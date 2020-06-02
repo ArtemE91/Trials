@@ -1,0 +1,74 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Sample
+{% endblock %}
+
+{% block search %}
+    {% include 'sample/includes/search.html' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'sample/includes/table.html' %}
+
+    <div class="ui orange segment grid" id="segment_card_id">
+        <div class="sixteen wide column">
+            <h3 class="ui header">Выбранные образцы</h3>
+        </div>
+
+        <div class="sixteen wide column">
+            <div class="ui four cards" id="cards">
+
+            </div>
+        </div>
+{#        <div class="sixteen wide column">#}
+{#            <div class="ui right floated green button">Посмотреть детально</div>#}
+{#        </div>#}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const select_cards = [];
+
+    const select_card_template = $('<a class="ui card green selectable" href="#" id="">\n' +
+        '                    <div class="content">\n' +
+        '                        <div class="header">Материал</div>\n' +
+        '                            <div class="meta">\n' +
+        '                                <span class="right floated time">May 24, 2020</span>\n' +
+        '                                <span class="category">Способ упрочнения</span>\n' +
+        '                            </div>\n' +
+        '                            <div class="description">\n' +
+        '                                <p>Описание Образца</p>\n' +
+        '                            </div>\n' +
+        '                    </div>\n' +
+        '                    <div class="extra content">\n' +
+        '                        <div class="right floated author">\n' +
+        '                            <i class="ui user icon"></i>\n' +
+        '                              Автор\n' +
+        '                        </div>\n' +
+        '                    </div>\n' +
+        '                </a>')
+
+    function create_card(id){
+        select_card_template.attr('href', id);
+        select_card_template.attr('id', 'card_' + id);
+        return select_card_template.clone();
+    }
+
+    function change_select_cards(id){
+        const index = select_cards.indexOf(id); {#Проверяем выбран ли card с таким id#}
+        if (index > -1){
+            select_cards.splice(index, 1);  {#Если card уже был выбран удаляем его#}
+            $('#card_' + id).remove();
+        }
+        else{
+            select_cards.push(id);  {#Если card не выбран добавляем его#}
+            const card = create_card(id);
+            card.appendTo($('#cards'));
+        }
+    }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="ui orange segment" id="segment_create_sample">
+        <h3 class="ui header">Введите параметры для образца</h3>
+        <div class="ui form">
+            <div class="fields four">
+                <div class="field">
+                    <label for="id_method">Способ упрочнения</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_exp_param">Параметры упрочнения</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Параметры упрочнения" name="exp_param" id="id_exp_param">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_date_proc_streng">Дата процесса упрочнения</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Дата процесса упрочнения" name="date_proc_streng" id="id_date_proc_streng">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_depth_coating">Толщина упрочнения</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating">
+                    </div>
+                </div>
+            </div>
+
+            <div class="fields four">
+                <div class="field">
+                    <label for="id_roughness">Шероховатость поверхности</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Шероховатость поверхности" name="roughness" id="id_roughness">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_hardness_coating">Твердость упрочнения</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_sub_hardness">Твердость подложки</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_struct_coating">Состав покрытия</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Состав покрытия" name="struct_coating" id="id_struct_coating">
+                    </div>
+                </div>
+            </div>
+
+            <div class="fields four">
+                <div class="field">
+                    <label for="id_organization">Организация которая провела упрочнение</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Организация" name="organization" id="id_organization">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_weight">Первоначальная масса образца</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Масса" name="weight" id="id_weight">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Материал</label>
+                    <div class="ui fluid search normal selection dropdown" name="material">
+                        <input type="hidden">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Материал</div>
+                        <div class="menu">
+                            <div class="item" data-value="Сталь">
+                                Сталь
+                            </div>
+                            <div class="item" data-value="Сталь">
+                                Медь
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Тип образца</label>
+                    <div class="ui fluid search normal selection dropdown" name="type">
+                        <input type="hidden">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Тип образца</div>
+                        <div class="menu">
+                            <div class="item" data-value="Грибок">
+                                Грибок
+                            </div>
+                            <div class="item" data-value="Диск">
+                                Диск
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+{%  endblock %}
+
+{% block scripts %}
+<script>
+$(' .ui.normal.dropdown')
+  .dropdown({
+    allowAdditions: true
+  })
+;
+</script>
+
+{% endblock %}
+
+{# label = for=id, input = type, name, id #}

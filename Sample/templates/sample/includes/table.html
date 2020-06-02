@@ -1,0 +1,61 @@
+<div class="ui orange segment" id="segment_table">
+
+    <h3 class="ui header">Таблица образцов</h3>
+    <table class="ui celled striped table green compact" style="width:100%" id="sample_table">
+        <thead>
+        <tr>
+            <th>Материал</th>
+            <th>Способ упрочнения</th>
+            <th>Параметры воздействия</th>
+            <th>Дата упрочнения</th>
+            <th>Толщина покрытия</th>
+            <th>Шероховатость поверхности</th>
+            <th>Твердость покрытия</th>
+            <th>Состав покрытия</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sample in object_list %}
+            <tr name="tr_{{ sample.id }}">
+                <td data-label="Name">{{ sample.material.name}}</td>
+                <td data-label="Age">{{ sample.method }}</td>
+                <td data-label="Job">{{ sample.exp_param }}</td>
+                <td data-label="Job">{{ sample.date_proc_streng }}</td>
+                <td data-label="Job">{{ sample.depth_coating }}</td>
+                <td data-label="Job">{{ sample.roughness }}</td>
+                <td data-label="Job">{{ sample.hardness_coating }}</td>
+                <td data-label="Job">{{ sample.struct_coating }}</td>
+                <td class="collapsing">
+                    <div class="ui toggle checkbox" id="checkbox_tr_sample_{{ sample.id }}" name="{{ id }}">
+                      <input type="checkbox">
+                      <label></label>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    {# https://datatables.net/ - Примеры таблиц #}
+    $(document).ready(function() {
+        $('#sample_table').DataTable({
+
+        });
+    });
+
+    $(' .checkbox')
+        .checkbox({
+            onChange: function(){
+                const id = $(this).closest('.checkbox').attr('id').split('checkbox_tr_sample_')[1]
+                {# функция находится в sample.html #}
+                {# добавляет и удаляет card выбранныx элементов из таблицы #}
+                {# в блок segment с id='segment_card_id' #}
+                change_select_cards(id);
+            }
+        })
+
+</script>

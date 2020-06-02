@@ -1,0 +1,96 @@
+<div class="ui orange segment" id="form_search">
+
+    <h3 class="ui header">Выберите параметры поиска</h3>
+    <div class="ui form">
+        <div class="fields three">
+            <div class="field">
+                <label>Способ упрочнения</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="method">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Способ упрочнения</div>
+                    <div class="menu">
+                        {% for name in method %}
+                        <div class="item" data-value="{{ name }}">
+                            {{ name }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Параметры воздействия</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="exp_param">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Параметры воздействия</div>
+                    <div class="menu">
+                        {% for name in exp_param %}
+                        <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                            {{ name }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Дата проведения опыта</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="date_proc_streng">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Дата проведения опыта</div>
+                    <div class="menu">
+                        {% for name in date_proc_streng %}
+                        <div class="item" data-value="{{ name|date:'Y-m-d' }}" data-text="{{ name }}">
+                            {{ name }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    const search_list = {};
+
+    function ajax_get_table(){
+        $.ajax({
+                  type: "GET",
+                  url: "/sample/table",
+                  data: {
+                      'search': JSON.stringify(search_list),
+                  },
+                  success: function(msg){
+                      $("#segment_table").replaceWith(msg);
+                      {# Выставляю в пришедщей таблице checked на элементы которые были выбраны до этого #}
+                      if (select_cards) {
+                          for (let i in select_cards) {
+                                let checkbox = $('#checkbox_tr_sample_' + select_cards[i])
+                                checkbox.children('input').attr('checked', 'checked');
+                          }
+                      }
+                  }
+                });
+    }
+
+    $('.ui.normal.dropdown')
+      .dropdown({
+          onChange: function(value, text, $selectedItem) {
+              const name_dropdown = $(this).closest('.ui.normal.dropdown').attr('name');
+              {# Записываю выбранный элемент в список для поиска если элемент удален то удаляю его из списка #}
+              search_list[name_dropdown + '__in'] = value.split(',');
+              if (value === ''){
+                  delete search_list[name_dropdown + '__in'];
+              }
+              ajax_get_table();
+          },
+      });
+
+</script>
