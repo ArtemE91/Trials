@@ -100,7 +100,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+static/Fomantic-UI/
 downloads/
 eggs/
 .eggs/

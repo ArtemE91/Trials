@@ -115,6 +115,18 @@
 
             </div>
 
+            <div class="fields four">
+                <div class="field">
+                     <h3>Date only</h3>
+                      <div class="ui calendar" id="example2">
+                        <div class="ui input left icon">
+                          <i class="calendar icon"></i>
+                          <input type="text" placeholder="Date">
+                        </div>
+                      </div>
+                </div>
+            </div>
+
         </div>
     </div>
 {%  endblock %}
@@ -124,8 +136,15 @@
 $(' .ui.normal.dropdown')
   .dropdown({
     allowAdditions: true
-  })
-;
+  });
+
+$('#example2').calendar({
+  type: 'date'
+});
+
+$('#example12').calendar({
+  monthFirst: false
+});
 </script>
 
 {% endblock %}
