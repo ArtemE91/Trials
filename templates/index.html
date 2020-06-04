@@ -17,14 +17,14 @@
 
 <div class="ui fixed inverted menu" style="height: 55px;">
     <div class="ui container">
-        <a href="{% url 'sample' %}" class="header item">
+        <a href="{% url 'sample:' %}" class="header item">
             Trials
         </a>
         <div class="ui simple dropdown item">
             Образец <i class="dropdown icon"></i>
             <div class="menu">
-                <a class="item" href="{% url 'sample' %}" >Информация</a>
-                <a class="item" href="{% url 'sample_create' %}">Создать</a>
+                <a class="item" href="{% url 'sample:' %}" >Информация</a>
+                <a class="item" href="{% url 'sample:create' %}">Создать</a>
                 <a class="item" href="#">Изменить</a>
                 <a class="item" href="#">Удалить</a>
             </div>
