@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'Trials.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sampledb',
+        'NAME': 'trialsdb',
         'HOST': 'localhost',
         'PORT': '',
     }

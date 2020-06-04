@@ -42,3 +42,9 @@ class SampleCreate(CreateView):
     form_class = SampleForm
     template_name = 'sample/sample_create.html'
 
+    def post(self, request):
+        sample_form = self.form_class(request.POST)
+        if sample_form.is_valid():
+            sample = sample_form.save()
+        return render(request, self.template_name, {"form": sample_form})
+

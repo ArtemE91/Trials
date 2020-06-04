@@ -8,22 +8,20 @@
 from django.db import models
 
 
+class SampleType(models.Model):
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'sample_type'
+
+
 class SampleMaterial(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     type = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'sample_material'
-
-
-class SampleType(models.Model):
-    name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'sample_type'
 
 
 class Sample(models.Model):
@@ -38,11 +36,12 @@ class Sample(models.Model):
     organization = models.CharField(max_length=255, blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
 
-    material = models.ForeignKey(SampleMaterial, on_delete=models.CASCADE, related_name='material')
-    type = models.ForeignKey(SampleType, on_delete=models.CASCADE, related_name='type')
+    sample_material = models.ForeignKey(SampleMaterial, on_delete=models.CASCADE,
+                                        blank=True, null=True, related_name='material')
+    sample_type = models.ForeignKey(SampleType, on_delete=models.CASCADE,
+                                    blank=True, null=True, related_name='type')
 
     class Meta:
-        managed = False
         db_table = 'sample'
 
 
@@ -56,10 +55,10 @@ class Trials(models.Model):
     type_particle = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
-    sample = models.OneToOneField(Sample, on_delete=models.CASCADE, related_name='sample')
+    sample = models.OneToOneField(Sample, on_delete=models.CASCADE,
+                                  blank=True, null=True, related_name='sample')
 
     class Meta:
-        managed = False
         db_table = 'trials'
 
 
@@ -68,8 +67,8 @@ class ReceivedValues(models.Model):
     time_trials = models.IntegerField(blank=True, null=True)
     image = models.FileField(upload_to=None, null=True, blank=True)
 
-    trials = models.ForeignKey(Trials, on_delete=models.CASCADE, related_name="trials_values")
+    trials = models.ForeignKey(Trials, on_delete=models.CASCADE,
+                               blank=True, null=True, related_name="trials_values")
 
     class Meta:
-        managed = False
         db_table = 'received_values'
