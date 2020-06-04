@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form method="post" action="{% url 'sample_create' %}">
+<form method="post" action="{% url 'sample:create' %}">
 {% csrf_token %}
     <div class="ui orange segment" id="segment_create_sample">
         <h3 class="ui header">Введите параметры для образца</h3>
