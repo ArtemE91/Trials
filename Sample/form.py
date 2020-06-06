@@ -2,7 +2,7 @@ from django import forms
 
 import datetime
 
-from .models import Sample
+from .models import Sample, SampleMaterial, SampleType
 
 
 class SampleForm(forms.ModelForm):
@@ -10,8 +10,14 @@ class SampleForm(forms.ModelForm):
         model = Sample
         fields = '__all__'
 
-    # def clean_tags(self):
-    #     new_data = self.cleaned_data['date_proc_streng']
-    #     new_data = datetime.datetime.strptime(new_data, '%Y-%m-%d').date()
-    #
-    #     return new_data
+
+class MaterialForm(forms.ModelForm):
+    class Meta:
+        model = SampleMaterial
+        fields = '__all__'
+
+
+class TypeForm(forms.ModelForm):
+    class Meta:
+        model = SampleType
+        fields = '__all__'

@@ -23,11 +23,15 @@
         <div class="ui simple dropdown item">
             Образец <i class="dropdown icon"></i>
             <div class="menu">
-                <a class="item" href="{% url 'sample:' %}" >Информация</a>
+                <a class="item" href="{% url 'sample:' %}" ><i class="red circular"></i>Информация</a>
                 <a class="item" href="{% url 'sample:create' %}">Создать</a>
                 <a class="item" href="#">Изменить</a>
                 <a class="item" href="#">Удалить</a>
+                <div class="divider"></div>
+                <a class="item" href="#">Материал</a>
+                <a class="item" href="#">Тип</a>
             </div>
+
         </div>
         <div class="ui simple dropdown item">
             Испытания <i class="dropdown icon"></i>
@@ -41,10 +45,7 @@
     </div>
 </div>
 
-    <div class="ui grid centered">
-
-        <div class="sixteen wide column">
-        </div>
+{#    <div class="ui grid centered">#}
 
         <div class="fifteen wide column center">
 
@@ -60,7 +61,7 @@
 
         </div>
 
-    </div>
+{#    </div>#}
 
 </body>
 </html>

@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.shortcuts import reverse
 
 
 class SampleType(models.Model):
@@ -13,6 +14,13 @@ class SampleType(models.Model):
 
     class Meta:
         db_table = 'sample_type'
+
+    def __str__(self):
+        return f'{self.name}'
+
+    # Добавил для AjaxableResponseMixin, для реализции DetailView необходиму возращать url элемента
+    def get_absolute_url(self):
+        pass
 
 
 class SampleMaterial(models.Model):
@@ -22,6 +30,13 @@ class SampleMaterial(models.Model):
 
     class Meta:
         db_table = 'sample_material'
+
+    def __str__(self):
+        return f'{self.name} {self.type}'
+
+    # Добавил для AjaxableResponseMixin, для реализции DetailView необходиму возращать url элемента
+    def get_absolute_url(self):
+        pass
 
 
 class Sample(models.Model):

@@ -1,30 +1,50 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form method="post" action="{% url 'sample:create' %}">
+<form method="post" action="{% url 'sample:create' %}" class="ui form" style="margin-top: 55px;">
 {% csrf_token %}
+
     <div class="ui orange segment" id="segment_create_sample">
-        <h3 class="ui header">Введите параметры для образца</h3>
-        <div class="ui form">
-            <div class="fields four">
+        <h3 class="ui dividing header">Информация по упрочнению</h3>
+        <div class="field">
+            <div class="two fields">
                 <div class="field">
-                    <label for="id_method">Способ упрочнения</label>
+                    <label for="id_method">Способ</label>
                     <div class="ui input">
-                      <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method"
-                      >
+                      <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method">
                     </div>
                 </div>
 
                 <div class="field">
-                    <label for="id_exp_param">Параметры упрочнения</label>
+                    <label for="id_exp_param">Параметры</label>
                     <div class="ui input">
                       <input type="text" placeholder="Параметры упрочнения" name="exp_param" id="id_exp_param"
                       >
                     </div>
                 </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_depth_coating">Толщина</label>
+                    <div class="ui input">
+                      <input type="number" step="0.01" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
+                      >
+                    </div>
+                </div>
 
                 <div class="field">
-                     <label for="id_date_proc_streng">Дата процесса упрочнения</label>
+                    <label for="id_hardness_coating">Твердость</label>
+                    <div class="ui input">
+                      <input type="number" step="0.01" placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
+                      >
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                     <label for="id_date_proc_streng">Дата процесса</label>
                       <div class="ui calendar" id="id_calendar">
                         <div class="ui input left icon">
                           <i class="calendar icon"></i>
@@ -32,29 +52,30 @@
                         </div>
                       </div>
                 </div>
+            </div>
 
+        </div>
+
+        <h3 class="ui dividing header">Информация по образцу</h3>
+        <div class="field">
+            <div class="two fields">
                 <div class="field">
-                    <label for="id_depth_coating">Толщина упрочнения</label>
+                    <label for="id_weight">Первоначальная масса</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
+                      <input type="number" step="0.01" placeholder="Первоначальная масса образца" name="weight" id="id_weight"
                       >
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="fields four">
+        <h3 class="ui dividing header">Дополнительная информация</h3>
+        <div class="field">
+            <div class="two fields">
                 <div class="field">
                     <label for="id_roughness">Шероховатость поверхности</label>
                     <div class="ui input">
-                      <input type="double" step="0.01" placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
-                      >
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label for="id_hardness_coating">Твердость упрочнения</label>
-                    <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
+                      <input type="number" step="0.01" placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
                       >
                     </div>
                 </div>
@@ -66,88 +87,165 @@
                       >
                     </div>
                 </div>
-
-                <div class="field">
-                    <label for="id_struct_coating">Состав покрытия</label>
-                    <div class="ui input">
-                      <input type="text" placeholder="Состав покрытия" name="struct_coating" id="id_struct_coating"
-                      >
-                    </div>
-                </div>
             </div>
 
-            <div class="fields four">
-                <div class="field">
-                    <label for="id_organization">Организация которая провела упрочнение</label>
-                    <div class="ui input">
-                      <input type="text" placeholder="Организация" name="organization" id="id_organization"
-                      >
-                    </div>
+            <div class="field">
+                <label for="id_organization">Организация которая провела упрочнение</label>
+                <div class="ui input">
+                    <input type="text" placeholder="Организация" name="organization" id="id_organization"
+                    >
                 </div>
-
-                <div class="field">
-                    <label for="id_weight">Первоначальная масса образца</label>
-                    <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Масса" name="weight" id="id_weight"
-                      >
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Материал</label>
-                    <div class="ui fluid search normal selection dropdown" name="material">
-                        <input type="hidden">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Материал</div>
-                        <div class="menu">
-                            <div class="item" data-value="Сталь">
-                                Сталь
-                            </div>
-                            <div class="item" data-value="Сталь">
-                                Медь
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Тип образца</label>
-                    <div class="ui fluid search normal selection dropdown" name="type">
-                        <input type="hidden">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Тип образца</div>
-                        <div class="menu">
-                            <div class="item" data-value="Грибок">
-                                Грибок
-                            </div>
-                            <div class="item" data-value="Диск">
-                                Диск
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="ui grid">
-            <div class="right floated column">
-                <button type="submit" class="ui button orange">Сохранить</button>
             </div>
         </div>
 
-    </div>
+        <h3 class="ui dividing header">Материал и тип образца</h3>
+        <div class="ui visible info message">
+            <p>Материал и тип образца можно выбрать из имеющихся в базе, либо создать новый!</p>
+        </div>
+
+        <div class="ui success message" id="id_message_material_success">
+            <i class="close icon"></i>
+            <div class="header">Успешно.</div>
+            <p>Новый материал добавлен в базу!</p>
+        </div>
+        <div class="two fields" id="id_block_material">
+            {% include 'sample/material/material.html' %}
+        </div>
+
+        <div class="ui success message" id="id_message_type_success">
+            <i class="close icon"></i>
+            <div class="header">Успешно.</div>
+            <p>Новый тип образца добавлен в базу!</p>
+        </div>
+        <div class="two fields" id="id_block_type">
+            {% include 'sample/type/type.html' %}
+        </div>
+
+        <div class="ui button orange">Сохранить</div>
+
+</div>
+
 </form>
+
 {%  endblock %}
 
 {% block scripts %}
 <script>
-$(' .ui.normal.dropdown')
-  .dropdown({
-        allowAdditions: true,
-        monthsShort: true
-  });
+
+function ajax_get_modal_material(){
+    $.ajax({
+        type: "GET",
+        url: "{% url 'sample:material_create' %}",
+        success: function(data){
+            $(data)
+            .modal({
+                onApprove : function () {
+                    ajax_post_modal_material();
+                }
+            })
+            .modal('show');
+        }
+    });
+}
+
+function ajax_get_material(id_item_material){
+    $.ajax({
+        type: "GET",
+        url: "{% url 'sample:material' %}",
+        success: function(data){
+            {# Удаляем dropdown material #}
+            $('#id_material_field').remove();
+            {# Находим последний добавленный элемент #}
+            let name_item = $(data).find("#id_item_material" + id_item_material).attr('data-value');
+            {# Присваиваем его dropdown !!!! Почему то не добавляется#}
+            $(data).find("#id_input_dropdown_material_default").attr('value', name_item);
+            {# Добавляем обновленный dropdown material #}
+            $(data).appendTo($('#id_block_material'));
+        }
+    });
+}
+
+function ajax_get_type(id_item_type){
+    $.ajax({
+        type: "GET",
+        url: "{% url 'sample:type' %}",
+        success: function(data){
+            {# Удаляем dropdown type #}
+            $('#id_type_field').remove();
+            {# Находим последний добавленный элемент #}
+            let name_item = $(data).find("#id_item_type" + id_item_type).attr('data-value');
+            {# Присваиваем его dropdown#}
+            $(data).find("#id_input_dropdown_type_default").attr('value', name_item);
+            {# Добавляем обновленный dropdown type #}
+            $(data).appendTo($('#id_block_type'));
+        }
+    });
+}
+
+
+function ajax_post_modal_material(){
+    let form = $('#id_material_form').serialize();
+    console.log(form);
+    $.ajax({
+        type: "POST",
+        url: "{% url 'sample:material_create' %}",
+        data:  form,
+        success: function(response){
+            if (response['pk']){
+                $('#id_message_material_success').attr('class', 'ui success message visible');
+                ajax_get_material(response['pk']);
+            }
+        }
+    });
+}
+
+function ajax_get_modal_type(){
+    $.ajax({
+        type: "GET",
+        url: "{% url 'sample:type_create' %}",
+        success: function(data){
+            $(data)
+            .modal({
+                onApprove : function () {
+                    ajax_post_modal_type();
+                }
+            })
+            .modal('show');
+        }
+    });
+}
+
+function ajax_post_modal_type(){
+    let form = $('#id_type_form').serialize();
+    $.ajax({
+        type: "POST",
+        url: "{% url 'sample:type_create' %}",
+        data:  form,
+        success: function(response){
+            if (response['pk']){
+                $('#id_message_type_success').attr('class', 'ui success message visible');
+                ajax_get_type(response['pk']);
+            }
+        }
+    });
+}
+
+    $('.ui.button.positive.material')
+        .click(function () {
+            ajax_get_modal_material();
+        });
+
+    $('.ui.button.positive.type')
+        .click(function () {
+            ajax_get_modal_type();
+        });
+
+    $('.message .close')
+    .on('click', function(){
+        $(this)
+        .closest('.message')
+        .transition('fade')
+    });
 
 $('#id_calendar')
     .calendar({

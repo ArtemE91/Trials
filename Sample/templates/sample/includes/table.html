@@ -18,7 +18,7 @@
         <tbody>
         {% for sample in object_list %}
             <tr name="tr_{{ sample.id }}">
-                <td data-label="Name">{{ sample.material.name}}</td>
+                <td data-label="Name">{{ sample.sample_material}}</td>
                 <td data-label="Age">{{ sample.method }}</td>
                 <td data-label="Job">{{ sample.exp_param }}</td>
                 <td data-label="Job">{{ sample.date_proc_streng }}</td>

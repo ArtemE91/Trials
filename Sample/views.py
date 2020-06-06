@@ -1,13 +1,28 @@
 from django.views.generic import ListView, DetailView, CreateView, View
-from django.shortcuts import render
+from django.http import JsonResponse
 
-from .models import Sample
+from .models import Sample, SampleType, SampleMaterial
 from .filter_queryset import filter_queryset
-from .form import SampleForm
+from .form import SampleForm, MaterialForm, TypeForm
 
 
-def home(request):
-    return render(request, 'sample/sample.html')
+class AjaxableResponseMixin:
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.is_ajax():
+            data = {
+                'pk': self.object.pk,
+            }
+            return JsonResponse(data, status=200)
+        else:
+            return response
 
 
 class SampleList(ListView):
@@ -42,9 +57,38 @@ class SampleCreate(CreateView):
     form_class = SampleForm
     template_name = 'sample/sample_create.html'
 
-    def post(self, request):
-        sample_form = self.form_class(request.POST)
-        if sample_form.is_valid():
-            sample = sample_form.save()
-        return render(request, self.template_name, {"form": sample_form})
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['material'] = SampleMaterial.objects.all()
+        context['type'] = SampleType.objects.all()
+        return context
 
+
+class SampleMaterialList(ListView):
+    model = SampleMaterial
+    template_name = 'sample/material/material.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['material'] = context['object_list']
+        return context
+
+
+class SampleMaterialCreate(AjaxableResponseMixin, CreateView):
+    form_class = MaterialForm
+    template_name = 'sample/material/material_create.html'
+
+
+class SampleTypeList(ListView):
+    model = SampleType
+    template_name = 'sample/type/type.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = context['object_list']
+        return context
+
+
+class SampleTypeCreate(AjaxableResponseMixin, CreateView):
+    form_class = TypeForm
+    template_name = 'sample/type/type_create.html'
