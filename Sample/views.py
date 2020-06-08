@@ -1,5 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, View
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Sample, SampleType, SampleMaterial
 from .filter_queryset import filter_queryset
@@ -53,15 +55,9 @@ class SampleDetail(DetailView):
     pk_url_kwarg = "id"
 
 
-class SampleCreate(CreateView):
+class SampleCreate(AjaxableResponseMixin, CreateView):
     form_class = SampleForm
     template_name = 'sample/sample_create.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['material'] = SampleMaterial.objects.all()
-        context['type'] = SampleType.objects.all()
-        return context
 
 
 class SampleMaterialList(ListView):

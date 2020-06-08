@@ -10,9 +10,7 @@
             <div class="two fields">
                 <div class="field">
                     <label for="id_method">Способ</label>
-                    <div class="ui input">
                       <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method">
-                    </div>
                 </div>
 
                 <div class="field">
@@ -109,7 +107,7 @@
             <p>Новый материал добавлен в базу!</p>
         </div>
         <div class="two fields" id="id_block_material">
-            {% include 'sample/material/material.html' %}
+            {% include 'sample/material/material.html' with material=form.sample_material only %}
         </div>
 
         <div class="ui success message" id="id_message_type_success">
@@ -118,10 +116,10 @@
             <p>Новый тип образца добавлен в базу!</p>
         </div>
         <div class="two fields" id="id_block_type">
-            {% include 'sample/type/type.html' %}
+            {% include 'sample/type/type.html'  with type=form.sample_type only %}
         </div>
 
-        <div class="ui button orange">Сохранить</div>
+        <button type="submit" class="ui button orange">Сохранить</button>
 
 </div>
 
@@ -158,7 +156,7 @@ function ajax_get_material(id_item_material){
             {# Находим последний добавленный элемент #}
             let name_item = $(data).find("#id_item_material" + id_item_material).attr('data-value');
             {# Присваиваем его dropdown !!!! Почему то не добавляется#}
-            $(data).find("#id_input_dropdown_material_default").attr('value', name_item);
+            $(data).find("#id_item_material" + id_item_material).attr('selected', 'selected');
             {# Добавляем обновленный dropdown material #}
             $(data).appendTo($('#id_block_material'));
         }
