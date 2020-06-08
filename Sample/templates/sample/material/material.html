@@ -1,24 +1,17 @@
 <div class="field" id="id_material_field">
     <label>Материал</label>
     <div class="ui action input">
-        <div class="ui fluid search normal selection dropdown" name="material">
-            <input type="hidden" value="" id="id_input_dropdown_material_default">
-            <i class="dropdown icon"></i>
-            <div class="default text">Материал</div>
-            <div class="menu">
-                {% for value in material %}
-                    <div class="item" data-value="{{ value }}" id="id_item_material{{ value.id }}">
-                        {{ value }}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+        <select name="sample_material" class="ui fluid search dropdown" id="id_sample_material">
+        {% for value in material %}
+            <option value="{{ value.id }}" data-value="{{ value }}" id="id_item_material{{ value.id }}">{{ value }}</option>
+        {% endfor %}
+        </select>
         <div class="ui button positive material">Создать</div>
     </div>
 </div>
 
 <script>
-    $(' .ui.normal.dropdown')
+    $(' .ui.dropdown')
   .dropdown({
         allowAdditions: true,
         monthsShort: true

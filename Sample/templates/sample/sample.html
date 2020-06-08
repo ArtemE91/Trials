@@ -51,7 +51,7 @@
         '                </a>')
 
     function create_card(id){
-        select_card_template.attr('href', id);
+        select_card_template.attr('href', 'detail/' + id);
         select_card_template.attr('id', 'card_' + id);
         return select_card_template.clone();
     }

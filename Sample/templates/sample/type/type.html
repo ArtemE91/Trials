@@ -1,24 +1,17 @@
 <div class="field" id="id_type_field">
     <label>Тип</label>
     <div class="ui action input">
-        <div class="ui fluid search normal selection dropdown" name="type">
-            <input type="hidden" value="" id="id_input_dropdown_type_default">
-            <i class="dropdown icon"></i>
-            <div class="default text">Тип образца</div>
-            <div class="menu">
-                {% for value in type %}
-                    <div class="item" data-value="{{ value }}" id="id_item_type{{ value.id }}">
-                        {{ value }}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+        <select name="sample_type" class="ui fluid search dropdown">
+        {% for value in type %}
+            <option value="{{ value.id }}" id="id_item_type{{ value.id }}">{{ value }}</option>
+        {% endfor %}
+        </select>
         <div class="ui button positive type">Создать</div>
     </div>
 </div>
 
 <script>
-    $(' .ui.normal.dropdown')
+    $(' .ui.dropdown')
   .dropdown({
         allowAdditions: true,
         monthsShort: true
