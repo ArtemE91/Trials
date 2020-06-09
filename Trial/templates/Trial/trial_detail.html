@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="ui orange segment" style="margin-top: 55px;">
+    <h3 class="ui header">Испытание {{ trials.pk }}</h1>
+    <div class="ui list">
+        <div class="item">Размер частиц: {{ trials.size_particle }}</div>
+        <div class="item">Скорость соударения: {{ trials.speed_collision }}</div>
+        <div class="item">Дополнительные параметры:    {{ trials.add_param }}</div>
+        <div class="item">Угол соударения:{{ trials.corner_collision }}</div>
+        <div class="item">Дата начала испытаний:{{ trials.date_trials }}</div>
+        <div class="item">Дата окончания испытаний:{{ trials.date_end_trials }}</div>
+        <div class="item">Тип частиц:{{ trials.type_particle }}</div>
+        <div class="item">Описание:{{ trials.description }}</div>
+        <div class="item">Образец:{{ trials.sample }}</div>
+        <p>Размер частиц:      123{{ trials.size_particle }}</p>
+    </div>
+<div class="ui grid">
+  <div class="four wide column"></div>
+  <div class="four wide column"></div>
+  <div class="four wide column"></div>
+  <div class="four wide column"></div>
+  <div class="two wide column"></div>
+  <div class="eight wide column"></div>
+  <div class="six wide column"></div>
+</div>    
+</div>
+{% endblock content %}
