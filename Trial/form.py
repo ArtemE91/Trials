@@ -14,5 +14,7 @@ class TrialForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(TrialForm, self).__init__(*args, **kwargs)
-        self.fields['add_param'].widget.attrs['placeholder'] = 'return false;'
+        self.fields['add_param'].widget.attrs['placeholder'] = 'Нужны ли плейсхолдеры?'
         self.fields['sample'].queryset = Sample.objects.filter(sample=None)
+        self.fields['sample'].widget.attrs['class'] = 'ui fluid search dropdown'
+
