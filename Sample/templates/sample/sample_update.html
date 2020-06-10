@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<form method="post" action="" class="ui form" style="margin-top: 55px;">
+{% csrf_token %}
+    <div class="ui orange segment" id="segment_create_sample">
+        <h3 class="ui dividing header">Редактирование образца</h3>
+            {{ object }}
+        <button type="submit" class="ui button orange">Сохранить</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,12 +1,16 @@
 <div class="field" id="id_type_field">
     <label>Тип</label>
-    <div class="ui action input">
-        <select name="sample_type" class="ui fluid search dropdown">
-        {% for value in type %}
-            <option value="{{ value.id }}" id="id_item_type{{ value.id }}">{{ value }}</option>
-        {% endfor %}
-        </select>
-        <div class="ui button positive type">Создать</div>
+    <div class="two fields">
+        <div class="field">
+            <select name="sample_type" class="ui fluid search dropdown">
+                {% for value in type %}
+                    <option value="{{ value.id }}" id="id_item_type{{ value.id }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="field">
+            <div class="ui button positive type">Создать</div>
+        </div>
     </div>
 </div>
 

@@ -17,17 +17,18 @@
         </thead>
         <tbody>
         {% for sample in object_list %}
-            <tr name="tr_{{ sample.id }}">
-                <td data-label="Name">{{ sample.sample_material}}</td>
-                <td data-label="Age">{{ sample.method }}</td>
-                <td data-label="Job">{{ sample.exp_param }}</td>
-                <td data-label="Job">{{ sample.date_proc_streng }}</td>
-                <td data-label="Job">{{ sample.depth_coating }}</td>
-                <td data-label="Job">{{ sample.roughness }}</td>
-                <td data-label="Job">{{ sample.hardness_coating }}</td>
-                <td data-label="Job">{{ sample.struct_coating }}</td>
+            <tr id="tr_{{ sample.id }}"><a href="#">
+                <td>{{ sample.sample_material}}</td>
+                <td>{{ sample.method }}</td>
+                <td>{{ sample.exp_param }}</td>
+                <td>{{ sample.date_proc_streng }}</td>
+                <td>{{ sample.depth_coating }}</td>
+                <td>{{ sample.roughness }}</td>
+                <td>{{ sample.hardness_coating }}</td>
+                <td>{{ sample.struct_coating }}</td>
+            </a>
                 <td class="collapsing">
-                    <div class="ui toggle checkbox" id="checkbox_tr_sample_{{ sample.id }}" name="{{ id }}">
+                    <div class="ui toggle checkbox" id="{{ sample.id }}">
                       <input type="checkbox">
                       <label></label>
                     </div>
@@ -39,7 +40,6 @@
 </div>
 
 <script>
-
     {# https://datatables.net/ - Примеры таблиц #}
     $(document).ready(function() {
         $('#sample_table').DataTable({
@@ -49,12 +49,23 @@
 
     $(' .checkbox')
         .checkbox({
-            onChange: function(){
-                const id = $(this).closest('.checkbox').attr('id').split('checkbox_tr_sample_')[1]
-                {# функция находится в sample.html #}
-                {# добавляет и удаляет card выбранныx элементов из таблицы #}
-                {# в блок segment с id='segment_card_id' #}
-                change_select_cards(id);
+            onChecked: function(){
+                let id_sample = $(this).closest('.checkbox').attr('id');
+                let line_table = $('#tr_' + id_sample).clone();
+                line_table.find('th:last, td:last').remove();
+                line_table.attr('class', 'select_tr');
+                line_table.attr('id', 'tr_' + id_sample);
+                line_table.find('a').attr('href', '/sample/detail/' + id_sample);
+                line_table.bind('click', function(){
+                    location.href = '/sample/detail/' + id_sample;
+                });
+                $('#sample_table_select > tbody:last-child').append(line_table);
+                select_sample.push(id_sample);
+            },
+            onUnchecked: function(){
+                let id_sample = $(this).closest('.checkbox').attr('id');
+                $('#sample_table_select').find('#tr_' + id_sample ).remove();
+                select_sample.splice(select_sample.indexOf(id_sample), 1);
             }
         })
 

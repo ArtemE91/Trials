@@ -1,5 +1,6 @@
-from django.views.generic import ListView, DetailView, CreateView, View
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -58,6 +59,19 @@ class SampleDetail(DetailView):
 class SampleCreate(AjaxableResponseMixin, CreateView):
     form_class = SampleForm
     template_name = 'sample/sample_create.html'
+
+
+class SampleUpdateView(UpdateView):
+    form_class = SampleForm
+    template_name = "sample/sample_update.html"
+
+    def get_object(self, queryset=None):
+        return Sample.objects.get(id=self.kwargs['id'])
+
+
+class SampleDeleteView(DeleteView):
+    model = Sample
+    success_url = reverse_lazy('sample:')
 
 
 class SampleMaterialList(ListView):
