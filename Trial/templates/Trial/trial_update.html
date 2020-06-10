@@ -1,16 +1,114 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<div class="ui segment orange" style="margin-top: 55px;">
-    <form method="post" class="ui form" style="margin-top: 55px;">
-    {% csrf_token %}
+<form method="post" class="ui form" style="margin-top: 55px;">
+{% csrf_token %}
+    <div class="ui orange segment" id="segment_create_trial">
         <h3 class="ui dividing header">Изменение испытания {{ trials.pk }}</h3>
-        {{ form.as_p }}
-        <button class='ui orange button' type="submit" value="Update">Сохранить изменения</button>
-    </form>
-    <form method="post" action="{% url 'trial:delete' trials.pk %}">
-    {% csrf_token %}
-        <button class='ui red button' type="submit" value="DELETE">Удалить</button>
-    </form>
-</div>
+        <div class="two fields">
+            <div class="field">
+                {{ form.size_particle.label_tag }}
+                {{ form.size_particle }}
+            </div>
+            <div class="field">
+                {{ form.speed_collision.label_tag }}
+                {{ form.speed_collision }}
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                {{ form.add_param.label_tag }}
+                {{ form.add_param }}
+            </div>
+            <div class="field">
+                {{ form.corner_collision.label_tag }}
+                {{ form.corner_collision }}
+            </div>        
+        </div>
+        <div class="two fields">
+            <div class="field">
+                {{ form.date_trials.label_tag  }}
+                <div class="ui calendar" id="rangestart">
+                    <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        {{ form.date_trials  }}
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {{ form.date_end_trials.label_tag  }}
+                <div class='ui calendar' id='rangeend'>
+                    <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        {{ form.date_end_trials }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                {{ form.type_particle.label_tag }}
+                {{ form.type_particle }}
+            </div>
+            <div class="field">
+                {{ form.sample.label_tag  }}
+                <div class="ui action input">
+                    {{ form.sample }}
+                </div>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+            </div>
+        </div>
+        <br>
+        <button class='ui right floated blue button' type="submit" value="Update">Сохранить</button>
+        <button class='ui red button' formaction="{% url 'trial:delete' trials.pk %}" type="submit" value="DELETE">Удалить</button>
+    </div>
+</form>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+
+$('#rangestart').calendar({
+    type: 'date',
+    centuryBreak: 0,
+    formatter: {
+        date: function (date, settings) {
+            if (!date) return '';
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            return year + '-' + month + '-' + day;
+        }
+    },
+    endCalendar: $('#rangeend')
+});
+
+$('#rangeend').calendar({
+    type: 'date',
+    centuryBreak: 0,
+    formatter: {
+        date: function (date, settings) {
+            if (!date) return '';
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            return year + '-' + month + '-' + day;
+        }
+    },
+    startCalendar: $('#rangestart')
+});
+
+$(' .ui.dropdown')
+  .dropdown({
+    allowAdditions: true
+  })
+;
+
+</script>
+{% endblock scripts %}
+

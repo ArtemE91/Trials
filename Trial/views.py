@@ -28,5 +28,4 @@ class TrialUpdate(UpdateView):
 
 class TrialDelete(DeleteView):
     model = Trials
-    # template_name = 'Trial/trial_delete.html'
     success_url = '/trial/'
