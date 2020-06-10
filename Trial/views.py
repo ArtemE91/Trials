@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from Sample.models import Trials
 from .form import TrialForm, TrialUpdateForm
 
@@ -23,3 +23,10 @@ class TrialUpdate(UpdateView):
     model = Trials
     template_name = 'Trial/trial_update.html'
     fields = '__all__'
+    success_url = '/trial/'
+
+
+class TrialDelete(DeleteView):
+    model = Trials
+    # template_name = 'Trial/trial_delete.html'
+    success_url = '/trial/'
