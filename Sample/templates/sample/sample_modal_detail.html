@@ -1,0 +1,17 @@
+<div class="ui modal sample">
+    <i class="close icon"></i>
+    <div class="header">
+        Детальная информация по образцу
+    </div>
+    <div class="content">
+        <form class="ui form" id="id_sample_form" method="post" action="{% url 'sample:update' %}">
+            {% csrf_token %}
+            {{ object }}
+        </form>
+        <button type="submit" class="ui positive right labeled icon button">
+            Редактировать
+            <i class="checkmark icon"></i>
+        </button>
+    </div>
+</div>
+

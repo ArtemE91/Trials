@@ -70,9 +70,9 @@
                   success: function(msg){
                       $("#segment_table").replaceWith(msg);
                       {# Выставляю в пришедщей таблице checked на элементы которые были выбраны до этого #}
-                      if (select_cards) {
-                          for (let i in select_cards) {
-                                let checkbox = $('#checkbox_tr_sample_' + select_cards[i])
+                      if (select_sample) {
+                          for (let i in select_sample) {
+                                let checkbox = $('#' + select_sample[i])
                                 checkbox.children('input').attr('checked', 'checked');
                           }
                       }

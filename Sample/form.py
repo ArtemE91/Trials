@@ -9,6 +9,20 @@ class SampleForm(forms.ModelForm):
     class Meta:
         model = Sample
         fields = '__all__'
+        labels = {
+            'method': 'Cпособ',
+            'exp_param': 'Параметры',
+            'date_proc_streng': 'Дата процесса',
+            'depth_coating': 'Толщина',
+            'roughness': 'Шероховатость поверхности',
+            'hardness_coating': 'Твердость',
+            'struct_coating': 'Состав покрытия',
+            'sub_hardness': 'Твердость подложки',
+            'organization': 'Организация которая провела упрочнение',
+            'weight': 'Первоначальная масса',
+            'sample_material': 'Материал',
+            'sample_type': 'Тип'
+        }
 
     def __init__(self, *args, **kwargs):
         super(SampleForm, self).__init__(*args, **kwargs)

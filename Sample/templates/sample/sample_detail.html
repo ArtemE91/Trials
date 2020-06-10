@@ -1,5 +1,13 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    {{ object }}
-{% endblock %}
+<form method="post" action="{{ object.get_update_url }}" class="ui form" style="margin-top: 55px;">
+{% csrf_token %}
+
+    <div class="ui orange segment" id="segment_create_sample">
+        <h3 class="ui dividing header">Информация по образцу</h3>
+            {{ object }}
+        <button type="submit" class="ui button orange">Редактировать</button>
+    </div>
+</form>
+{%  endblock %}
