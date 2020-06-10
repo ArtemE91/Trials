@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="ui orange segment" style="margin-top: 55px;">
+    <h3 class="ui dividing header">Испытание {{ trials.pk }}</h3>
+    <div class="ui list">
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Размер частиц:</div>
+                <div class="thirteen wide column">{{ trials.size_particle }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Скорость соударения:</div>
+                <div class="thirteen wide column">{{ trials.speed_collision }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Дополнительные параметры:</div>
+                <div class="thirteen wide column">{{ trials.add_param }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Угол соударения:</div>
+                <div class="thirteen wide column">{{ trials.corner_collision }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Дата начала испытаний:</div>
+                <div class="thirteen wide column">{{ trials.date_trials }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Дата окончания испытаний:</div>
+                <div class="thirteen wide column">{{ trials.date_end_trials }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Тип частиц:</div>
+                <div class="thirteen wide column">{{ trials.type_particle }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Описание:</div>
+                <div class="thirteen wide column">{{ trials.description }}</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ui grid">
+                <div class="three wide column">Образец:</div>
+                <div class="thirteen wide column">{{ trials.sample }}</div>
+            </div>
+        </div>
+        <br>
+        <form action="{% url 'trial:update' trials.pk %}">
+            <button class="ui button">Изменить</button>
+        </form>
+    </div>  
+</div>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="ui segment orange" style="margin-top: 55px;">
+    <form method="post" class="ui form" style="margin-top: 55px;">
+    {% csrf_token %}
+        <h3 class="ui dividing header">Изменение испытания {{ trials.pk }}</h3>
+        {{ form.as_p }}
+        <button class='ui orange button' type="submit" value="Update">Сохранить изменения</button>
+    </form>
+    <form method="post" action="{% url 'trial:delete' trials.pk %}">
+    {% csrf_token %}
+        <button class='ui red button' type="submit" value="DELETE">Удалить</button>
+    </form>
+</div>
+{% endblock content %}

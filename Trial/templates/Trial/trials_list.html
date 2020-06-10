@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+{% block title %}
+  Trials
+{% endblock %}
+
+{% block content %}
+<div class="ui orange segment" id="segment_trials_table" style="margin-top: 55px;">
+    <h3 class="ui header">Список испытаний</h3>
+    <table class="ui celled striped table green compact" style="width:100%" id="sample_table">
+        <thead>
+            <tr>
+                <th>Размер частиц</th>
+                <th>Скорость соударения</th>
+                <th>Дополнительные параметры</th>
+                <th>Угол соударения</th>
+                <th>Дата начала испытаний</th>
+                <th>Дата окончания испытаний</th>
+                <th>Тип частиц</th>
+                <th>Описание</th>
+                <th>Образец</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for trial in object_list %}
+            <tr name="tr_{{ trial.id }}">
+                <td>{{ trial.size_particle }}</td>
+                <td>{{ trial.speed_collision }}</td>
+                <td>{{ trial.add_param }}</td>
+                <td>{{ trial.corner_collision }}</td>
+                <td>{{ trial.date_trials }}</td>
+                <td>{{ trial.date_end_trials }}</td>
+                <td>{{ trial.type_particle }}</td>
+                <td>{{ trial.description }}</td>
+                <td>{{ trial.sample }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+  </table>
+</div>
+{% endblock content %}
