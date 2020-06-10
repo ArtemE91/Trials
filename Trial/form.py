@@ -18,3 +18,8 @@ class TrialForm(forms.ModelForm):
         self.fields['sample'].queryset = Sample.objects.filter(sample=None)
         self.fields['sample'].widget.attrs['class'] = 'ui fluid search dropdown'
 
+
+class TrialUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Trials
+        fields = '__all__'
