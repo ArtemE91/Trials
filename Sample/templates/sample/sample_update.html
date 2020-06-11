@@ -1,12 +1,147 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form method="post" action="" class="ui form" style="margin-top: 55px;">
+<form method="post" class="ui form" style="margin-top: 55px;">
 {% csrf_token %}
     <div class="ui orange segment" id="segment_create_sample">
-        <h3 class="ui dividing header">Редактирование образца</h3>
-            {{ object }}
+        <h3 class="ui dividing header">Информация по упрочнению</h3>
+        <div class="field">
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_method">{{ form.method.label_tag }}</label>
+                    <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method"
+                    value="{{ form.method.value }}">
+                </div>
+
+                <div class="field">
+                    <label for="id_exp_param">{{ form.exp_param.label_tag }}</label>
+                    <div class="ui input">
+                      <input type="text" placeholder="Параметры упрочнения" name="exp_param" id="id_exp_param"
+                      value="{{ form.exp_param.value }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_depth_coating">{{ form.depth_coating.label_tag }}</label>
+                    <div class="ui input">
+                      <input type="number" step="0.01" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
+                      value="{{ form.depth_coating.value }}">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_hardness_coating">{{ form.hardness_coating.label_tag }}</label>
+                    <div class="ui input">
+                      <input type="number" step="0.01" placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
+                        value="{{ form.hardness_coating.value }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                     <label for="id_date_proc_streng">{{ form.date_proc_streng.label_tag }}</label>
+                      <div class="ui calendar" id="id_calendar">
+                        <div class="ui input left icon">
+                          <i class="calendar icon"></i>
+                          <input type="text" placeholder="Дата процесса упрочнения" name="date_proc_streng" id="id_date_proc_streng"
+                          value="{{ form.date_proc_streng.value }}">
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h3 class="ui dividing header">Информация по образцу</h3>
+        <div class="field">
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_weight">{{ form.weight.label_tag }}</label>
+                    <div class="ui input">
+                      <input type="number" step="0.01" placeholder="Первоначальная масса образца" name="weight" id="id_weight"
+                      value="{{ form.weight.value }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ui dividing header">Дополнительная информация</h3>
+        <div class="field">
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_roughness">{{ form.roughness.label_tag }}</label>
+                    <div class="ui input">
+                      <input type="number" step="0.01" placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
+                      value="{{ form.roughness.value }}">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="id_sub_hardness">{{ form.sub_hardness.label_tag }}</label>
+                    <div class="ui input">
+                      <input type="number" step="0.01" placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness"
+                      value="{{ form.sub_hardness.value }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="id_organization">{{ form.organization.label_tag }}</label>
+                <div class="ui input">
+                    <input type="text" placeholder="Организация" name="organization" id="id_organization"
+                    value="{{ form.organization.value }}">
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ui dividing header">Материал и тип образца</h3>
+        <div class="ui visible info message">
+            <p>Материал и тип образца можно выбрать из имеющихся в базе, либо создать новый!</p>
+        </div>
+
+        <div class="ui success message" id="id_message_material_success">
+            <i class="close icon"></i>
+            <div class="header">Успешно.</div>
+            <p>Новый материал добавлен в базу!</p>
+        </div>
+        <div class="two fields" id="id_block_material">
+            {% include 'sample/material/material.html' with material=form.sample_material only %}
+        </div>
+
+        <div class="ui success message" id="id_message_type_success">
+            <i class="close icon"></i>
+            <div class="header">Успешно.</div>
+            <p>Новый тип образца добавлен в базу!</p>
+        </div>
+        <div class="two fields" id="id_block_type">
+            {% include 'sample/type/type.html'  with type=form.sample_type only %}
+        </div>
+
         <button type="submit" class="ui button orange">Сохранить</button>
-    </div>
+        <button class='ui red button' formaction="{% url 'sample:delete' sample.pk %}" type="submit" value="DELETE">Удалить</button>
+
+</div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $('#id_calendar')
+    .calendar({
+        type: 'date',
+        centuryBreak: 0,
+        formatter: {
+      date: function (date, settings) {
+        if (!date) return '';
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        return year + '-' + month + '-' + day;
+      }
+    }
+    });
+</script>
 {% endblock %}

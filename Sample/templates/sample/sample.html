@@ -51,16 +51,16 @@
         }
     }
 
-    {#function ajax_get_detail_sample(sample_id){#}
-    {#    $.ajax({#}
-    {#        type: 'GET',#}
-    {#        url: '/sample/detail/' + sample_id,#}
-    {#        success: function (response) {#}
-    {#            $(response)#}
-    {#            .modal('show');#}
-    {#        }#}
-    {#    });#}
-    {#}#}
+    function ajax_get_detail_sample(sample_id){
+        $.ajax({
+            type: 'GET',
+            url: '/sample/detail/' + sample_id,
+            success: function (response) {
+                $(response)
+                .modal('show');
+            }
+        });
+    }
 
 
 </script>

@@ -62,9 +62,6 @@ class Sample(models.Model):
     def get_absolute_url(self):
         return reverse('sample:detail', kwargs={'id': self.id})
 
-    def get_update_url(self):
-        return reverse('sample:update', kwargs={'id': self.id})
-
 
 class Trials(models.Model):
     size_particle = models.IntegerField(blank=True, null=True)

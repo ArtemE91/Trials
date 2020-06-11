@@ -1,17 +1,107 @@
 <div class="ui modal sample">
     <i class="close icon"></i>
     <div class="header">
-        Детальная информация по образцу
+        Образец {{ sample.pk }}
     </div>
     <div class="content">
-        <form class="ui form" id="id_sample_form" method="post" action="{% url 'sample:update' %}">
-            {% csrf_token %}
-            {{ object }}
-        </form>
-        <button type="submit" class="ui positive right labeled icon button">
-            Редактировать
-            <i class="checkmark icon"></i>
-        </button>
+        <div class="ui list">
+            <div class="item">
+                <div class="ui grid">
+                    <div class="five wide column">Cпособ упрочнения:</div>
+                    <div class="eleven wide column">{{ sample.method }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Параметры упрочнения:</div>
+                    <div class="eleven wide column">{{ sample.exp_param }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Толщина упрочнения:</div>
+                    <div class="eleven wide column">{{ sample.depth_coating }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Твердость упрочнения:</div>
+                    <div class="eleven wide column">{{ sample.hardness_coating }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Дата процесса упрочнения:</div>
+                    <div class="eleven wide column">{{ sample.date_proc_streng }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Первоначальная масса:</div>
+                    <div class="eleven wide column">{{ sample.weight }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Шероховатость поверхности:</div>
+                    <div class="eleven wide column">{{ sample.roughness }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Твердость подложки:</div>
+                    <div class="eleven wide column">{{ sample.sub_hardness }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Организация которая провела упрочнение:</div>
+                    <div class="eleven wide column">{{ sample.organization }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Организация которая провела упрочнение:</div>
+                    <div class="eleven wide column">{{ sample.organization }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Материал:</div>
+                    <div class="eleven wide column">{{ sample.sample_material }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Тип:</div>
+                    <div class="eleven wide column">{{ sample.sample_type }}</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="actions">
+        <div class="ui grid column">
+            <div class="column row">
+                <div class="right floated column">
+                    <form action="{% url 'sample:update' sample.pk  %}">
+                        <button type="submit" class="ui right floated positive button">Редактировать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 

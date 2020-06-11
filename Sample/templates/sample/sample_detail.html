@@ -1,13 +1,96 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form method="post" action="{{ object.get_update_url }}" class="ui form" style="margin-top: 55px;">
-{% csrf_token %}
+    <div class="ui orange clearing segment" id="segment_create_sample" style="margin-top: 55px;">
+        <h3 class="ui dividing header">Образец {{ sample.pk }}</h3>
+        <div class="ui list">
+            <div class="item">
+                <div class="ui grid">
+                    <div class="three wide column">Cпособ упрочнения:</div>
+                    <div class="thirteen wide column">{{ sample.method }}</div>
+                </div>
+            </div>
 
-    <div class="ui orange segment" id="segment_create_sample">
-        <h3 class="ui dividing header">Информация по образцу</h3>
-            {{ object }}
-        <button type="submit" class="ui button orange">Редактировать</button>
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Параметры упрочнения:</div>
+                    <div class="thirteen wide column">{{ sample.exp_param }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Толщина упрочнения:</div>
+                    <div class="thirteen wide column">{{ sample.depth_coating }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Твердость упрочнения:</div>
+                    <div class="thirteen wide column">{{ sample.hardness_coating }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Дата процесса упрочнения:</div>
+                    <div class="thirteen wide column">{{ sample.date_proc_streng }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Первоначальная масса:</div>
+                    <div class="thirteen wide column">{{ sample.weight }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Шероховатость поверхности:</div>
+                    <div class="thirteen wide column">{{ sample.roughness }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Твердость подложки:</div>
+                    <div class="thirteen wide column">{{ sample.sub_hardness }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Организация которая провела упрочнение:</div>
+                    <div class="thirteen wide column">{{ sample.organization }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Организация которая провела упрочнение:</div>
+                    <div class="thirteen wide column">{{ sample.organization }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Материал:</div>
+                    <div class="thirteen wide column">{{ sample.sample_material }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="three wide column">Тип:</div>
+                    <div class="thirteen wide column">{{ sample.sample_type }}</div>
+                </div>
+            </div>
+        </div>
+
+        <form action="{% url 'sample:update' sample.pk  %}">
+            <button type="submit" class="ui right floated blue button">Изменить</button>
+        </form>
     </div>
-</form>
 {%  endblock %}

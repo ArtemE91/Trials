@@ -2,7 +2,7 @@
     <label>Тип</label>
     <div class="two fields">
         <div class="field">
-            <select name="sample_type" class="ui fluid search dropdown">
+            <select name="sample_type" class="ui fluid search dropdown" id="id_sample_type">
                 {% for value in type %}
                     <option value="{{ value.id }}" id="id_item_type{{ value.id }}">{{ value }}</option>
                 {% endfor %}
@@ -15,9 +15,17 @@
 </div>
 
 <script>
+
     $(' .ui.dropdown')
   .dropdown({
         allowAdditions: true,
         monthsShort: true
   });
+
+
+  $('.ui.button.positive.type')
+        .click(function () {
+            ajax_get_modal('{% url 'sample:type_create' %}',
+            '{% url 'sample:type' %}', 'type');
+        });
 </script>
