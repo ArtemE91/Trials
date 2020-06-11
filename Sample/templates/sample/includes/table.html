@@ -50,20 +50,23 @@
     $(' .checkbox')
         .checkbox({
             onChecked: function(){
-                let id_sample = $(this).closest('.checkbox').attr('id');
-                let line_table = $('#tr_' + id_sample).clone();
-                line_table.find('th:last, td:last').remove();
-                line_table.attr('class', 'select_tr');
-                line_table.attr('id', 'tr_' + id_sample);
-                line_table.find('a').attr('href', '/sample/detail/' + id_sample);
-                line_table.bind('click', function(){
-                    location.href = '/sample/detail/' + id_sample;
+                let id_sample = $(this).closest('.checkbox').attr('id'); // Получаем id объекта
+                let line_table = $('#tr_' + id_sample).clone(); // Копируем его
+                line_table.find('th:last, td:last').remove(); // Удаляем checkbox
+                line_table.attr('class', 'select_tr'); // Присваиваем класс новой строке (<tr>)
+                line_table.attr('id', 'tr_' + id_sample); // Присваиваем id новой строке (<tr>)
+                line_table.bind('click', function(){ // Вешаем обработчик
+                    ajax_get_detail_sample(id_sample); //  Обработчик на detail modal sample
+                    //location.href = '/sample/' + id_sample; // Обработчик на detail
                 });
+                // Добавляем в таблицу с выбранными Sample
                 $('#sample_table_select > tbody:last-child').append(line_table);
+                // Записываем выбранный id, для активации checkbox в таблице sample_table
+                // При ее render ajax запросом
                 select_sample.push(id_sample);
             },
-            onUnchecked: function(){
-                let id_sample = $(this).closest('.checkbox').attr('id');
+            onUnchecked: function(){ // При отмене checbox в таблице sample_table удаляем что добавляли
+                 let id_sample = $(this).closest('.checkbox').attr('id');
                 $('#sample_table_select').find('#tr_' + id_sample ).remove();
                 select_sample.splice(select_sample.indexOf(id_sample), 1);
             }

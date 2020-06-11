@@ -2,23 +2,29 @@
     <label>Материал</label>
     <div class="two fields">
         <div class="field">
-            <select name="sample_material" class="ui fluid search dropdown ten" id="id_sample_material">
+            <select name="sample_material" class="ui fluid search dropdown" id="id_sample_material">
                 {% for value in material %}
                     <option value="{{ value.id }}" data-value="{{ value }}" id="id_item_material{{ value.id }}">{{ value }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="field">
-            <div class="ui button positive material four">Создать</div>
+            <div class="ui button positive material">Создать</div>
         </div>
     </div>
 </div>
 
 <script>
-    $(' .ui.selection.dropdown')
+  $(' .ui.selection.dropdown')
   .dropdown({
         clearable: true,
         allowAdditions: true,
         monthsShort: true
   });
+
+     $('.ui.button.positive.material')
+        .click(function () {
+            ajax_get_modal('{% url 'sample:material_create' %}',
+            '{% url 'sample:material' %}', 'material');
+        });
 </script>

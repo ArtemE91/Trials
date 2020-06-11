@@ -50,23 +50,24 @@ class SampleTableListView(ListView):
         return queryset
 
 
-class SampleDetail(DetailView):
+class SampleDetail(AjaxableResponseMixin, DetailView):
     model = Sample
     template_name = 'sample/sample_detail.html'
-    pk_url_kwarg = "id"
 
 
-class SampleCreate(AjaxableResponseMixin, CreateView):
+class SampleCreate(CreateView):
     form_class = SampleForm
     template_name = 'sample/sample_create.html'
+    success_url = reverse_lazy('sample:')
 
 
 class SampleUpdateView(UpdateView):
     form_class = SampleForm
     template_name = "sample/sample_update.html"
+    success_url = reverse_lazy('sample:create')
 
     def get_object(self, queryset=None):
-        return Sample.objects.get(id=self.kwargs['id'])
+        return Sample.objects.get(id=self.kwargs['pk'])
 
 
 class SampleDeleteView(DeleteView):

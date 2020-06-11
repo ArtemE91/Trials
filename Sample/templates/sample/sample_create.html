@@ -129,115 +129,6 @@
 
 {% block scripts %}
 <script>
-
-function ajax_get_modal_material(){
-    $.ajax({
-        type: "GET",
-        url: "{% url 'sample:material_create' %}",
-        success: function(data){
-            $(data)
-            .modal({
-                onApprove : function () {
-                    ajax_post_modal_material();
-                }
-            })
-            .modal('show');
-        }
-    });
-}
-
-function ajax_get_material(id_item_material){
-    $.ajax({
-        type: "GET",
-        url: "{% url 'sample:material' %}",
-        success: function(data){
-            {# Удаляем dropdown material #}
-            $('#id_material_field').remove();
-            {# Находим последний добавленный элемент #}
-            let name_item = $(data).find("#id_item_material" + id_item_material).attr('data-value');
-            {# Присваиваем его dropdown !!!! Почему то не добавляется#}
-            $(data).find("#id_item_material" + id_item_material).attr('selected', 'selected');
-            {# Добавляем обновленный dropdown material #}
-            $(data).appendTo($('#id_block_material'));
-        }
-    });
-}
-
-function ajax_get_type(id_item_type){
-    $.ajax({
-        type: "GET",
-        url: "{% url 'sample:type' %}",
-        success: function(data){
-            {# Удаляем dropdown type #}
-            $('#id_type_field').remove();
-            {# Находим последний добавленный элемент #}
-            let name_item = $(data).find("#id_item_type" + id_item_type).attr('data-value');
-            {# Присваиваем его dropdown#}
-            $(data).find("#id_input_dropdown_type_default").attr('value', name_item);
-            {# Добавляем обновленный dropdown type #}
-            $(data).appendTo($('#id_block_type'));
-        }
-    });
-}
-
-
-function ajax_post_modal_material(){
-    let form = $('#id_material_form').serialize();
-    console.log(form);
-    $.ajax({
-        type: "POST",
-        url: "{% url 'sample:material_create' %}",
-        data:  form,
-        success: function(response){
-            if (response['pk']){
-                $('#id_message_material_success').attr('class', 'ui success message visible');
-                ajax_get_material(response['pk']);
-            }
-        }
-    });
-}
-
-function ajax_get_modal_type(){
-    $.ajax({
-        type: "GET",
-        url: "{% url 'sample:type_create' %}",
-        success: function(data){
-            $(data)
-            .modal({
-                onApprove : function () {
-                    ajax_post_modal_type();
-                }
-            })
-            .modal('show');
-        }
-    });
-}
-
-function ajax_post_modal_type(){
-    let form = $('#id_type_form').serialize();
-    $.ajax({
-        type: "POST",
-        url: "{% url 'sample:type_create' %}",
-        data:  form,
-        success: function(response){
-            if (response['pk']){
-                $('#id_message_type_success').attr('class', 'ui success message visible');
-                ajax_get_type(response['pk']);
-            }
-        }
-    });
-}
-
-    $('.ui.button.positive.material')
-        .click(function () {
-            ajax_get_modal_material();
-        });
-
-    $('.ui.button.positive.type')
-        .click(function () {
-            ajax_get_modal_type();
-        });
-
     $('.message .close')
     .on('click', function(){
         $(this)
@@ -252,14 +143,13 @@ $('#id_calendar')
         formatter: {
       date: function (date, settings) {
         if (!date) return '';
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
         return year + '-' + month + '-' + day;
       }
     }
-    })
-;
+    });
 
 </script>
 
