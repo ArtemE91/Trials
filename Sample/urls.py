@@ -14,6 +14,9 @@ urlpatterns = [
     path('detail/<int:pk>/', SampleDetail.as_view(
         template_name='sample/sample_modal_detail.html'),
         name='detail_modal'),
+    path('detail/tr/<int:pk>/', SampleDetail.as_view(
+        template_name='sample/sample_detail_tr.html'),
+        name='detail_tr'),
     path('<int:pk>/update/', SampleUpdateView.as_view(), name='update'),
     path('create/', SampleCreate.as_view(), name='create'),
     path('<int:pk>/delete/', SampleDeleteView.as_view(), name='delete'),

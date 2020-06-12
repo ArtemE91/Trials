@@ -129,6 +129,14 @@
 
 {% block scripts %}
 <script>
+
+$('.message .close')
+    .on('click', function(){
+        $(this)
+        .closest('.message')
+        .transition('fade')
+    });
+
     $('#id_calendar')
     .calendar({
         type: 'date',
