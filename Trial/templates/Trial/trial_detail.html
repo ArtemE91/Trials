@@ -1,4 +1,6 @@
 {% extends 'index.html' %}
+{% load static %}
+
 
 {% block content %}
 <div class="ui orange clearing segment" style="margin-top: 55px;">
@@ -65,51 +67,38 @@
     </div>  
 </div>
 
-<div class="ui orange clearing segment">
-    <h3 class="ui header">Испытание {{ trials.pk }}</h3>
-    <table class="ui definition table">
-    <tbody>
-        <tr>
-        <td class="two wide column">Размер частиц:</td>
-        <td>{{ trials.size_particle }}</td>
-        </tr>
-        <tr>
-        <td>Скорость соударения:</td>
-        <td>{{ trials.speed_collision }}</td>
-        </tr>
-        <tr>
-        <td>Дополнительные параметры:</td>
-        <td>{{ trials.add_param }}</td>
-        </tr>
-        <tr>
-        <td>Угол соударения:</td>
-        <td>{{ trials.corner_collision }}</td>
-        </tr>
-        <tr>
-        <td>Дата начала испытаний:</td>
-        <td>{{ trials.date_trials }}</td>
-        </tr>
-        <tr>
-        <td>Дата окончания испытаний:</td>
-        <td>{{ trials.date_end_trials }}</td>
-        </tr>
-        <tr>
-        <td>Тип частиц:</td>
-        <td>{{ trials.type_particle }}</td>
-        </tr>
-        <tr>
-        <td>Описание:</td>
-        <td>{{ trials.description }}</td>
-        </tr>
-        <tr>
-        <td>Образец:</td>
-        <td>{{ trials.sample }}</td>
-        </tr>
-    </tbody>
+<div class="ui orange segment">
+    <h3 class="ui dividing header">Эксперементы</h3>
+    <table class="ui celled striped table green compact">
+        <thead>
+            <tr>
+                <th>Изменение массы за время испытания</th>
+                <th>Время испытания</th>
+                <th>Испытание</th>
+                <th>Изображение</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>jhlilk22@yahoo.com</td>
+                <td>No</td>
+                <td>Imaga</td>
+            </tr>
+        </tbody>
     </table>
-    <br>
-    <form action="{% url 'trial:update' trials.pk %}">
-        <button class="ui right floated blue button">Изменить</button>
-    </form>
+    <div class="field">
+        <div class="ui button positive material">Создать</div>
+    </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'Trial/js/experiment.js' %}"></script>
+<script>
+
+$('.ui.button.positive.material').click(function () {
+            ajax_experement_create('{% url 'trial:create_experiment' %}');
+        });
+</script>
+{% endblock scripts %}

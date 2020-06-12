@@ -1,0 +1,29 @@
+<div class="ui modal">
+<form method="post" class="ui form" action="{% url 'trial:create_experiment' %}" id="create_experiment">
+{% csrf_token %}
+    {{ form.as_p }}
+    <input class="ui button" type="submit" value="Save">
+</form>
+</div>
+
+<script>
+    $("#create_experiment").submit(function (event) {
+        event.preventDefault();
+        let form = $("#create_experiment").serialize();
+        var serverUrl =$("#create_experiment").attr('action');
+        $.ajax({
+                        url: serverUrl,
+                        type: 'POST',
+                        data: $("#create_experiment").serialize(),
+        success: function(data)
+        {
+            alert('Seucces');
+            let pk_object = data['pk']; // Primary key созданного объекта
+            if (pk_object){
+                // Делаем видимым message что объект создан
+                alert("Object created")
+            }
+        }
+               });
+    });
+</script>

@@ -5,37 +5,137 @@
 {% endblock %}
 
 {% block content %}
-<div class="ui orange segment" id="segment_trials_table" style="margin-top: 55px;">
-    <h3 class="ui header">Список испытаний</h3>
-    <table class="ui celled striped table green compact" style="width:100%" id="sample_table">
-        <thead>
-            <tr>
-                <th>Размер частиц</th>
-                <th>Скорость соударения</th>
-                <th>Дополнительные параметры</th>
-                <th>Угол соударения</th>
-                <th>Дата начала испытаний</th>
-                <th>Дата окончания испытаний</th>
-                <th>Тип частиц</th>
-                <th>Описание</th>
-                <th>Образец</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for trial in object_list %}
-            <tr name="tr_{{ trial.id }}">
-                <td>{{ trial.size_particle }}</td>
-                <td>{{ trial.speed_collision }}</td>
-                <td>{{ trial.add_param }}</td>
-                <td>{{ trial.corner_collision }}</td>
-                <td>{{ trial.date_trials }}</td>
-                <td>{{ trial.date_end_trials }}</td>
-                <td>{{ trial.type_particle }}</td>
-                <td>{{ trial.description }}</td>
-                <td>{{ trial.sample }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-  </table>
+{% include 'trial/trial_table.html' %}
+
+<div class="ui orange segment" segment_card_id>
+    <div class="ui grid">
+        <div class="six wide column">
+            <h3 class="ui header">Таблица выбранных испытаний</h3>
+        </div>
+        <div class="ten wide column">
+            <button class="ui button disabled" id="id_btn_detail_trial">
+                <i class="exclamation icon"></i>
+                Детально
+            </button>
+        </div>
+    </div>
+    <br>
+    <div class="sixteen wide column">
+        <div class="select table">
+            <table class="ui celled striped table green compact selectable" style="width:100%" id="trial_table_select">
+                <thead>
+                <tr>
+                    <th>Размер частиц</th>
+                    <th>Скорость соударения</th>
+                    <th>Дополнительные параметры</th>
+                    <th>Угол соударения</th>
+                    <th>Дата начала испытаний</th>
+                    <th>Дата окончания испытаний</th>
+                    <th>Тип частиц</th>
+                    <th>Описание</th>
+                    <th>Образец</th>
+                     <th>
+                        <div class="ui checkbox all" id="id_checkbox_all_select">
+                            <input type="checkbox" name="checkbox_all_select">
+                            <label></label>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+
+const select_trial = []; // Выбранные элементы в таблице trial_table
+const check_trial = []; // Выбранные элементы в таблице trial_table_select
+
+
+// Функция для подсвечивания выбранной строки
+function check_select_tr(action, trial_id){
+    if (action === 'check') {
+        $('#tr_select_' + trial_id).attr('class', 'green');
+        $('#select_checkbox_' + trial_id).checkbox('set checked');
+        check_trial.push(trial_id);
+    }
+    else {
+        $('#tr_select_' + trial_id).removeAttr('class');
+        $('#select_checkbox_' + trial_id).checkbox('set unchecked');
+        check_trial.splice(check_trial.indexOf(trial_id), 1);
+    }
+}
+
+// Функция сравнения массивов, возращает элементы которых нет во 2 массиве
+function diff(a1, a2) {
+    return a1.filter(i=>!a2.includes(i))
+    .concat(a2.filter(i=>!a1.includes(i)))
+}
+
+// Обработка checkbox в шапке таблицы trial_table_select
+$('#id_btn_detail_trial')
+    .on('click', function () {
+        ajax_get_detail_trial(check_trial[0]);
+    })
+
+$('.ui.checkbox.all')
+    .checkbox({
+        onChecked: function(){
+            // Если выбранных элементов trial_table_select нет то делаем их все активными
+            if (check_trial.length === 0) {
+                for (let trial_id of select_trial) {
+                    check_select_tr('check', trial_id);
+                }
+            }
+            else { // Делаем активными только те которые еще не были выбраны
+                let uncheck_trial = diff(select_trial, check_trial);
+                for (let trial_id of uncheck_trial) {
+                    check_select_tr('check', trial_id);
+                }
+            }
+        },
+        // Будет активным только если все элементы в таблице trial_table_select выбраны
+        onUnchecked: function(){
+            // Убираем подсветку всем выбранным элементам
+            if (check_trial.length === select_trial.length) {
+                for (let trial_id of select_trial) {
+                    check_select_tr('uncheck', trial_id);
+                }
+            }
+        }
+    })
+
+    // Функция проверяет был ли это элемент уже выбран
+    function check_select_trial(id){
+        const index = check_trial.indexOf(id);
+        return index <= -1;
+    }
+
+    function change_select_trial(id){
+        const index = select_trial.indexOf(id);
+        if (index > -1){
+            select_trial.splice(index, 1);
+        }
+        else{
+            select_trial.push(id);
+        }
+    }
+
+    function ajax_get_detail_trial(trial_id){
+        $.ajax({
+            type: 'GET',
+            url: '/trial/detail/' + trial_id,
+            success: function (response) {
+                $(response)
+                .modal('show');
+            }
+        });
+    }
+</script>
+{% endblock scripts %}
+
