@@ -12,7 +12,17 @@
     {% include 'sample/includes/table.html' %}
 
     <div class="ui orange segment" id="segment_card_id">
-    <h3 class="ui header">Таблица выбранных образцов</h3>
+        <div class="ui grid">
+            <div class="six wide column">
+                <h3 class="ui header">Таблица выбранных образцов</h3>
+            </div>
+            <div class="ten wide column">
+                <button class="ui button disabled" id="id_btn_detail_sample">
+                    <i class="exclamation icon"></i>
+                    Детально
+                </button>
+            </div>
+        </div>
         <br>
         <div class="sixteen wide column">
                 <div class="select table">
@@ -27,6 +37,12 @@
                             <th>Шероховатость поверхности</th>
                             <th>Твердость покрытия</th>
                             <th>Состав покрытия</th>
+                            <th>
+                                <div class="ui checkbox all" id="id_checkbox_all_select">
+                                    <input type="checkbox" name="checkbox_all_select">
+                                    <label></label>
+                                </div>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -35,11 +51,76 @@
                 </div>
         </div>
     </div>
+
+<p></p>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    const select_sample = [];
+
+
+const select_sample = []; // Выбранные элементы в таблице sample_table
+const check_sample = []; // Выбранные элементы в таблице sample_table_select
+
+
+// Функция для подсвечивания выбранной строки
+function check_select_tr(action, sample_id){
+    if (action === 'check') {
+        $('#tr_select_' + sample_id).attr('class', 'green');
+        $('#select_checkbox_' + sample_id).checkbox('set checked');
+        check_sample.push(sample_id);
+    }
+    else {
+        $('#tr_select_' + sample_id).removeAttr('class');
+        $('#select_checkbox_' + sample_id).checkbox('set unchecked');
+        check_sample.splice(check_sample.indexOf(sample_id), 1);
+    }
+}
+
+// Функция сравнения массивов, возращает элементы которых нет во 2 массиве
+function diff(a1, a2) {
+    return a1.filter(i=>!a2.includes(i))
+    .concat(a2.filter(i=>!a1.includes(i)))
+}
+
+// Обработка checkbox в шапке таблицы sample_table_select
+$('#id_btn_detail_sample')
+    .on('click', function () {
+        ajax_get_detail_sample(check_sample[0]);
+    })
+
+$('.ui.checkbox.all')
+    .checkbox({
+        onChecked: function(){
+            // Если выбранных элементов sample_table_select нет то делаем их все активными
+            if (check_sample.length === 0) {
+                for (let sample_id of select_sample) {
+                    check_select_tr('check', sample_id);
+                }
+            }
+            else { // Делаем активными только те которые еще не были выбраны
+                let uncheck_sample = diff(select_sample, check_sample);
+                for (let sample_id of uncheck_sample) {
+                    check_select_tr('check', sample_id);
+                }
+            }
+        },
+        // Будет активным только если все элементы в таблице sample_table_select выбраны
+        onUnchecked: function(){
+            // Убираем подсветку всем выбранным элементам
+            if (check_sample.length === select_sample.length) {
+                for (let sample_id of select_sample) {
+                    check_select_tr('uncheck', sample_id);
+                }
+            }
+        }
+    })
+
+    // Функция проверяет был ли это элемент уже выбран
+    function check_select_sample(id){
+        const index = check_sample.indexOf(id);
+        return index <= -1;
+    }
 
     function change_select_sample(id){
         const index = select_sample.indexOf(id);

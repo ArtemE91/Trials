@@ -1,8 +1,6 @@
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
-from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Sample, SampleType, SampleMaterial
 from .filter_queryset import filter_queryset
