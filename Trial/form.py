@@ -1,5 +1,5 @@
 from django import forms
-from Sample.models import Trials, Sample
+from Sample.models import Trials, Sample, ReceivedValues
 
 
 class TrialForm(forms.ModelForm):
@@ -22,4 +22,10 @@ class TrialForm(forms.ModelForm):
 class TrialUpdateForm(forms.ModelForm):
     class Meta:
         model = Trials
+        fields = '__all__'
+
+
+class ExperementForm(forms.ModelForm):
+    class Meta:
+        model = ReceivedValues
         fields = '__all__'

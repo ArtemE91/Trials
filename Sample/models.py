@@ -90,3 +90,6 @@ class ReceivedValues(models.Model):
 
     class Meta:
         db_table = 'received_values'
+
+    def get_absolute_url(self):
+        return reverse('trial:list')

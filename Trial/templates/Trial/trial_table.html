@@ -1,0 +1,109 @@
+<div class="ui orange segment" id="segment_trials_table" style="margin-top: 55px;">
+    <h3 class="ui header">Список испытаний</h3>
+    <table class="ui selectable celled striped table green compact" style="width:100%" id="trial_table">
+        <thead>
+            <tr>
+                <th>Размер частиц</th>
+                <th>Скорость соударения</th>
+                <th>Дополнительные параметры</th>
+                <th>Угол соударения</th>
+                <th>Дата начала испытаний</th>
+                <th>Дата окончания испытаний</th>
+                <th>Тип частиц</th>
+                <th>Описание</th>
+                <th>Образец</th>
+                <th>Выбрать</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for trial in object_list %}
+            <tr name="tr_{{ trial.id }}">
+                <td>{{ trial.size_particle }}</td>
+                <td>{{ trial.speed_collision }}</td>
+                <td>{{ trial.add_param }}</td>
+                <td>{{ trial.corner_collision }}</td>
+                <td>{{ trial.date_trials }}</td>
+                <td>{{ trial.date_end_trials }}</td>
+                <td>{{ trial.type_particle }}</td>
+                <td>{{ trial.description }}</td>
+                <td>{{ trial.sample }}</td>
+                <td class="collapsing">
+                    <div class="ui toggle checkbox" id="{{ trial.id }}">
+                      <input type="checkbox">
+                      <label></label>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+  </table>
+</div>
+
+<script>
+    {# https://datatables.net/ - Примеры таблиц #}
+    $(document).ready(function() {
+        $('#trial_table').DataTable({
+
+        });
+    });
+
+    function ajax_get_detail_tr(trial_id){
+        $.ajax({
+            url: '/trial/detail/tr/' + trial_id,
+            type: 'get',
+            success: function (response) {
+                // Получаем trial_detail в виде строки таблицы
+                let line_table = $(response).clone();
+                 line_table.bind('click', function(){ // Обработчик checkbox строк в таблице trial_table_select
+                     if (check_trial.length === select_trial.length){
+                         // Если выбранны все элементы то при уборе одного
+                         // checkbox_all_select делаем unchecked
+                         $('#id_checkbox_all_select').checkbox('set unchecked');
+                     }
+                     if (check_select_trial(trial_id)) { // Проверяем выбран ли элемент
+                         check_select_tr('check', trial_id); // Если нет то подсвечиваем
+                     }
+                     else {
+                          // Если да то убираем цвет и ставим checkbox - uncheck
+                         check_select_tr('uncheck', trial_id);
+                     }
+                     // Если выбранны все строки то выставляем checkbox_all_select - checked
+                     if (check_trial.length === select_trial.length){
+                         $('#id_checkbox_all_select').checkbox('set checked');
+                     }
+                     // Делаем активной кнопку для просмотра детальной информации
+                     // по trial только если выбран один элемент
+                     if (check_trial.length === 1){
+                         $('#id_btn_detail_trial').attr('class', 'ui button');
+                     }
+                     else{
+                         $('#id_btn_detail_trial').attr('class', 'ui button disabled');
+                     }
+                });
+                 // Вставляем в таблицу trial_table_select trial_detail_tr.html
+                $('#trial_table_select > tbody:last-child').append(line_table);
+                // Записываем в массив id выбранного элемента
+                select_trial.push(trial_id);
+            }
+        });
+    }
+
+    $(' .ui.toggle.checkbox')
+        .checkbox({
+            onChecked: function(){
+                let id_trial = $(this).closest('.checkbox').attr('id'); // Получаем id объекта
+                ajax_get_detail_tr(id_trial);
+            },
+            onUnchecked: function(){ // При отмене checbox в таблице trial_table удаляем что добавляли
+                 let id_trial = $(this).closest('.checkbox').attr('id');
+                $('#trial_table_select').find('#tr_select_' + id_trial ).remove();
+                select_trial.splice(select_trial.indexOf(id_trial), 1);
+                // При удалении из select_table проверяем был ли этот элемент активным
+                let index = check_trial.indexOf(id_trial);
+                if (index > -1){
+                    check_trial.splice(index, 1); // Если был то удаляем
+                }
+            }
+        })
+
+</script>
