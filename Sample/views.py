@@ -26,6 +26,8 @@ class AjaxableResponseMixin:
             return response
 
 
+# _______________SAMPLE_______________________
+
 class SampleList(ListView):
     model = Sample
     template_name = 'sample/sample.html'
@@ -73,9 +75,11 @@ class SampleDeleteView(DeleteView):
     success_url = reverse_lazy('sample:')
 
 
+# _____________________SAMPLE_MATERIAL______________________
+
 class SampleMaterialList(ListView):
     model = SampleMaterial
-    template_name = 'sample/material/material.html'
+    template_name = 'sample/material/material_dropdown.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -83,14 +87,35 @@ class SampleMaterialList(ListView):
         return context
 
 
+class SampleMaterialDetail(AjaxableResponseMixin, DetailView):
+    model = SampleMaterial
+    template_name = 'sample/material/material_detail.html'
+
+
+class SampleMaterialUpdateView(UpdateView):
+    form_class = MaterialForm
+    template_name = "sample/material/material_update.html"
+    success_url = reverse_lazy('sample:material_table')
+
+    def get_object(self, queryset=None):
+        return SampleMaterial.objects.get(id=self.kwargs['pk'])
+
+
+class SampleMaterialDeleteView(DeleteView):
+    model = SampleMaterial
+    success_url = reverse_lazy('sample:material_table')
+
+
 class SampleMaterialCreate(AjaxableResponseMixin, CreateView):
     form_class = MaterialForm
-    template_name = 'sample/material/material_create.html'
+    template_name = 'sample/material/material_create_modal.html'
 
+
+# _____________________SAMPLE_TYPE______________________
 
 class SampleTypeList(ListView):
     model = SampleType
-    template_name = 'sample/type/type.html'
+    template_name = 'sample/type/type_dropdown.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -98,6 +123,25 @@ class SampleTypeList(ListView):
         return context
 
 
+class SampleTypeDetail(AjaxableResponseMixin, DetailView):
+    model = SampleType
+    template_name = 'sample/type/type_detail.html'
+
+
+class SampleTypeUpdateView(UpdateView):
+    form_class = TypeForm
+    template_name = "sample/type/type_update.html"
+    success_url = reverse_lazy('sample:type_table')
+
+    def get_object(self, queryset=None):
+        return SampleType.objects.get(id=self.kwargs['pk'])
+
+
+class SampleTypeDeleteView(DeleteView):
+    model = SampleType
+    success_url = reverse_lazy('sample:type_table')
+
+
 class SampleTypeCreate(AjaxableResponseMixin, CreateView):
     form_class = TypeForm
-    template_name = 'sample/type/type_create.html'
+    template_name = 'sample/type/type_create_modal.html'

@@ -26,11 +26,23 @@
             <div class="menu">
                 <a class="item" href="{% url 'sample:' %}" ><i class="red circular"></i>Информация</a>
                 <a class="item" href="{% url 'sample:create' %}">Создать</a>
-                <a class="item" href="#">Изменить</a>
-                <a class="item" href="#">Удалить</a>
                 <div class="divider"></div>
-                <a class="item" href="#">Материал</a>
-                <a class="item" href="#">Тип</a>
+                <div class="item">
+                  <i class="dropdown icon"></i>
+                  <span class="text">Материал</span>
+                  <div class="menu">
+                      <a class="item" href="{% url 'sample:material_table' %}">Информация</a>
+                      <a class="item" href="{% url 'sample:material_create_form' %}">Создать</a>
+                  </div>
+                </div>
+                <div class="item">
+                  <i class="dropdown icon"></i>
+                  <span class="text">Тип</span>
+                  <div class="menu">
+                      <a class="item" href="{% url 'sample:type_table' %}">Информация</a>
+                      <a class="item" href="{% url 'sample:type_create_form' %}">Создать</a>
+                  </div>
+                </div>
             </div>
 
         </div>

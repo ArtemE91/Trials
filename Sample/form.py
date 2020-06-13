@@ -25,7 +25,7 @@ class SampleForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(SampleForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['sample_material'].quereset = SampleMaterial.objects.all()
         self.fields['sample_type'].queryset = SampleType.objects.all()
 
@@ -34,9 +34,17 @@ class MaterialForm(forms.ModelForm):
     class Meta:
         model = SampleMaterial
         fields = '__all__'
+        labels = {
+            'name': 'Название',
+            'type': 'Тип',
+            'description': 'Описание',
+        }
 
 
 class TypeForm(forms.ModelForm):
     class Meta:
         model = SampleType
         fields = '__all__'
+        labels = {
+            'name': 'Название',
+        }
