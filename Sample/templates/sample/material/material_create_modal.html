@@ -1,9 +1,10 @@
-{% extends 'index.html' %}
-
-{% block content %}
-    <div class="ui orange segment" id="segment_create_material_form" style="margin-top: 55px;">
-        <h3 class="ui dividing header">Создание материала</h3>
-        <form method="post" class="ui form" id="id_material_form">
+<div class="ui modal material">
+    <i class="close icon"></i>
+    <div class="header">
+        Добавить новый материал для образца
+    </div>
+    <div class="content">
+        <form class="ui form" id="id_material_form">
             {% csrf_token %}
             <div class="field">
                 <label for="id_name">Название материала</label>
@@ -18,13 +19,15 @@
                 <textarea type="text" name="description" id="id_description" placeholder="Дополнительное описание">
                 </textarea>
             </div>
-            <button class='ui orange button' type="submit" value="Save">Сохранить</button>
         </form>
     </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-</script>
-{% endblock %}
-
+    <div class="actions">
+        <div class="ui red deny button">
+            Отмена
+        </div>
+        <div class="ui positive right labeled icon button">
+            Добавить
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>

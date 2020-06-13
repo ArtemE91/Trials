@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<form method="post" class="ui form" style="margin-top: 55px;">
+{% csrf_token %}
+    <div class="ui orange segment" id="segment_create_type">
+        <h3 class="ui dividing header">Информация по Типу № {{ object.pk }}</h3>
+        <div class="field">
+            <div class="two fields">
+                <div class="field">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="ui button orange">Сохранить</button>
+        <button class='ui red button' formaction="{% url 'sample:type_delete' object.pk %}" type="submit" value="DELETE">Удалить</button>
+
+</div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

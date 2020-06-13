@@ -1,30 +1,55 @@
-<div class="field" id="id_material_field">
-    <label>Материал</label>
-    <div class="two fields">
-        <div class="field">
-            <select name="sample_material" class="ui fluid search dropdown" id="id_sample_material">
-                {% for value in material %}
-                    <option value="{{ value.id }}" data-value="{{ value }}" id="id_item_material{{ value.id }}">{{ value }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="field">
-            <div class="ui button positive material">Создать</div>
-        </div>
-    </div>
+{% extends 'index.html' %}
+
+{% block title %}
+    Material
+{% endblock %}
+
+{% block content %}
+    <div class="ui orange segment" style="margin-top: 55px;">
+
+    <h3 class="ui header">Таблица материалов</h3>
+    <table class="ui celled striped table green compact selectable" style="width:100%" id="id_material_table">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Тип</th>
+            <th>Описание</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for value in material %}
+            <tr id="{{ value.id }}">
+                <td>{{ value.name}}</td>
+                <td>{{ value.type }}</td>
+                <td>{{ value.description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
-  $(' .ui.selection.dropdown')
-  .dropdown({
-        clearable: true,
-        allowAdditions: true,
-        monthsShort: true
-  });
-
-     $('.ui.button.positive.material')
-        .click(function () {
-            ajax_get_modal('{% url 'sample:material_create' %}',
-            '{% url 'sample:material' %}', 'material');
+    $(document).ready(function() {
+        $('#id_material_table').DataTable({
         });
+    });
+
+    function ajax_get_detail_material(id_material){
+        $.ajax({
+            type: 'GET',
+            url: '/sample/material/detail/' + id_material,
+            success: function (response) {
+                $(response)
+                .modal('show');
+            }
+        });
+    }
+
+    $( "#id_material_table tbody tr" ).on( "click", function() {
+        ajax_get_detail_material($( this ).attr('id'));
+});
+
 </script>
+{% endblock %}

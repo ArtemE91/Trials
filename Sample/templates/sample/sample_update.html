@@ -9,8 +9,7 @@
             <div class="two fields">
                 <div class="field">
                     <label for="id_method">{{ form.method.label_tag }}</label>
-                    <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method"
-                    value="{{ form.method.value }}">
+                    <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method">
                 </div>
 
                 <div class="field">
@@ -108,7 +107,7 @@
             <p>Новый материал добавлен в базу!</p>
         </div>
         <div class="two fields" id="id_block_material">
-            {% include 'sample/material/material.html' with material=form.sample_material only %}
+            {% include 'sample/material/material_dropdown.html' with material=form.sample_material only %}
         </div>
 
         <div class="ui success message" id="id_message_type_success">
@@ -117,7 +116,7 @@
             <p>Новый тип образца добавлен в базу!</p>
         </div>
         <div class="two fields" id="id_block_type">
-            {% include 'sample/type/type.html'  with type=form.sample_type only %}
+            {% include 'sample/type/type_dropdown.html'  with type=form.sample_type only %}
         </div>
 
         <button type="submit" class="ui button orange">Сохранить</button>

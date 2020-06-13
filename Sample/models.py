@@ -20,7 +20,7 @@ class SampleType(models.Model):
 
     # Добавил для AjaxableResponseMixin, для реализции DetailView необходиму возращать url элемента
     def get_absolute_url(self):
-        pass
+        return reverse('sample:type_table')
 
 
 class SampleMaterial(models.Model):
@@ -36,7 +36,7 @@ class SampleMaterial(models.Model):
 
     # Добавил для AjaxableResponseMixin, для реализции DetailView необходиму возращать url элемента
     def get_absolute_url(self):
-        pass
+        return reverse('sample:material_table')
 
 
 class Sample(models.Model):

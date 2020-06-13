@@ -1,0 +1,44 @@
+<div class="ui modal sample">
+    <i class="close icon"></i>
+    <div class="header">
+        Материал № {{ object.pk }}
+    </div>
+    <div class="content">
+        <div class="ui list">
+            <div class="item">
+                <div class="ui grid">
+                    <div class="five wide column">Название:</div>
+                    <div class="eleven wide column">{{ object.name }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Тип:</div>
+                    <div class="eleven wide column">{{ object.type }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Описание:</div>
+                    <div class="eleven wide column">{{ object.description }}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="actions">
+        <div class="ui grid column">
+            <div class="column row">
+                <div class="right floated column">
+                    <form action="{% url 'sample:material_update' object.pk %}">
+                        <button type="submit" class="ui right floated positive button">Редактировать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

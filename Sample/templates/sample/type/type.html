@@ -1,31 +1,51 @@
-<div class="field" id="id_type_field">
-    <label>Тип</label>
-    <div class="two fields">
-        <div class="field">
-            <select name="sample_type" class="ui fluid search dropdown" id="id_sample_type">
-                {% for value in type %}
-                    <option value="{{ value.id }}" id="id_item_type{{ value.id }}">{{ value }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="field">
-            <div class="ui button positive type">Создать</div>
-        </div>
-    </div>
+{% extends 'index.html' %}
+
+{% block title %}
+    Тип
+{% endblock %}
+
+{% block content %}
+    <div class="ui orange segment" style="margin-top: 55px;">
+
+    <h3 class="ui header">Таблица типов</h3>
+    <table class="ui celled striped table green compact selectable" style="width:100%" id="id_type_table">
+        <thead>
+        <tr>
+            <th>Название</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for value in type %}
+            <tr id="{{ value.id }}">
+                <td>{{ value.name}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
-
-    $(' .ui.dropdown')
-  .dropdown({
-        allowAdditions: true,
-        monthsShort: true
-  });
-
-
-  $('.ui.button.positive.type')
-        .click(function () {
-            ajax_get_modal('{% url 'sample:type_create' %}',
-            '{% url 'sample:type' %}', 'type');
+    $(document).ready(function() {
+        $('#id_type_table').DataTable({
         });
+    });
+
+    function ajax_get_detail_material(id_type){
+        $.ajax({
+            type: 'GET',
+            url: '/sample/type/detail/' + id_type,
+            success: function (response) {
+                $(response)
+                .modal('show');
+            }
+        });
+    }
+
+    $( "#id_type_table tbody tr" ).on( "click", function() {
+        ajax_get_detail_material($( this ).attr('id'));
+});
+
 </script>
+{% endblock %}
