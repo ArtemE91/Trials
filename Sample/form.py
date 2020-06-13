@@ -20,6 +20,7 @@ class SampleForm(forms.ModelForm):
             'sub_hardness': 'Твердость подложки',
             'organization': 'Организация которая провела упрочнение',
             'weight': 'Первоначальная масса',
+            'marking': 'Маркировка',
             'sample_material': 'Материал',
             'sample_type': 'Тип'
         }

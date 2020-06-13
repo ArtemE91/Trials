@@ -6,6 +6,8 @@ from .models import Sample, SampleType, SampleMaterial
 from .filter_queryset import filter_queryset
 from .form import SampleForm, MaterialForm, TypeForm
 
+from .plotly_sample import figure
+
 
 class AjaxableResponseMixin:
     def form_invalid(self, form):
@@ -53,6 +55,11 @@ class SampleTableListView(ListView):
 class SampleDetail(AjaxableResponseMixin, DetailView):
     model = Sample
     template_name = 'sample/sample_detail.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plot_div'] = figure()
+        return context
 
 
 class SampleCreate(CreateView):
