@@ -74,17 +74,17 @@
             <tr>
                 <th>Изменение массы за время испытания</th>
                 <th>Время испытания</th>
-                <th>Испытание</th>
                 <th>Изображение</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id='experiments_table'>
+            {% for experiment in trials.trials_values.all %}
             <tr>
-                <td>1</td>
-                <td>jhlilk22@yahoo.com</td>
-                <td>No</td>
-                <td>Imaga</td>
+                <td>{{ experiment.change_weight }}</td>
+                <td>{{ experiment.time_trials }}</td>
+                <td>{{ experiment.image }}</td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
     <div class="field">
@@ -97,8 +97,17 @@
 <script src="{% static 'Trial/js/experiment.js' %}"></script>
 <script>
 
-$('.ui.button.positive.material').click(function () {
-            ajax_experement_create('{% url 'trial:create_experiment' %}');
-        });
+
+
+$('.ui.button.positive.material').click(function () { // создаю модальное окно, с формой для создания эксперемента
+    $.ajax({
+        url: '{% url 'trial:create_experiment' %}',
+        type: 'get',
+        success: function(data)
+        { // Получили форму модального окна
+            $(data).modal().modal('show');
+        }
+    });
+});
 </script>
 {% endblock scripts %}
