@@ -10,7 +10,7 @@ from django.shortcuts import reverse
 
 
 class SampleType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = 'sample_type'
@@ -50,6 +50,8 @@ class Sample(models.Model):
     sub_hardness = models.FloatField(blank=True, null=True)
     organization = models.CharField(max_length=255, blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
+    marking = models.CharField(max_length=255, blank=True, null=True)
+    image = models.FileField(upload_to=None, null=True, blank=True)
 
     sample_material = models.ForeignKey(SampleMaterial, on_delete=models.CASCADE,
                                         blank=True, null=True, related_name='material')
