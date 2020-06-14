@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.shortcuts import reverse
+from django.conf import settings
 
 
 class SampleType(models.Model):
@@ -46,6 +47,10 @@ class SampleMaterial(models.Model):
 
 
 class Sample(models.Model):
+
+    def sample_image_path(self, filename):
+        return f"sample/{self.id}/{filename}"
+
     method = models.CharField(max_length=255, blank=True, null=True)
     exp_param = models.CharField(max_length=255, blank=True, null=True)
     date_proc_streng = models.DateField(blank=True, null=True)
@@ -57,7 +62,7 @@ class Sample(models.Model):
     organization = models.CharField(max_length=255, blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     marking = models.CharField(max_length=255, blank=True, null=True)
-    image = models.FileField(upload_to=None, null=True, blank=True)
+    image = models.FileField(upload_to=sample_image_path, null=True, blank=True)
 
     sample_material = models.ForeignKey(SampleMaterial, on_delete=models.CASCADE,
                                         blank=True, null=True, related_name='material')
@@ -69,6 +74,11 @@ class Sample(models.Model):
 
     def get_absolute_url(self):
         return reverse('sample:detail', kwargs={'id': self.id})
+
+    def get_image(self):
+        if not self.image.name:
+            return f'{settings.MEDIA_URL}/default.png'
+        return f'{settings.MEDIA_URL}/{self.image}'
 
 
 class Trials(models.Model):

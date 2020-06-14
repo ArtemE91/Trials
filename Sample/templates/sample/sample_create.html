@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form method="post" action="{% url 'sample:create' %}" class="ui form" style="margin-top: 55px;">
+<form method="post" action="{% url 'sample:create' %}" class="ui form" style="margin-top: 55px;" enctype="multipart/form-data">
 {% csrf_token %}
 
     <div class="ui orange segment" id="segment_create_sample">
@@ -94,6 +94,21 @@
                     >
                 </div>
             </div>
+
+            <div class="three fields">
+                <div class="field">
+                    <label for="id_image">Изображение образца</label>
+                    <div class="ui action input">
+                        <input type="text" placeholder="Нажмите для выбора файла" readonly>
+                        <input type="file" name="image" id="id_image" style="display: none;">
+                        <div class="ui icon button">
+                            <i class="attach icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
 
         <h3 class="ui dividing header">Материал и тип образца</h3>
@@ -129,6 +144,17 @@
 
 {% block scripts %}
 <script>
+
+$("input:text").click(function() {
+  $(this).parent().find("input:file").click();
+});
+
+$('input:file', '.ui.action.input')
+  .on('change', function(e) {
+    let name = e.target.files[0].name;
+    $('input:text', $(e.target).parent()).val(name);
+  });
+
     $('.message .close')
     .on('click', function(){
         $(this)

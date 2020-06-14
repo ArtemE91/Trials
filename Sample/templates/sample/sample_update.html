@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form method="post" class="ui form" style="margin-top: 55px;">
+<form method="post" class="ui form" style="margin-top: 55px;" enctype="multipart/form-data">
 {% csrf_token %}
     <div class="ui orange segment" id="segment_create_sample">
         <h3 class="ui dividing header">Информация по упрочнению</h3>
@@ -94,6 +94,26 @@
                     value="{{ form.organization.value }}">
                 </div>
             </div>
+
+            <div class="field">
+                <label for="id_image_old">Изображение образца:</label>
+                <div class="media" id="id_image_old">
+                    <img class="ui medium image" src="{{ object.get_image}}">
+                </div>
+            </div>
+
+            <div class="three fields">
+                <div class="field">
+                    <label for="id_image">Загрузить новое изображение</label>
+                    <div class="ui action input">
+                        <input type="text" placeholder="Нажмите для выбора файла" readonly>
+                        <input type="file" name="image" id="id_image" style="display: none;">
+                        <div class="ui icon button">
+                            <i class="attach icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <h3 class="ui dividing header">Материал и тип образца</h3>
@@ -128,6 +148,16 @@
 
 {% block scripts %}
 <script>
+
+$("input:text").click(function() {
+  $(this).parent().find("input:file").click();
+});
+
+$('input:file', '.ui.action.input')
+  .on('change', function(e) {
+    let name = e.target.files[0].name;
+    $('input:text', $(e.target).parent()).val(name);
+  });
 
 $('.message .close')
     .on('click', function(){
