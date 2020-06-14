@@ -1,6 +1,6 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from Sample.models import Trials, ReceivedValues
-from .form import TrialForm, TrialUpdateForm, ExperementForm, ExperementListForm
+from .form import TrialForm, TrialUpdateForm, ExperementForm
 from django.http import JsonResponse
 
 
@@ -66,8 +66,12 @@ class ExperimentCreate(AjaxableResponseMixin, CreateView):
     template_name = 'Experiment/Experiment.html'
 
 
+class ExperimentDelete(AjaxableResponseMixin, DeleteView):
+    model = ReceivedValues
+    success_url = '/trial/'
+
+
 class ExperimentList(ListView):
-    # form = ExperementListForm
     model = ReceivedValues
     template_name = 'Experiment/ExperimentTable.html'
 
