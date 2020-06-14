@@ -4,7 +4,7 @@
         <div class="field">
             <select name="sample_material" class="ui fluid search dropdown" id="id_sample_material">
                 {% for value in material %}
-                    <option value="{{ value.id }}" data-value="{{ value }}" id="id_item_material{{ value.id }}">{{ value }}</option>
+                    <option value="{{ value.id }}" id="id_item_material{{ value.id }}">{{ value }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -15,9 +15,8 @@
 </div>
 
 <script>
-  $(' .ui.selection.dropdown')
+  $(' .ui.dropdown')
   .dropdown({
-        clearable: true,
         allowAdditions: true,
         monthsShort: true
   });

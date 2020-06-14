@@ -1,6 +1,6 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from Sample.models import Trials, ReceivedValues
-from .form import TrialForm, TrialUpdateForm, ExperementForm, ExperementListForm
+from .form import TrialForm, TrialUpdateForm, ExperementForm
 from django.http import JsonResponse
 
 

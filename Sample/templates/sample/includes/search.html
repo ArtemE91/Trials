@@ -1,6 +1,7 @@
 <div class="ui orange segment" id="form_search" style="margin-top: 55px;">
 
     <h3 class="ui header">Выберите параметры поиска</h3>
+    <h4 class="ui dividing header">Данные базы данных</h4>
     <div class="ui form">
         <div class="fields three">
             <div class="field">
@@ -11,9 +12,11 @@
                     <div class="default text">Способ упрочнения</div>
                     <div class="menu">
                         {% for name in method %}
-                        <div class="item" data-value="{{ name }}">
-                            {{ name }}
-                        </div>
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}">
+                                    {{ name }}
+                                </div>
+                             {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -27,9 +30,11 @@
                     <div class="default text">Параметры воздействия</div>
                     <div class="menu">
                         {% for name in exp_param %}
-                        <div class="item" data-value="{{ name }}" data-text="{{ name }}">
-                            {{ name }}
-                        </div>
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -43,15 +48,43 @@
                     <div class="default text">Дата проведения опыта</div>
                     <div class="menu">
                         {% for name in date_proc_streng %}
-                        <div class="item" data-value="{{ name|date:'Y-m-d' }}" data-text="{{ name }}">
-                            {{ name }}
-                        </div>
+                            {% if name %}
+                                <div class="item" data-value="{{ name|date:'Y-m-d' }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
             </div>
 
         </div>
+
+    <h4 class="ui dividing header">Дополнительные фильтры</h4>
+            <div class="field">
+                <div class="ui labeled icon top left pointing dropdown button" name="date">
+                  <i class="filter icon"></i>
+                  <span class="text">По дате</span>
+                  <div class="menu">
+                    <div class="item" data-value="7">
+                      <i class="olive circle icon"></i>
+                      За неделю
+                    </div>
+                    <div class="item" data-value="30">
+                      <i class="violet circle icon"></i>
+                      За месяц
+                    </div>
+                    <div class="item" data-value="365">
+                      <i class="orange circle icon"></i>
+                      За год
+                    </div>
+                    <div class="item" data-value="all">
+                      <i class="green circle icon"></i>
+                      За все время
+                    </div>
+                  </div>
+                </div>
+            </div>
     </div>
 </div>
 
@@ -59,6 +92,19 @@
 <script>
 
     const search_list = {};
+
+    const dimmer = $('<div class="ui active inverted dimmer" id="id_dimmer_sample">' +
+        '<div class="ui active green inline slow text loader">' +
+        'Загрузка</div></div>')
+
+    $('.ui.pointing.dropdown')
+    .dropdown({
+        onChange: function(value, text, $selectedItem){
+                search_list['date'] = value;
+                ajax_get_table();
+            }
+        }
+    )
 
     function ajax_get_table(){
         $.ajax({
@@ -83,6 +129,7 @@
     $('.ui.normal.dropdown')
       .dropdown({
           onChange: function(value, text, $selectedItem) {
+              $('#segment_table').append(dimmer);
               const name_dropdown = $(this).closest('.ui.normal.dropdown').attr('name');
               {# Записываю выбранный элемент в список для поиска если элемент удален то удаляю его из списка #}
               search_list[name_dropdown + '__in'] = value.split(',');
