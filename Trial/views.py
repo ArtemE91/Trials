@@ -66,8 +66,12 @@ class ExperimentCreate(AjaxableResponseMixin, CreateView):
     template_name = 'Experiment/Experiment.html'
 
 
+class ExperimentDelete(AjaxableResponseMixin, DeleteView):
+    model = ReceivedValues
+    success_url = '/trial/'
+
+
 class ExperimentList(ListView):
-    # form = ExperementListForm
     model = ReceivedValues
     template_name = 'Experiment/ExperimentTable.html'
 

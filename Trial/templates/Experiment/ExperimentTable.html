@@ -1,5 +1,5 @@
 {% for experiment in object_list %}
-<tr>
+<tr id='{{ experiment.pk }}'>
     <td>{{ experiment.change_weight }}</td>
     <td>{{ experiment.time_trials }}</td>
     <td>{{ experiment.image }}</td>
