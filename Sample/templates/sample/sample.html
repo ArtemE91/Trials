@@ -11,22 +11,25 @@
 {% block content %}
     {% include 'sample/includes/table.html' %}
 
-    <div class="ui orange segment" id="segment_card_id">
+    <div class="ui orange segment" id="id_segment_select_table">
         <div class="ui grid">
             <div class="six wide column">
                 <h3 class="ui header">Таблица выбранных образцов</h3>
             </div>
             <div class="ten wide column">
-                <button class="ui button disabled" id="id_btn_detail_sample">
+                <button class="ui button disabled" id="id_btn_detail_sample"  style="display: none;">
                     <i class="exclamation icon"></i>
                     Детально
                 </button>
             </div>
         </div>
+        <div class="ui visible info message" id="id_message_table_select">
+            <p>Здесь будут отображаться выбранные вами образцы!</p>
+        </div>
         <br>
         <div class="sixteen wide column">
                 <div class="select table">
-                    <table class="ui celled striped table green compact selectable" style="width:100%" id="sample_table_select">
+                    <table hidden class="ui celled striped table green compact selectable" style="width:100%" id="sample_table_select">
                         <thead>
                         <tr>
                             <th>Материал</th>
@@ -53,15 +56,27 @@
         </div>
     </div>
 
-<p></p>
 {% endblock %}
 
 {% block scripts %}
 <script>
 
-
 const select_sample = []; // Выбранные элементы в таблице sample_table
 const check_sample = []; // Выбранные элементы в таблице sample_table_select
+
+function show_select_table() {
+    if (select_sample.length > 0){
+        $('#id_btn_detail_sample').removeAttr('style');
+        $('#sample_table_select').removeAttr('hidden');
+        $('#id_message_table_select').attr('style', 'display: none');
+
+    }
+    else {
+        $('#id_btn_detail_sample').attr('style', 'display: none');
+        $('#sample_table_select').attr('hidden', 'display: none');
+        $('#id_message_table_select').removeAttr('style');
+    }
+}
 
 
 // Функция для подсвечивания выбранной строки
@@ -87,6 +102,7 @@ function diff(a1, a2) {
 // Обработка checkbox в шапке таблицы sample_table_select
 $('#id_btn_detail_sample')
     .on('click', function () {
+        $('#id_segment_select_table').append(dimmer);
         ajax_get_detail_sample(check_sample[0]);
     })
 

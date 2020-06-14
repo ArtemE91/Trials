@@ -13,7 +13,7 @@ function ajax_get_modal(url_create, url_list, model){
                 .modal({
                     onApprove : function () { // Ставим обработчик на кнопку сохранить
                     ajax_post_modal(url_create, url_list, model);
-                }
+                },
             })
             .modal('show');
         }
@@ -44,8 +44,9 @@ function ajax_get_list_object(url_list, model){ // Получаемый новы
         type: 'get',
         success: function(data)
         {
-            $('#id_' + model + '_field').remove(); // Удаляем старый список обхектов
+            $('#id_' + model + '_field').remove(); // Удаляем старый список объектов
             $(data).appendTo($('#id_block_' + model)); // Вставляем новый список объектов
+            $('#id_' + model + '_modal').remove(); // удаляем модальное окно из кеша semantic
         }
     });
 }

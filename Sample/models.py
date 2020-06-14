@@ -32,9 +32,15 @@ class SampleMaterial(models.Model):
         db_table = 'sample_material'
 
     def __str__(self):
-        return f'{self.name}, {self.type}'
+        label = ''
+        if self.name:
+            label += self.name + " "
+        if self.type:
+            label += self.type + " "
+        if self.description:
+            label += self.description
+        return label
 
-    # Добавил для AjaxableResponseMixin, для реализции DetailView необходиму возращать url элемента
     def get_absolute_url(self):
         return reverse('sample:material_table')
 
