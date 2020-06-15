@@ -1,0 +1,29 @@
+<div class='ui modal'>
+    <div class='content'>
+        <form  class='ui form' action="{% url 'trial:update_experiment' receivedvalues.pk %}" method='post' id="update_experiment" enctype='multipart/form-data'>
+        {% csrf_token %}
+            {{ form.as_p }}
+            <button class='ui right floated blue button' type="submit" value="Update">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+$("#update_experiment").submit(function (event) {
+    event.preventDefault(); // блокирую дефолтный сценарий события submit-save
+    let form = $("#update_experiment").serialize();
+    var serverUrl =$("#update_experiment").attr('action');
+    $.ajax({
+                    url: serverUrl,
+                    type: 'POST',
+                    data: form,
+    success: function(data)
+    {
+        ajax_download_experement_table();
+        $(`#${checked_experement_pk}`).attr('class', 'green');
+    }
+           });
+});
+
+</script>

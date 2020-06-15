@@ -79,3 +79,10 @@ class ExperimentList(ListView):
         trial_pk = self.kwargs['pk']
         trial = Trials.objects.get(pk=trial_pk)
         return trial.trials_values.all()
+
+
+class ExperimentUpdate(UpdateView):
+    model = ReceivedValues
+    template_name = 'Experiment/ExperimentUpdate.html'
+    fields = '__all__'
+    success_url = '/trial/'
