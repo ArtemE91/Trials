@@ -1,9 +1,11 @@
 <div class="ui modal">
-<form method="post" class="ui form" action="{% url 'trial:create_experiment' %}" id="create_experiment" enctype="multipart/form-data">
-{% csrf_token %}
-    {{ form.as_p }}
-    <input class="ui button" type="submit" value="Save">
-</form>
+    <div class='content'>
+    <form method="post" class="ui form" action="{% url 'trial:create_experiment' %}" id="create_experiment" enctype="multipart/form-data">
+        {% csrf_token %}
+            {{ form.as_p }}
+            <input class="ui button" type="submit" value="Save">
+        </form>
+    </div>
 </div>
 
 <script>
@@ -18,7 +20,7 @@ $("#create_experiment").submit(function (event) {
                     data: form,
     success: function(data)
     {
-        ajax_update_experement_table();
+        ajax_download_experement_table();
     }
            });
 });
