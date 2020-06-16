@@ -10,7 +10,16 @@ from django.shortcuts import reverse
 from django.conf import settings
 
 
-class SampleType(models.Model):
+class AbstractModel(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date_create = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class SampleType(AbstractModel):
     name = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
@@ -24,7 +33,7 @@ class SampleType(models.Model):
         return reverse('sample:type_table')
 
 
-class SampleMaterial(models.Model):
+class SampleMaterial(AbstractModel):
     name = models.CharField(max_length=255, blank=True, null=True)
     type = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -46,7 +55,7 @@ class SampleMaterial(models.Model):
         return reverse('sample:material_table')
 
 
-class Sample(models.Model):
+class Sample(AbstractModel):
 
     def sample_image_path(self, filename):
         return f"sample/{self.id}/{filename}"
@@ -73,15 +82,15 @@ class Sample(models.Model):
         db_table = 'sample'
 
     def get_absolute_url(self):
-        return reverse('sample:detail', kwargs={'id': self.id})
+        return reverse('sample:detail', kwargs={'pk': self.pk})
 
     def get_image(self):
-        if not self.image.name:
+        if not self.image:
             return f'{settings.MEDIA_URL}/default.png'
         return f'{settings.MEDIA_URL}/{self.image}'
 
 
-class Trials(models.Model):
+class Trials(AbstractModel):
     size_particle = models.IntegerField(blank=True, null=True)
     speed_collision = models.IntegerField(blank=True, null=True)
     add_param = models.CharField(max_length=255, blank=True, null=True)
@@ -98,7 +107,7 @@ class Trials(models.Model):
         db_table = 'trials'
 
 
-class ReceivedValues(models.Model):
+class ReceivedValues(AbstractModel):
     change_weight = models.FloatField(blank=True, null=True)
     time_trials = models.IntegerField(blank=True, null=True)
     image = models.FileField(upload_to=None, null=True, blank=True)

@@ -8,7 +8,9 @@ from .models import Sample, SampleMaterial, SampleType
 class SampleForm(forms.ModelForm):
     class Meta:
         model = Sample
-        fields = '__all__'
+        fields = ['method', 'exp_param', 'date_proc_streng', 'depth_coating', 'roughness',
+                  'hardness_coating', 'struct_coating', 'sub_hardness', 'organization',
+                  'weight', 'marking', 'sample_material', 'sample_type']
         labels = {
             'method': 'Cпособ',
             'exp_param': 'Параметры',
