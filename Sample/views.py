@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.shortcuts import redirect, render
 
 from .models import Sample, SampleType, SampleMaterial
 from .filter_queryset import filter_queryset
@@ -66,6 +67,17 @@ class SampleCreate(CreateView):
     form_class = SampleForm
     template_name = 'sample/sample_create.html'
     success_url = reverse_lazy('sample:')
+
+    def post(self, request, *args, **kwargs):
+        sample_form = self.form_class(request.POST)
+
+        if sample_form.is_valid():
+            sample = sample_form.save(commit=False)
+            sample.author = request.user
+            sample.save()
+            return redirect(sample.get_absolute_url())
+
+        return render(request, self.template_name, {"form": sample_form})
 
 
 class SampleUpdateView(UpdateView):
