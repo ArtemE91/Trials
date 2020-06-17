@@ -40,15 +40,14 @@ class SampleMaterial(AbstractModel):
 
     class Meta:
         db_table = 'sample_material'
+        ordering = ['name', 'type']
 
     def __str__(self):
         label = ''
         if self.name:
             label += self.name + " "
         if self.type:
-            label += self.type + " "
-        if self.description:
-            label += self.description
+            label += self.type
         return label
 
     def get_absolute_url(self):

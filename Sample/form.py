@@ -36,7 +36,7 @@ class SampleForm(forms.ModelForm):
 class MaterialForm(forms.ModelForm):
     class Meta:
         model = SampleMaterial
-        fields = '__all__'
+        fields = ['name', 'type', 'description']
         labels = {
             'name': 'Название',
             'type': 'Тип',
@@ -47,7 +47,7 @@ class MaterialForm(forms.ModelForm):
 class TypeForm(forms.ModelForm):
     class Meta:
         model = SampleType
-        fields = '__all__'
+        fields = ['name']
         labels = {
             'name': 'Название',
         }

@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.db.models import Q
 from django.shortcuts import redirect, render
 
 from .models import Sample, SampleType, SampleMaterial
@@ -19,14 +20,16 @@ class AjaxableResponseMixin:
             return response
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        instanse = form.save(commit=False)
+        instanse.author = self.request.user
+        instanse.save()
         if self.request.is_ajax():
             data = {
-                'pk': self.object.pk,
+                'pk': instanse.pk,
             }
             return JsonResponse(data, status=200)
         else:
-            return response
+            return super().form_valid(form)
 
 
 # _______________SAMPLE_______________________
@@ -34,12 +37,16 @@ class AjaxableResponseMixin:
 class SampleList(ListView):
     model = Sample
     template_name = 'sample/sample.html'
+    search_filter = ('method', 'date_proc_streng', 'struct_coating',
+                     'organization', 'marking')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["method"] = Sample.objects.order_by().values_list('method', flat=True).distinct()
-        context["exp_param"] = Sample.objects.order_by().values_list('exp_param', flat=True).distinct()
-        context["date_proc_streng"] = Sample.objects.order_by().values_list('date_proc_streng', flat=True).distinct()
+        for value in self.search_filter:
+            context[value] = context['object_list'].order_by().values_list(value, flat=True).distinct()
+        context['material_name'] = context['object_list'].order_by().values_list('sample_material__name', flat=True).distinct()
+        context['material_type'] = context['object_list'].order_by().values_list('sample_material__type', flat=True).distinct()
+        context['type'] = context['object_list'].order_by().values_list('sample_type__name', flat=True).distinct()
         return context
 
 
@@ -63,21 +70,10 @@ class SampleDetail(AjaxableResponseMixin, DetailView):
         return context
 
 
-class SampleCreate(CreateView):
+class SampleCreate(AjaxableResponseMixin, CreateView):
     form_class = SampleForm
     template_name = 'sample/sample_create.html'
     success_url = reverse_lazy('sample:')
-
-    def post(self, request, *args, **kwargs):
-        sample_form = self.form_class(request.POST)
-
-        if sample_form.is_valid():
-            sample = sample_form.save(commit=False)
-            sample.author = request.user
-            sample.save()
-            return redirect(sample.get_absolute_url())
-
-        return render(request, self.template_name, {"form": sample_form})
 
 
 class SampleUpdateView(UpdateView):
