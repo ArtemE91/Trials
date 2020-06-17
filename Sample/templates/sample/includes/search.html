@@ -3,13 +3,32 @@
     <h3 class="ui header">Выберите параметры поиска</h3>
     <h4 class="ui dividing header">Данные базы данных</h4>
     <div class="ui form">
+
         <div class="fields three">
+            <div class="field">
+                <label>Дата упрочнения</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="date_proc_streng">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберете значение</div>
+                    <div class="menu">
+                        {% for name in date_proc_streng %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name|date:'Y-m-d' }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
             <div class="field">
                 <label>Способ упрочнения</label>
                 <div class="ui fluid multiple search normal selection dropdown" name="method">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
-                    <div class="default text">Способ упрочнения</div>
+                    <div class="default text">Выберете значение</div>
                     <div class="menu">
                         {% for name in method %}
                             {% if name %}
@@ -23,13 +42,33 @@
             </div>
 
             <div class="field">
-                <label>Параметры воздействия</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="exp_param">
+                <label>Тип образца</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="sample_type__name">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
-                    <div class="default text">Параметры воздействия</div>
+                    <div class="default text">Выберете значение</div>
                     <div class="menu">
-                        {% for name in exp_param %}
+                        {% for name in type %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fields three">
+            <div class="field">
+                <label>Состав покрытия</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="struct_coating">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберете значение</div>
+                    <div class="menu">
+                        {% for name in struct_coating %}
                             {% if name %}
                                 <div class="item" data-value="{{ name }}" data-text="{{ name }}">
                                     {{ name }}
@@ -41,15 +80,15 @@
             </div>
 
             <div class="field">
-                <label>Дата проведения опыта</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="date_proc_streng">
+                <label>Организация, выполняющая упрочнение</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="organization">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
-                    <div class="default text">Дата проведения опыта</div>
+                    <div class="default text">Выберете значение</div>
                     <div class="menu">
-                        {% for name in date_proc_streng %}
+                        {% for name in organization %}
                             {% if name %}
-                                <div class="item" data-value="{{ name|date:'Y-m-d' }}" data-text="{{ name }}">
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
                                     {{ name }}
                                 </div>
                             {% endif %}
@@ -58,7 +97,66 @@
                 </div>
             </div>
 
+            <div class="two fields">
+                <div class="field">
+                    <label>Материал образца</label>
+                    <div class="ui fluid multiple search normal selection dropdown" name="sample_material__name">
+                        <input type="hidden">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Имя</div>
+                        <div class="menu">
+                            {% for name in material_name %}
+                                {% if name %}
+                                    <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                        {{ name }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label style="margin-top: 12%;"></label>
+                    <div class="ui fluid multiple search normal selection dropdown" name="sample_material__type">
+                        <input type="hidden">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Тип</div>
+                        <div class="menu">
+                            {% for name in material_type %}
+                                {% if name %}
+                                    <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                        {{ name }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="fields three">
+            <div class="field">
+                <label>Маркировка образца</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="marking">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберете значение</div>
+                    <div class="menu">
+                        {% for name in marking %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 
     <h4 class="ui dividing header">Дополнительные фильтры</h4>
             <div class="field">
