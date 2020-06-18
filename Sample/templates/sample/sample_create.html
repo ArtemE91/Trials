@@ -55,17 +55,36 @@
         </div>
 
         <h3 class="ui dividing header">Информация по образцу</h3>
+
         <div class="field">
+        <label>Масса образца</label>
+        <div class="three fields">
+            <div class="field">
+                <div class="ui action input">
+                    <div class="ui input">
+                        <input type="number" id="id_weight_i" placeholder="i-ое взвешивание">
+                    </div>
+                    <div class="ui button" id="id_btn_add">Добавить</div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui action input">
+                    <div class="ui input">
+                      <input type="text" disabled="" placeholder="Введеные значения" id="id_weight_all">
+                    </div>
+                    <div class="ui button" id="id_btn_clear">Очистить</div>
+                </div>
+            </div>
             <div class="two fields">
                 <div class="field">
-                    <label for="id_weight">Первоначальная масса</label>
-                    <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Первоначальная масса образца" name="weight" id="id_weight"
+                    <div class="ui input disabled">
+                      <input type="number" step="0.01" placeholder="Среднее" name="weight" id="id_weight"
                       >
                     </div>
                 </div>
             </div>
         </div>
+      </div>
 
         <h3 class="ui dividing header">Дополнительная информация</h3>
         <div class="field">
@@ -144,6 +163,25 @@
 
 {% block scripts %}
 <script>
+
+var weight_list = []
+
+$('#id_btn_add')
+    .on('click', function(){
+        let weight_i = $('#id_weight_i').val();
+        weight_list.push(weight_i);
+        $('#id_weight_all').val(weight_list);
+        $('#id_weight').val((weight_list.reduce((a, b) => parseInt(a) + parseInt(b))/weight_list.length));
+        $('#id_weight_i').val('');
+    });
+
+$('#id_btn_clear')
+    .on('click', function(){
+        weight_list = [];
+        $('#id_weight_i').val('');
+        $('#id_weight_all').val('');
+        $('#id_weight').val('');
+});
 
 $("input:text").click(function() {
   $(this).parent().find("input:file").click();
