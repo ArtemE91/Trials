@@ -8,11 +8,8 @@
             <tr>
                 <th>Материал</th>
                 <th>Способ упрочнения</th>
-                <th>Параметры воздействия</th>
+                <th>Организация</th>
                 <th>Дата упрочнения</th>
-                <th>Толщина покрытия</th>
-                <th>Шероховатость поверхности</th>
-                <th>Твердость покрытия</th>
                 <th>Состав покрытия</th>
                 <th>Выбрать</th>
             </tr>
@@ -22,11 +19,8 @@
                 <tr id="tr_{{ sample.id }}">
                     <td>{{ sample.sample_material}}</td>
                     <td>{{ sample.method }}</td>
-                    <td>{{ sample.exp_param }}</td>
+                    <td>{{ sample.organization }}</td>
                     <td>{{ sample.date_proc_streng }}</td>
-                    <td>{{ sample.depth_coating }}</td>
-                    <td>{{ sample.roughness }}</td>
-                    <td>{{ sample.hardness_coating }}</td>
                     <td>{{ sample.struct_coating }}</td>
                     <td class="collapsing">
                         <div class="ui toggle checkbox" id="{{ sample.id }}">
