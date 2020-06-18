@@ -1,94 +1,129 @@
 <div class="ui modal sample">
     <i class="close icon"></i>
     <div class="header">
-        Образец {{ sample.pk }}
+        {% if sample.sample_material.name %}
+            {{ sample.sample_material.name }}
+        {% endif %}
+        {% if sample.sample_material.type %}
+            {{ sample.sample_material.type }}
+        {% endif %}
+        {% if sample.method %}
+            {{ sample.method }}
+        {% endif %}
+        {% if sample.marking %}
+            {{ sample.marking }}
+        {% endif %}
     </div>
     <div class="content">
-        <div class="ui list">
+
+        <div class="ui divided items">
             <div class="item">
-                <div class="ui grid">
-                    <div class="five wide column">Cпособ упрочнения:</div>
-                    <div class="eleven wide column">{{ sample.method }}</div>
+
+            <div class="image">
+                <img class="ui image" src="{{ sample.get_image }}" style="background-size: 100%">
+            </div>
+
+            <div class="content">
+                <div class="description">
+                    <div class="ui list">
+                {% if sample.method %}
+                <div class="item">
+                    <div class="ui grid">
+                        <div class="five wide column">Cпособ упрочнения:</div>
+                        <div class="eleven wide column">{{ sample.method }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if sample.exp_param  %}
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Параметры упрочнения:</div>
+                        <div class="eleven wide column">{{ sample.exp_param }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if sample.depth_coating %}
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Толщина покрытия/глубина упрочнения, [мкм/мм]:</div>
+                        <div class="eleven wide column">{{ sample.depth_coating }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if sample.hardness_coating %}
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Твердость упрочнения, [HV] :</div>
+                        <div class="eleven wide column">{{ sample.hardness_coating }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Дата процесса упрочнения, [м д,г]:</div>
+                        <div class="eleven wide column">{{ sample.date_proc_streng }}</div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Первоначальная масса, [г]:</div>
+                        <div class="eleven wide column">{{ sample.weight }}</div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Шероховатость поверхности, [мкм]:</div>
+                        <div class="eleven wide column">{{ sample.roughness }}</div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Твердость подложки, [HB]:</div>
+                        <div class="eleven wide column">{{ sample.sub_hardness }}</div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Организация которая провела упрочнение:</div>
+                        <div class="eleven wide column">{{ sample.organization }}</div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Материал:</div>
+                        <div class="eleven wide column">{{ sample.sample_material }}</div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Тип:</div>
+                        <div class="eleven wide column">{{ sample.sample_type }}</div>
+                    </div>
+                </div>
+            </div>
                 </div>
             </div>
 
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Параметры упрочнения:</div>
-                    <div class="eleven wide column">{{ sample.exp_param }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Толщина упрочнения:</div>
-                    <div class="eleven wide column">{{ sample.depth_coating }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Твердость упрочнения:</div>
-                    <div class="eleven wide column">{{ sample.hardness_coating }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Дата процесса упрочнения:</div>
-                    <div class="eleven wide column">{{ sample.date_proc_streng }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Первоначальная масса:</div>
-                    <div class="eleven wide column">{{ sample.weight }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Шероховатость поверхности:</div>
-                    <div class="eleven wide column">{{ sample.roughness }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Твердость подложки:</div>
-                    <div class="eleven wide column">{{ sample.sub_hardness }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Организация которая провела упрочнение:</div>
-                    <div class="eleven wide column">{{ sample.organization }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Материал:</div>
-                    <div class="eleven wide column">{{ sample.sample_material }}</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="ui grid column">
-                    <div class="five wide column">Тип:</div>
-                    <div class="eleven wide column">{{ sample.sample_type }}</div>
-                </div>
             </div>
         </div>
 
-        <div style="width:600px;height:500px">
-        {% if plot_div %}
-            {{ plot_div|safe }}
-        {% endif %}
+        <div class="content">
+            <div style="width:600px;height:500px">
+                {% if plot_div %}
+                    {{ plot_div|safe }}
+                {% endif %}
+            </div>
         </div>
-
     </div>
 
     <div class="actions">
@@ -102,5 +137,5 @@
             </div>
         </div>
     </div>
-</div>
 
+</div>
