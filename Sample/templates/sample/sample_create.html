@@ -26,7 +26,7 @@
                 <div class="field">
                     <label for="id_depth_coating">Толщина</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
+                      <input type="text" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
                       >
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="field">
                     <label for="id_hardness_coating">Твердость</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
+                      <input placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
                       >
                     </div>
                 </div>
@@ -62,7 +62,7 @@
             <div class="field">
                 <div class="ui action input">
                     <div class="ui input">
-                        <input type="number" id="id_weight_i" placeholder="i-ое взвешивание">
+                        <input name="i_weight" id="id_weight_i" placeholder="i-ое взвешивание">
                     </div>
                     <div class="ui button" id="id_btn_add">Добавить</div>
                 </div>
@@ -78,7 +78,7 @@
             <div class="two fields">
                 <div class="field">
                     <div class="ui input disabled">
-                      <input type="number" step="0.01" placeholder="Среднее" name="weight" id="id_weight"
+                      <input placeholder="Среднее" name="weight" id="id_weight"
                       >
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                 <div class="field">
                     <label for="id_roughness">Шероховатость поверхности</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
+                      <input placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
                       >
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                 <div class="field">
                     <label for="id_sub_hardness">Твердость подложки</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness"
+                      <input placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness"
                       >
                     </div>
                 </div>
@@ -164,15 +164,106 @@
 {% block scripts %}
 <script>
 
+$('.ui.form')
+    .form({
+        on: 'blur',
+        inline : true,
+        fields: {
+            method: {
+                identifier: 'method',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле для заполнения!'
+                    },
+                ]
+            },
+            depth_coating: {
+                identifier: 'depth_coating',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            hardness_coating: {
+                identifier: 'hardness_coating',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            roughness: {
+                identifier: 'roughness',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            sub_hardness: {
+                identifier: 'sub_hardness',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            weight: {
+                identifier: 'weight',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле для заполнения! Введите данные в поле i-ое взвешивание'
+                    },
+                ]
+            },
+            i_weight: {
+                identifier: 'i_weight',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            sample_material: {
+                identifier: 'sample_material',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле! Выберете необходимый материал'
+                    },
+                ]
+            },
+            sample_type: {
+                identifier: 'sample_type',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле! Выберете необходимый тип'
+                    },
+                ]
+            },
+        }
+    })
+
 var weight_list = []
 
 $('#id_btn_add')
     .on('click', function(){
         let weight_i = $('#id_weight_i').val();
-        weight_list.push(weight_i);
-        $('#id_weight_all').val(weight_list);
-        $('#id_weight').val((weight_list.reduce((a, b) => parseInt(a) + parseInt(b))/weight_list.length));
-        $('#id_weight_i').val('');
+        if (!isNaN(weight_i)) {
+            weight_list.push(weight_i);
+            $('#id_weight_all').val(weight_list);
+            $('#id_weight').val((weight_list.reduce((a, b) => parseInt(a) + parseInt(b)) / weight_list.length));
+            $('#id_weight_i').val('');
+        }
     });
 
 $('#id_btn_clear')

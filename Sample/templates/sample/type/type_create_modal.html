@@ -8,7 +8,7 @@
             {% csrf_token %}
             <div class="field">
                 <label for="id_name">Название типа</label>
-                <input type="text" name="name" id="id_name" placeholder="Название типа">
+                <input onkeyup="checkParams()" type="text" name="name" id="id_name" placeholder="Название типа">
             </div>
         </form>
     </div>
@@ -16,9 +16,37 @@
         <div class="ui red deny button">
             Отмена
         </div>
-        <div class="ui button positive right labeled icon create" id="id_btn_create_type">
+        <div class="ui button positive right labeled icon create disabled" id="id_btn_create_type">
             Добавить
             <i class="checkmark icon"></i>
         </div>
     </div>
 </div>
+
+<script>
+    function checkParams(){
+        let name = $('#id_name').val();
+        if(name.length !== 0){
+            $('#id_btn_create_type').attr('class', 'ui button positive right labeled icon create');
+        } else {
+            $('#id_btn_create_type').attr('class', 'ui button positive right labeled icon create disabled disabled');
+        }
+    }
+
+    $('.ui.form')
+    .form({
+        on: 'blur',
+        inline: true,
+        fields: {
+            name: {
+                identifier: 'name',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле для заполнения!'
+                    },
+                ]
+            },
+        }
+    });
+</script>
