@@ -13,17 +13,19 @@ class AjaxableResponseMixin:
             return response
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        instanse = form.save(commit=False)
+        instanse.author = self.request.user
+        instanse.save()
         if self.request.is_ajax():
             data = {
-                'pk': self.object.pk,
+                'pk': instanse.pk,
             }
             return JsonResponse(data, status=200)
         else:
-            return response
+            return super().form_valid(form)
 
 
-class TrialCreate(CreateView):
+class TrialCreate(AjaxableResponseMixin, CreateView):
     form_class = TrialForm
     template_name = 'Trial/trials_form.html'
     success_url = '/trial/create/'
@@ -81,8 +83,8 @@ class ExperimentList(ListView):
         return trial.trials_values.all()
 
 
-class ExperimentUpdate(UpdateView):
+class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
     model = ReceivedValues
     template_name = 'Experiment/ExperimentUpdate.html'
     fields = '__all__'
-    success_url = '/trial/'
+    # success_url = '/trial/'

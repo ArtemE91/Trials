@@ -1,30 +1,36 @@
-<div class="ui modal">
+    <div class="ui modal">
     <div class='content'>
     <form method="post" class="ui form" action="{% url 'trial:create_experiment' %}" id="create_experiment" enctype="multipart/form-data">
         {% csrf_token %}
             {{ form.as_p }}
             <input class="ui button" type="submit" value="Save">
         </form>
+        
     </div>
 </div>
 
 <script>
 
-$("#create_experiment").submit(function (event) {
-    event.preventDefault(); // блокирую дефолтный сценарий события submit-save
-    let form = $("#create_experiment").serialize();
-    var serverUrl =$("#create_experiment").attr('action');
+$("#create_experiment").submit(function(event){
+    event.preventDefault();
+
+    var formData  = new FormData(this);
+    var createPostUrl = $("#create_experiment").attr('action');
     $.ajax({
-                    url: serverUrl,
-                    type: 'POST',
-                    data: form,
-    success: function(data)
-    {
-        ajax_download_experement_table();
-    }
-           });
-});
-
-
+        method   : "POST",
+        url      : createPostUrl,
+        data     : formData,
+        processData:false,
+        contentType:false,
+        success  : function(data){
+            location.reload(true); 
+            //ajax_download_experement_table(); // 
+        },
+        error    : function(data){
+            console.log("ERROR:CH0x2 while fetching after creation form submit");
+            console.log("data :",data.status, data.statusText);
+        }
+    });
+ });
 
 </script>

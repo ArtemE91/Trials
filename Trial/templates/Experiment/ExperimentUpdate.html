@@ -10,20 +10,26 @@
 
 <script>
 
-$("#update_experiment").submit(function (event) {
-    event.preventDefault(); // блокирую дефолтный сценарий события submit-save
-    let form = $("#update_experiment").serialize();
-    var serverUrl =$("#update_experiment").attr('action');
+$("#update_experiment").submit(function(event){
+    event.preventDefault();
+
+    var formData  = new FormData(this);
+    var createPostUrl = $("#update_experiment").attr('action');
     $.ajax({
-                    url: serverUrl,
-                    type: 'POST',
-                    data: form,
-    success: function(data)
-    {
-        ajax_download_experement_table();
-        $(`#${checked_experement_pk}`).attr('class', 'green');
-    }
-           });
-});
+        method   : "POST",
+        url      : createPostUrl,
+        data     : formData,
+        processData:false,
+        contentType:false,
+        success  : function(data){
+            location.reload(true); 
+            //ajax_download_experement_table(); // 
+        },
+        error    : function(data){
+            console.log("ERROR:CH0x2 while fetching after creation form submit");
+            console.log("data :",data.status, data.statusText);
+        }
+    });
+ });
 
 </script>
