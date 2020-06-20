@@ -23,5 +23,21 @@
 
 {% block scripts %}
 <script>
+    $('.ui.form')
+    .form({
+        on: 'blur',
+        inline: true,
+        fields: {
+            name: {
+                identifier: 'name',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле для заполнения!'
+                    },
+                ]
+            },
+        }
+    });
 </script>
 {% endblock %}

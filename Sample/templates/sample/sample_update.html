@@ -9,14 +9,15 @@
             <div class="two fields">
                 <div class="field">
                     <label for="id_method">{{ form.method.label_tag }}</label>
-                    <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method">
+                    <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method"
+                    value="{% if form.method.value %}{{ form.method.value }}{% endif %}">
                 </div>
 
                 <div class="field">
                     <label for="id_exp_param">{{ form.exp_param.label_tag }}</label>
                     <div class="ui input">
                       <input type="text" placeholder="Параметры упрочнения" name="exp_param" id="id_exp_param"
-                      value="{{ form.exp_param.value }}">
+                      value="{% if form.exp_param.value %}{{ form.exp_param.value }}{% endif %}">
                     </div>
                 </div>
             </div>
@@ -25,16 +26,16 @@
                 <div class="field">
                     <label for="id_depth_coating">{{ form.depth_coating.label_tag }}</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
-                      value="{{ form.depth_coating.value }}">
+                      <input placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
+                      value="{% if form.depth_coating.value %}{{ form.depth_coating.value }}{% endif %}">
                     </div>
                 </div>
 
                 <div class="field">
                     <label for="id_hardness_coating">{{ form.hardness_coating.label_tag }}</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
-                        value="{{ form.hardness_coating.value }}">
+                      <input placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
+                        value="{% if form.hardness_coating.value %}{{ form.hardness_coating.value }}{% endif %}">
                     </div>
                 </div>
             </div>
@@ -46,7 +47,7 @@
                         <div class="ui input left icon">
                           <i class="calendar icon"></i>
                           <input type="text" placeholder="Дата процесса упрочнения" name="date_proc_streng" id="id_date_proc_streng"
-                          value="{{ form.date_proc_streng.value }}">
+                          value="{% if form.date_proc_streng.value %}{{ form.date_proc_streng.value }}{% endif %}">
                         </div>
                       </div>
                 </div>
@@ -60,8 +61,8 @@
                 <div class="field">
                     <label for="id_weight">{{ form.weight.label_tag }}</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Первоначальная масса образца" name="weight" id="id_weight"
-                      value="{{ form.weight.value }}">
+                      <input placeholder="Первоначальная масса образца" name="weight" id="id_weight"
+                      value="{% if form.weight.value %}{{ form.weight.value }}{% endif %}">
                     </div>
                 </div>
             </div>
@@ -73,16 +74,16 @@
                 <div class="field">
                     <label for="id_roughness">{{ form.roughness.label_tag }}</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
-                      value="{{ form.roughness.value }}">
+                      <input placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
+                      value="{% if form.roughness.value %}{{ form.roughness.value }}{% endif %}">
                     </div>
                 </div>
 
                 <div class="field">
                     <label for="id_sub_hardness">{{ form.sub_hardness.label_tag }}</label>
                     <div class="ui input">
-                      <input type="number" step="0.01" placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness"
-                      value="{{ form.sub_hardness.value }}">
+                      <input placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness"
+                      value="{% if form.sub_hardness.value %}{{ form.sub_hardness.value }}{% endif %}">
                     </div>
                 </div>
             </div>
@@ -91,7 +92,7 @@
                 <label for="id_organization">{{ form.organization.label_tag }}</label>
                 <div class="ui input">
                     <input type="text" placeholder="Организация" name="organization" id="id_organization"
-                    value="{{ form.organization.value }}">
+                    value="{% if form.organization.value %}{{ form.organization.value }}{% endif %}">
                 </div>
             </div>
 
@@ -148,6 +149,89 @@
 
 {% block scripts %}
 <script>
+$('.ui.form')
+    .form({
+        on: 'blur',
+        inline : true,
+        fields: {
+            method: {
+                identifier: 'method',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле для заполнения!'
+                    },
+                ]
+            },
+            depth_coating: {
+                identifier: 'depth_coating',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            hardness_coating: {
+                identifier: 'hardness_coating',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            roughness: {
+                identifier: 'roughness',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            sub_hardness: {
+                identifier: 'sub_hardness',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            weight: {
+                identifier: 'weight',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле для заполнения!'
+                    },
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            sample_material: {
+                identifier: 'sample_material',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле! Выберете необходимый материал'
+                    },
+                ]
+            },
+            sample_type: {
+                identifier: 'sample_type',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле! Выберете необходимый тип'
+                    },
+                ]
+            },
+        }
+    })
 
 $("input:text").click(function() {
   $(this).parent().find("input:file").click();
@@ -182,3 +266,4 @@ $('.message .close')
     });
 </script>
 {% endblock %}
+
