@@ -7,7 +7,8 @@ def figure(x, y):
     fig.add_trace(go.Scatter(
         y=y,
         x=x,
-        name="Испытание №1"
+        name="Испытание №1",
+        mode='lines+markers',
     ))
 
     # fig.add_trace(go.Scatter(
@@ -18,8 +19,8 @@ def figure(x, y):
     # ))
 
     fig.update_layout(
-        xaxis_title="Время",
-        yaxis_title="Изменение массы",
+        xaxis_title="Изменение времени, мин",
+        yaxis_title="Изменение массы, г",
         title='График экспериментов',
     )
     plt_div = fig.to_html(full_html=False, default_height=500,
