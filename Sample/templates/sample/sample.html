@@ -101,7 +101,9 @@ function diff(a1, a2) {
 $('#id_btn_detail_sample')
     .on('click', function () {
         $('#id_segment_select_table').append(dimmer);
-        ajax_get_detail_sample(check_sample[0]);
+        let trial_id = $('#tr_select_' + check_sample[0]).attr('name')
+        console.log(trial_id);
+        ajax_get_graph(65, check_sample[0]);
     })
 
 $('.ui.checkbox.all')
@@ -147,13 +149,25 @@ $('.ui.checkbox.all')
         }
     }
 
-    function ajax_get_detail_sample(sample_id){
+    function ajax_get_graph(trial_id, sample_id){
+        // Реализовать проверку если trial_id отсутствует
+        $.ajax({
+            type: 'GET',
+            url: '/trial/' + trial_id + '/get_graph',
+            success: function (response) {
+                ajax_get_detail_sample(sample_id, $(response))
+            }
+        })
+    }
+
+    function ajax_get_detail_sample(sample_id, graph){
         $.ajax({
             type: 'GET',
             url: '/sample/detail/' + sample_id,
             success: function (response) {
-                $(response)
-                .modal('show');
+                let modal = $(response);
+                modal.find('#id_graph').append(graph);
+                modal.modal('show');
                 $('#id_dimmer_sample').remove()
             }
         });
