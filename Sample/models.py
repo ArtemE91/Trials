@@ -107,9 +107,12 @@ class Trials(AbstractModel):
 
 
 class ReceivedValues(AbstractModel):
+    def experement_image_path(self, filename):
+        return f"experement/trial_{self.trials.id}/{filename}"
+
     change_weight = models.FloatField(blank=True, null=True)
     time_trials = models.IntegerField(blank=True, null=True)
-    image = models.FileField(upload_to=None, null=True, blank=True)
+    image = models.FileField(upload_to=experement_image_path, null=True, blank=True)
 
     trials = models.ForeignKey(Trials, on_delete=models.CASCADE,
                                blank=True, null=True, related_name="trials_values")
