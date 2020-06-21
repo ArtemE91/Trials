@@ -53,6 +53,9 @@ class TrialDetail(DetailView):
     def get_object(self):
         trial = super(TrialDetail, self).get_object()
         trial.experiments = trial.trials_values.all().annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
+        trial.experiments = trial.experiments.order_by('-weight_loss')
+        for e in trial.experiments:
+            e.weight_loss = round(e.weight_loss, 5)
         return trial
 
 
