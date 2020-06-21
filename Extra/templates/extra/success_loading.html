@@ -36,36 +36,56 @@
     </table>
 
     <h3 class="ui header">Добавленные Испытания</h3>
-    <table class="ui celled striped table green compact" style="width:100%" id="id_sample_table_load">
+    <table class="ui celled striped table green compact" style="width:100%" id="id_trial_table_load">
         <thead>
         <tr>
             <th>№</th>
-            <th>Материал</th>
-            <th>Тип</th>
-            <th>Маркировка</th>
-            <th>Вес</th>
-            <th>Дата упрочнения</th>
-            <th>Способ упрочнения</th>
-            <th>Толщина покрытия</th>
-            <th>Твердость покрытия</th>
-            <th>Шероховатость поверхности</th>
-            <th>Состав покрытия</th>
+            <th>Образец</th>
+            <th>Размер частиц</th>
+            <th>Скорость соударения</th>
+            <th>Дополнительные параметры</th>
+            <th>Угол соударения</th>
+            <th>Дата начала испытаний</th>
+            <th>Дата окончания испытаний</th>
+            <th>Тип частиц</th>
+            <th>Описание</th>
         </tr>
         </thead>
         <tbody>
-            {% for key, sample in sample.items %}
-                <tr id="tr_{{ sample.id }}">
+            {% for key, trial in trials.items %}
+                <tr id="tr_{{ trial.id }}">
                     <td>{{ key }}</td>
-                    <td>{{ sample.sample_material}}</td>
-                    <td>{{ sample.sample_type}}</td>
-                    <td>{{ sample.marking }}</td>
-                    <td>{{ sample.weight }}</td>
-                    <td>{{ sample.date_proc_streng }}</td>
-                    <td>{{ sample.method }}</td>
-                    <td>{{ sample.depth_coating }}</td>
-                    <td>{{ sample.hardness_coating }}</td>
-                    <td>{{ sample.roughness }}</td>
-                    <td>{{ sample.struct_coating }}</td>
+                    <td>{{ trial.sample}}</td>
+                    <td>{{ trial.size_particle}}</td>
+                    <td>{{ trial.speed_collision }}</td>
+                    <td>{{ trial.add_param }}</td>
+                    <td>{{ trial.corner_collision }}</td>
+                    <td>{{ trial.date_trials }}</td>
+                    <td>{{ trial.date_end_trials }}</td>
+                    <td>{{ trial.type_particle }}</td>
+                    <td>{{ trial.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 class="ui header">Добавленные Эксперименты</h3>
+    <table class="ui celled striped table green compact" style="width:100%" id="id_exp_table_load">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Образец</th>
+            <th>Масса после эксперимента</th>
+            <th>Время эксперимента</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for key, exp in experiment.items %}
+                <tr id="tr_{{ exp.id }}">
+                    <td>{{ key }}</td>
+                    <td>{{ exp.trials.sample}}</td>
+                    <td>{{ exp.change_weight}}</td>
+                    <td>{{ exp.time_trials }}</td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -88,6 +88,16 @@ class Sample(AbstractModel):
             return f'{settings.MEDIA_URL}/default.png'
         return f'{settings.MEDIA_URL}/{self.image}'
 
+    def __str__(self):
+        label = f'{self.sample_material.name}'
+        if self.sample_material.type:
+            label += f'_{self.sample_material.type}'
+        if self.method:
+            label += f'_{self.method}'
+        if self.marking:
+            label += f'_{self.marking}'
+        return label
+
 
 class Trials(AbstractModel):
     size_particle = models.IntegerField(blank=True, null=True)
