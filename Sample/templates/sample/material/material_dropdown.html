@@ -9,7 +9,7 @@
             </select>
         </div>
         <div class="field">
-            <div class="ui button positive material">Создать</div>
+            <div class="ui button positive material" id="id_btn_create_material">Создать</div>
         </div>
     </div>
 </div>
@@ -21,7 +21,7 @@
         monthsShort: true
   });
 
-     $('.ui.button.positive.material')
+     $('#id_btn_create_material')
         .click(function () {
             ajax_get_modal('{% url 'sample:material_create' %}',
             '{% url 'sample:material' %}', 'material');

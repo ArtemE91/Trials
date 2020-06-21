@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<div class="ui fixed inverted menu" style="height: 55px;">
+<div class="ui fixed inverted menu">
     <div class="ui container">
         <a href="{% url 'sample:' %}" class="header item">
             Trials
@@ -49,8 +49,12 @@
             <div class="menu">
                 <a class="item" href="{% url 'trial:list' %}">Информация</a>
                 <a class="item" href="{% url 'trial:create' %}">Создать</a>
-                <a class="item" href="#">Изменить</a>
-                <a class="item" href="#">Удалить</a>
+            </div>
+        </div>
+        <div class="ui simple dropdown item">
+            Дополнительно <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item" href="{% url 'extra:data_loading' %}">Загрузка данных</a>
             </div>
         </div>
         <div class="ui right simple dropdown item">
@@ -65,23 +69,15 @@
     </div>
 </div>
 
-{#    <div class="ui grid centered">#}
+<div class="ui grid centered">
+    <div class="fifteen wide column center">
 
-        <div class="fifteen wide column center">
+        {% block search %}
+        {% endblock %}
 
-            <div class="ui bottom attached active tab segment" data-tab="first">
-
-                {% block search %}
-                {% endblock %}
-
-                {% block content %}
-                {% endblock %}
-
-            </div>
-
-        </div>
-
-{#    </div>#}
+        {% block content %}
+        {% endblock %}
+    </div>
 </div>
 
 </body>

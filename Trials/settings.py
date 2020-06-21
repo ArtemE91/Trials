@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'Sample',
     'Trial',
     'User',
+    'Extra',
 ]
 
 MIDDLEWARE = [
