@@ -87,4 +87,5 @@ class DataLoadingTemplateView(TemplateView):
         # В дальниешем сделать проверку на размер файла
         config = yaml.safe_load(request.FILES['file'].read())
         data_loading = DataLoading(config, request.user.id)
+        data_loading.write_data()
         return redirect(request.path)
