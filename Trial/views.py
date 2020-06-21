@@ -103,3 +103,15 @@ class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
     model = ReceivedValues
     template_name = 'Experiment/ExperimentUpdate.html'
     fields = '__all__'
+
+class TrialGraph(DetailView):
+    model = Trials
+    template_name = 'Trial/trial_graph.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        sample_weight = self.object.sample.weight
+        weight_loss = [sample_weight-experiment.change_weight for experiment in self.object.trials_values.all()]
+        times = [experiment.time_trials for experiment in self.object.trials_values.all()]
+        context['plot_div'] = figure(times, weight_loss)
+        return context
