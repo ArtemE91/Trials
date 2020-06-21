@@ -101,9 +101,16 @@ function diff(a1, a2) {
 $('#id_btn_detail_sample')
     .on('click', function () {
         $('#id_segment_select_table').append(dimmer);
-        let trial_id = $('#tr_select_' + check_sample[0]).attr('name')
-        console.log(trial_id);
-        ajax_get_graph(65, check_sample[0]);
+        let trial_id = $('#tr_select_' + check_sample[0]).attr('name').slice('id_trials_'.length);
+        if (trial_id){
+            ajax_get_graph(trial_id, check_sample[0]);
+        }else {
+            let message = $('<div class="ui message info visible">\n' +
+                '        <div class="ui text">У данного образца нет испытаний!</div>\n' +
+                '    </div>')
+            ajax_get_detail_sample(check_sample[0], message);
+        }
+
     })
 
 $('.ui.checkbox.all')
