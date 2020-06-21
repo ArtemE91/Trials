@@ -5,7 +5,8 @@ from Sample.models import Trials, Sample, ReceivedValues
 class TrialForm(forms.ModelForm):
     class Meta:
         model = Trials
-        fields = '__all__'
+        fields = ['size_particle', 'speed_collision', 'add_param', 'corner_collision',
+                  'date_trials', 'date_end_trials', 'type_particle', 'description', 'sample']
         labels = {
             'size_particle': 'Размер частицы',
             'speed_collision': 'Cкорость столкновения',
@@ -28,4 +29,4 @@ class TrialUpdateForm(forms.ModelForm):
 class ExperementForm(forms.ModelForm):
     class Meta:
         model = ReceivedValues
-        fields = '__all__'
+        fields = ['change_weight', 'time_trials', 'image', 'trials']

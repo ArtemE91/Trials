@@ -1,7 +1,9 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from Sample.models import Trials, ReceivedValues
+from .experiment_graph import figure
 from .form import TrialForm, TrialUpdateForm, ExperementForm
 from django.http import JsonResponse
+from django.db.models import F
 
 
 class AjaxableResponseMixin:
@@ -13,17 +15,19 @@ class AjaxableResponseMixin:
             return response
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        instanse = form.save(commit=False)
+        instanse.author = self.request.user
+        instanse.save()
         if self.request.is_ajax():
             data = {
-                'pk': self.object.pk,
+                'pk': instanse.pk,
             }
             return JsonResponse(data, status=200)
         else:
-            return response
+            return super().form_valid(form)
 
 
-class TrialCreate(CreateView):
+class TrialCreate(AjaxableResponseMixin, CreateView):
     form_class = TrialForm
     template_name = 'Trial/trials_form.html'
     success_url = '/trial/create/'
@@ -37,6 +41,19 @@ class TrialList(ListView):
 class TrialDetail(DetailView):
     model = Trials
     template_name = 'Trial/trial_detail.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        sample_weight = self.object.sample.weight
+        weight_loss = [sample_weight-experiment.change_weight for experiment in self.object.trials_values.all()]
+        times = [experiment.time_trials for experiment in self.object.trials_values.all()]
+        context['plot_div'] = figure(times, weight_loss)
+        return context
+
+    def get_object(self):
+        trial = super(TrialDetail, self).get_object()
+        trial.experiments = trial.trials_values.all().annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
+        return trial
 
 
 class TrialModalDetail(DetailView):
@@ -78,4 +95,11 @@ class ExperimentList(ListView):
     def get_queryset(self):
         trial_pk = self.kwargs['pk']
         trial = Trials.objects.get(pk=trial_pk)
-        return trial.trials_values.all()
+        qset = trial.trials_values.all()
+        return qset.annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
+
+
+class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
+    model = ReceivedValues
+    template_name = 'Experiment/ExperimentUpdate.html'
+    fields = '__all__'

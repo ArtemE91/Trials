@@ -1,21 +1,20 @@
-    <div class="ui modal">
+<div class='ui modal'>
     <div class='content'>
-    <form method="post" class="ui form" action="{% url 'trial:create_experiment' %}" id="create_experiment" enctype="multipart/form-data">
+        <form  class='ui form' action="{% url 'trial:update_experiment' receivedvalues.pk %}" method='post' id="update_experiment" enctype='multipart/form-data'>
         {% csrf_token %}
             {{ form.as_p }}
-            <input class="ui button" type="submit" value="Save">
+            <button class='ui right floated blue button' type="submit" value="Update">Сохранить</button>
         </form>
-        
     </div>
 </div>
 
 <script>
 
-$("#create_experiment").submit(function(event){
+$("#update_experiment").submit(function(event){
     event.preventDefault();
 
     var formData  = new FormData(this);
-    var createPostUrl = $("#create_experiment").attr('action');
+    var createPostUrl = $("#update_experiment").attr('action');
     $.ajax({
         method   : "POST",
         url      : createPostUrl,
