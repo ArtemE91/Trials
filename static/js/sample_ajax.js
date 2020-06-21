@@ -28,7 +28,6 @@ function ajax_post_modal(url_create, url_list, model){
         data: form,
         success: function(data)
         {
-            console.log($(data));
             let pk_object = data['pk']; // Primary key созданного объекта
             if (pk_object){
                 // Делаем видимым message что объект создан

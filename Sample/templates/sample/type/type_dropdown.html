@@ -9,7 +9,7 @@
             </select>
         </div>
         <div class="field">
-            <div class="ui button positive type">Создать</div>
+            <div class="ui button positive type" id="id_btn_create_type">Создать</div>
         </div>
     </div>
 </div>
@@ -23,7 +23,7 @@
   });
 
 
-  $('.ui.button.positive.type')
+  $('#id_btn_create_type')
         .click(function () {
             ajax_get_modal('{% url 'sample:type_create' %}',
             '{% url 'sample:type' %}', 'type');

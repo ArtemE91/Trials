@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form method="post" action="{% url 'sample:create' %}" class="ui form" style="margin-top: 55px;" enctype="multipart/form-data">
+<form method="post" action="{% url 'sample:create' %}" class="ui form" style="margin-top: 3%;" enctype="multipart/form-data">
 {% csrf_token %}
 
     <div class="ui orange segment" id="segment_create_sample">
@@ -114,7 +114,12 @@
                 </div>
             </div>
 
-            <div class="three fields">
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_description">Дополнительное описание</label>
+                    <textarea type="text" placeholder="" name="description" id="id_description"></textarea>
+                </div>
+
                 <div class="field">
                     <label for="id_image">Изображение образца</label>
                     <div class="ui action input">

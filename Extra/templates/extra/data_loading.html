@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Загрузка данных
+{% endblock %}
+
+{% block content %}
+    <div class="ui orange segment" style="margin-top: 3%;">
+    <form method="post" action="{% url 'extra:data_loading' %}" class="ui form" style="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class=" three fields">
+            <div class="field">
+                <label for="id_file">Файл</label>
+                <div class="ui action input">
+                    <input type="text" placeholder="Нажмите для выбора файла" readonly>
+                    <input type="file" name="file" id="id_file" style="display: none;">
+                    <div class="ui icon button">
+                        <i class="attach icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="ui button orange" >Загрузить</button>
+
+    </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    $("input:text").click(function() {
+    $(this).parent().find("input:file").click();
+    });
+
+$('input:file', '.ui.action.input')
+  .on('change', function(e) {
+    let name = e.target.files[0].name;
+    $('input:text', $(e.target).parent()).val(name);
+    });
+    </script>
+{% endblock %}
