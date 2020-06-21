@@ -24,6 +24,16 @@
         <button type="submit" class="ui button orange" >Загрузить</button>
     </form>
     </div>
+    {% if error %}
+        <div class="ui negative message visible">
+          <div class="header">
+            Файл для загрузки данных заполнен не верно!
+          </div>
+            <br>
+           <div class="ui text">{{ title }} {{ value }}</div>
+            <div class="ui text">Программное сообщение: {{ error }}</div>
+        </div>
+    {% endif %}
     {% if sample %}
         {% include 'extra/success_loading.html' %}
     {% endif %}
