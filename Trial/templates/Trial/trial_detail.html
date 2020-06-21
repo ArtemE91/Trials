@@ -114,6 +114,15 @@
         </div>
     </div>
 </div>
+<div class="ui orange segment">
+    <div class="ui small images">
+        {% for experiment in trials.experiments %}
+            {% if  experiment.image %}
+            <img src="{{  experiment.image.url  }}">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
 
 {% block scripts %}
