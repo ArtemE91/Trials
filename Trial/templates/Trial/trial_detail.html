@@ -60,6 +60,13 @@
                 <div class="thirteen wide column">{{ trials.sample }}</div>
             </div>
         </div>
+        <div class="content">
+            <div style="width:600px;height:500px">
+                {% if plot_div %}
+                    {{ plot_div|safe }}
+                {% endif %}
+            </div>
+        </div>
         <br>
         <form action="{% url 'trial:update' trials.pk %}">
             <button class="ui right floated button">Изменить</button>
@@ -76,15 +83,15 @@
                     <tr>
                         <th>Изменение массы за время испытания</th>
                         <th>Время испытания</th>
-                        <th>Изображение</th>
+                        <th>Потря массы</th>
                     </tr>
                 </thead>
                 <tbody id='experiments_table_body'>
-                    {% for experiment in trials.trials_values.all %}
+                    {% for experiment in trials.experiments %}
                     <tr id='{{ experiment.pk }}'>
                         <td>{{ experiment.change_weight }}</td>
                         <td>{{ experiment.time_trials }}</td>
-                        <td>{{ experiment.image }}</td>
+                        <td>{{ experiment.weight_loss }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
