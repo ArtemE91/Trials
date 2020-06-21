@@ -1,0 +1,74 @@
+<div class="ui orange segment" id="segment_table">
+    <h3 class="ui header">Добавленные образцы</h3>
+    <table class="ui celled striped table green compact" style="width:100%" id="id_sample_table_load">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Материал</th>
+            <th>Тип</th>
+            <th>Маркировка</th>
+            <th>Вес</th>
+            <th>Дата упрочнения</th>
+            <th>Способ упрочнения</th>
+            <th>Толщина покрытия</th>
+            <th>Твердость покрытия</th>
+            <th>Шероховатость поверхности</th>
+            <th>Состав покрытия</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for key, sample in sample.items %}
+                <tr id="tr_{{ sample.id }}">
+                    <td>{{ key }}</td>
+                    <td>{{ sample.sample_material}}</td>
+                    <td>{{ sample.sample_type}}</td>
+                    <td>{{ sample.marking }}</td>
+                    <td>{{ sample.weight }}</td>
+                    <td>{{ sample.date_proc_streng }}</td>
+                    <td>{{ sample.method }}</td>
+                    <td>{{ sample.depth_coating }}</td>
+                    <td>{{ sample.hardness_coating }}</td>
+                    <td>{{ sample.roughness }}</td>
+                    <td>{{ sample.struct_coating }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 class="ui header">Добавленные Испытания</h3>
+    <table class="ui celled striped table green compact" style="width:100%" id="id_sample_table_load">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Материал</th>
+            <th>Тип</th>
+            <th>Маркировка</th>
+            <th>Вес</th>
+            <th>Дата упрочнения</th>
+            <th>Способ упрочнения</th>
+            <th>Толщина покрытия</th>
+            <th>Твердость покрытия</th>
+            <th>Шероховатость поверхности</th>
+            <th>Состав покрытия</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for key, sample in sample.items %}
+                <tr id="tr_{{ sample.id }}">
+                    <td>{{ key }}</td>
+                    <td>{{ sample.sample_material}}</td>
+                    <td>{{ sample.sample_type}}</td>
+                    <td>{{ sample.marking }}</td>
+                    <td>{{ sample.weight }}</td>
+                    <td>{{ sample.date_proc_streng }}</td>
+                    <td>{{ sample.method }}</td>
+                    <td>{{ sample.depth_coating }}</td>
+                    <td>{{ sample.hardness_coating }}</td>
+                    <td>{{ sample.roughness }}</td>
+                    <td>{{ sample.struct_coating }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
