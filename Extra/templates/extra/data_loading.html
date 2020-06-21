@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="ui orange segment" style="margin-top: 3%;">
-    <form method="post" action="{% url 'extra:data_loading' %}" class="ui form" style="" enctype="multipart/form-data">
+    <form id="id_form_loading_data" method="post" action="{% url 'extra:data_loading' %}" class="ui form" style="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class=" three fields">
             <div class="field">
@@ -22,13 +22,32 @@
         </div>
 
         <button type="submit" class="ui button orange" >Загрузить</button>
-
     </form>
     </div>
+    {% if sample %}
+        {% include 'extra/success_loading.html' %}
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
     <script>
+    $('.ui.form')
+    .form({
+        on: 'blur',
+        inline: true,
+        fields: {
+            file: {
+                identifier: 'file',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Выберете файл!'
+                    },
+                ]
+            },
+        }
+    });
+
     $("input:text").click(function() {
     $(this).parent().find("input:file").click();
     });
@@ -38,5 +57,6 @@ $('input:file', '.ui.action.input')
     let name = e.target.files[0].name;
     $('input:text', $(e.target).parent()).val(name);
     });
+
     </script>
 {% endblock %}
