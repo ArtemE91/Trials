@@ -71,6 +71,7 @@ class Sample(AbstractModel):
     weight = models.FloatField(blank=True, null=True)
     marking = models.CharField(max_length=255, blank=True, null=True)
     image = models.FileField(upload_to=sample_image_path, null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
 
     sample_material = models.ForeignKey(SampleMaterial, on_delete=models.CASCADE,
                                         blank=True, null=True, related_name='material')

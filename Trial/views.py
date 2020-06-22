@@ -1,9 +1,11 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-from Sample.models import Trials, ReceivedValues
-from .experiment_graph import figure
-from .form import TrialForm, TrialUpdateForm, ExperementForm
 from django.http import JsonResponse
 from django.db.models import F
+
+from .experiment_graph import figure
+from Sample.models import Trials, ReceivedValues
+from .form import TrialForm, TrialUpdateForm, ExperementForm
+from .filter_queryset import filter_queryset
 
 
 class AjaxableResponseMixin:
@@ -36,6 +38,31 @@ class TrialCreate(AjaxableResponseMixin, CreateView):
 class TrialList(ListView):
     model = Trials
     template_name = 'Trial/trials_list.html'
+    search_filter = {'date_trials': 'date_trials', 'organization': 'sample__organization',
+                     'marking': 'sample__marking', 'corner_collision': 'corner_collision',
+                     'method': 'sample__method', 'size_particle': 'size_particle',
+                     'speed_collision': 'speed_collision',
+                     'material_name': 'sample__sample_material__name',
+                     'material_type': 'sample__sample_material__type',
+                     'type': 'sample__sample_type__name'}
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        for key, value in self.search_filter.items():
+            context[key] = context['object_list'].order_by().values_list(value, flat=True).distinct()
+
+        return context
+
+
+class TrialTableListView(ListView):
+    model = Trials
+    template_name = 'trial/trial_table.html'
+    http_method_names = ['get', 'post']
+
+    def get_queryset(self):
+        queryset = filter_queryset(self.request.GET['search'])
+        return queryset
 
 
 class TrialDetail(DetailView):
@@ -106,6 +133,7 @@ class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
     model = ReceivedValues
     template_name = 'Experiment/ExperimentUpdate.html'
     fields = '__all__'
+
 
 class TrialGraph(DetailView):
     model = Trials
