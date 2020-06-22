@@ -1,10 +1,13 @@
 from django.urls import path
 from .views import (TrialCreate, TrialList, TrialDetail,
-                    TrialUpdate, TrialDelete, ExperimentCreate, TrialDetailTr,
-                    TrialModalDetail, ExperimentList, ExperimentDelete, ExperimentUpdate, TrialGraph)
+                    TrialUpdate, TrialDelete, ExperimentCreate,
+                    TrialDetailTr,TrialModalDetail, ExperimentList,
+                    ExperimentDelete, ExperimentUpdate, TrialGraph,
+                    TrialTableListView)
 
 app_name = 'trial'
 urlpatterns = [
+    path('table/', TrialTableListView.as_view(), name='table'),
     path('experiment/<int:pk>/delete/', ExperimentDelete.as_view(), name='delete_experiment'),
     path('experiment/<int:pk>/update/', ExperimentUpdate.as_view(), name='update_experiment'),
     path('<int:pk>/experement_list/', ExperimentList.as_view(), name='list_experiment'),

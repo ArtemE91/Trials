@@ -6,13 +6,13 @@
 
         <div class="fields three">
             <div class="field">
-                <label>Дата упрочнения</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="date_proc_streng">
+                <label>Дата испытаний</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="date_trials">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
                     <div class="default text">Выберите значение</div>
                     <div class="menu">
-                        {% for name in date_proc_streng %}
+                        {% for name in date_trials %}
                             {% if name %}
                                 <div class="item" data-value="{{ name|date:'Y-m-d' }}" data-text="{{ name }}">
                                     {{ name }}
@@ -24,13 +24,13 @@
             </div>
 
             <div class="field">
-                <label>Способ упрочнения</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="method">
+                <label>Маркировка образца</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="sample__marking">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
                     <div class="default text">Выберите значение</div>
                     <div class="menu">
-                        {% for name in method %}
+                        {% for name in marking %}
                             {% if name %}
                                 <div class="item" data-value="{{ name }}">
                                     {{ name }}
@@ -43,7 +43,7 @@
 
             <div class="field">
                 <label>Тип образца</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="sample_type__name">
+                <div class="ui fluid multiple search normal selection dropdown" name="sample__sample_type__name">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
                     <div class="default text">Выберите значение</div>
@@ -62,18 +62,18 @@
 
         <div class="fields three">
             <div class="field">
-                <label>Состав покрытия</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="struct_coating">
+                <label>Способ упрочнения</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="sample__method">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
-                    <div class="default text">Выберите значение</div>
+                    <div class="default text">Выберете значение</div>
                     <div class="menu">
-                        {% for name in struct_coating %}
+                        {% for name in method %}
                             {% if name %}
-                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                <div class="item" data-value="{{ name }}">
                                     {{ name }}
                                 </div>
-                            {% endif %}
+                             {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -81,10 +81,10 @@
 
             <div class="field">
                 <label>Организация, выполняющая упрочнение</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="organization">
+                <div class="ui fluid multiple search normal selection dropdown" name="sample__organization">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
-                    <div class="default text">Выберите значение</div>
+                    <div class="default text">Выберете значение</div>
                     <div class="menu">
                         {% for name in organization %}
                             {% if name %}
@@ -101,7 +101,7 @@
                 <label>Материал образца</label>
                 <div class="two fields">
                     <div class="field">
-                        <div class="ui fluid multiple search normal selection dropdown" name="sample_material__name">
+                        <div class="ui fluid multiple search normal selection dropdown" name="sample__sample_material__name">
                             <input type="hidden">
                             <i class="dropdown icon"></i>
                             <div class="default text">Имя</div>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="ui fluid multiple search normal selection dropdown" name="sample_material__type">
+                        <div class="ui fluid multiple search normal selection dropdown" name="sample__sample_material__type">
                             <input type="hidden">
                             <i class="dropdown icon"></i>
                             <div class="default text">Тип</div>
@@ -138,13 +138,49 @@
 
         <div class="fields three">
             <div class="field">
-                <label>Маркировка образца</label>
-                <div class="ui fluid multiple search normal selection dropdown" name="marking">
+                <label>Угол соударения</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="corner_collision">
                     <input type="hidden">
                     <i class="dropdown icon"></i>
                     <div class="default text">Выберите значение</div>
                     <div class="menu">
-                        {% for name in marking %}
+                        {% for name in corner_collision %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Размер частиц</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="size_particle">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in size_particle %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Скорость соударения</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="speed_collision">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in speed_collision %}
                             {% if name %}
                                 <div class="item" data-value="{{ name }}" data-text="{{ name }}">
                                     {{ name }}
@@ -192,7 +228,7 @@
 
     const search_list = {};
 
-    const dimmer = $('<div class="ui active inverted dimmer" id="id_dimmer_sample">' +
+    const dimmer = $('<div class="ui active inverted dimmer" id="id_dimmer_trial">' +
         '<div class="ui active green inline slow text loader">' +
         'Загрузка</div></div>')
 
@@ -208,12 +244,12 @@
     function ajax_get_table(){
         $.ajax({
                   type: "GET",
-                  url: "/sample/table",
+                  url: "/trial/table",
                   data: {
                       'search': JSON.stringify(search_list),
                   },
                   success: function(msg){
-                      $("#segment_table").replaceWith(msg);
+                      $("#segment_trials_table").replaceWith(msg);
                       {# Выставляю в пришедщей таблице checked на элементы которые были выбраны до этого #}
                       if (select_sample) {
                           for (let i in select_sample) {
@@ -228,7 +264,7 @@
     $('.ui.normal.dropdown')
       .dropdown({
           onChange: function(value, text, $selectedItem) {
-              $('#segment_table').append(dimmer);
+              $('#segment_trials_table').append(dimmer);
               const name_dropdown = $(this).closest('.ui.normal.dropdown').attr('name');
               {# Записываю выбранный элемент в список для поиска если элемент удален то удаляю его из списка #}
               search_list[name_dropdown + '__in'] = value.split(',');

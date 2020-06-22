@@ -9,12 +9,12 @@
         <div class="field">
             <div class="two fields">
                 <div class="field">
-                    <label for="id_method">Способ</label>
+                    <label for="id_method">Cпособ упрочнения / нанесения покрытия</label>
                       <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method">
                 </div>
 
                 <div class="field">
-                    <label for="id_exp_param">Параметры</label>
+                    <label for="id_exp_param">Параметры упрочнения / нанесения покрытия</label>
                     <div class="ui input">
                       <input type="text" placeholder="Параметры упрочнения" name="exp_param" id="id_exp_param"
                       >
@@ -24,7 +24,7 @@
 
             <div class="two fields">
                 <div class="field">
-                    <label for="id_depth_coating">Толщина</label>
+                    <label for="id_depth_coating">Толщина покрытия / глубина упрочнения, [мкм]</label>
                     <div class="ui input">
                       <input type="text" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
                       >
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="id_hardness_coating">Твердость</label>
+                    <label for="id_hardness_coating">Твердость подложки, [HB]</label>
                     <div class="ui input">
                       <input placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
                       >
@@ -90,7 +90,7 @@
         <div class="field">
             <div class="two fields">
                 <div class="field">
-                    <label for="id_roughness">Шероховатость поверхности</label>
+                    <label for="id_roughness">Шероховатость поверхности после модификации, [мкм]</label>
                     <div class="ui input">
                       <input placeholder="Шероховатость поверхности" name="roughness" id="id_roughness"
                       >
@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="id_sub_hardness">Твердость подложки</label>
+                    <label for="id_sub_hardness">Твердость подложки, [HB]</label>
                     <div class="ui input">
                       <input placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness"
                       >
@@ -174,15 +174,6 @@ $('.ui.form')
         on: 'blur',
         inline : true,
         fields: {
-            method: {
-                identifier: 'method',
-                rules: [
-                    {
-                        type: 'empty',
-                        prompt: 'Обязательное поле для заполнения!'
-                    },
-                ]
-            },
             depth_coating: {
                 identifier: 'depth_coating',
                 rules: [
@@ -266,7 +257,7 @@ $('#id_btn_add')
         if (!isNaN(weight_i)) {
             weight_list.push(weight_i);
             $('#id_weight_all').val(weight_list);
-            $('#id_weight').val((weight_list.reduce((a, b) => parseInt(a) + parseInt(b)) / weight_list.length));
+            $('#id_weight').val((weight_list.reduce((a, b) => parseFloat(a) + parseFloat(b)) / weight_list.length).toFixed(5));
             $('#id_weight_i').val('');
         }
     });

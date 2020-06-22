@@ -64,10 +64,6 @@ class SampleDetail(AjaxableResponseMixin, DetailView):
     model = Sample
     template_name = 'sample/sample_detail.html'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
 
 class SampleCreate(AjaxableResponseMixin, CreateView):
     form_class = SampleForm
@@ -78,7 +74,7 @@ class SampleCreate(AjaxableResponseMixin, CreateView):
 class SampleUpdateView(UpdateView):
     form_class = SampleForm
     template_name = "sample/sample_update.html"
-    success_url = reverse_lazy('sample:create')
+    success_url = reverse_lazy('sample:')
 
     def get_object(self, queryset=None):
         return Sample.objects.get(id=self.kwargs['pk'])

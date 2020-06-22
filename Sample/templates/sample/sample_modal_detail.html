@@ -62,40 +62,50 @@
                 </div>
                 {% endif %}
 
+                {% if sample.date_proc_streng %}
                 <div class="item">
                     <div class="ui grid column">
                         <div class="five wide column">Дата процесса упрочнения, [м д,г]:</div>
                         <div class="eleven wide column">{{ sample.date_proc_streng }}</div>
                     </div>
                 </div>
+                {% endif %}
 
+                {% if sample.weight %}
                 <div class="item">
                     <div class="ui grid column">
                         <div class="five wide column">Первоначальная масса, [г]:</div>
                         <div class="eleven wide column">{{ sample.weight }}</div>
                     </div>
                 </div>
+                {% endif %}
 
+                {% if sample.roughness %}
                 <div class="item">
                     <div class="ui grid column">
                         <div class="five wide column">Шероховатость поверхности, [мкм]:</div>
                         <div class="eleven wide column">{{ sample.roughness }}</div>
                     </div>
                 </div>
+                {% endif %}
 
+                {% if sample.sub_hardness %}
                 <div class="item">
                     <div class="ui grid column">
                         <div class="five wide column">Твердость подложки, [HB]:</div>
                         <div class="eleven wide column">{{ sample.sub_hardness }}</div>
                     </div>
                 </div>
+                {% endif %}
 
+                {% if sample.organization %}
                 <div class="item">
                     <div class="ui grid column">
                         <div class="five wide column">Организация которая провела упрочнение:</div>
                         <div class="eleven wide column">{{ sample.organization }}</div>
                     </div>
                 </div>
+                {% endif %}
 
                 <div class="item">
                     <div class="ui grid column">

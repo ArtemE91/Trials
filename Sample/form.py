@@ -10,10 +10,10 @@ class SampleForm(forms.ModelForm):
         model = Sample
         fields = ['method', 'exp_param', 'date_proc_streng', 'depth_coating', 'roughness',
                   'hardness_coating', 'struct_coating', 'sub_hardness', 'organization',
-                  'weight', 'marking', 'sample_material', 'sample_type']
+                  'weight', 'marking', 'sample_material', 'sample_type', 'description', 'image']
         labels = {
             'method': 'Cпособ упрочнения / нанесения покрытия',
-            'exp_param': 'Параметры упрочнения (воздействие было) / нанесения покрытия',
+            'exp_param': 'Параметры упрочнения / нанесения покрытия',
             'date_proc_streng': 'Дата процесса',
             'depth_coating': 'Толщина покрытия / глубина упрочнения, [мкм]',
             'roughness': 'Шероховатость поверхности после модификации, [мкм]',
@@ -24,7 +24,8 @@ class SampleForm(forms.ModelForm):
             'weight': 'Первоначальная масса, [г]',
             'marking': 'Маркировка',
             'sample_material': 'Материал',
-            'sample_type': 'Тип'
+            'sample_type': 'Тип',
+            'description': 'Дополнительное описание'
         }
 
     def __init__(self, *args, **kwargs):
