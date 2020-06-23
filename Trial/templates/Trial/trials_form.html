@@ -5,62 +5,73 @@
 {% csrf_token %}
     <div class="ui orange segment" id="segment_create_trial">
         <h3 class="ui dividing header">Создание испытания</h3>
-        <div class="two fields">
+        <div class="three fields">
             <div class="field">
-                {{ form.size_particle.label_tag }}
-                {{ form.size_particle }}
+                <label for="id_size_particle">{{ form.size_particle.label_tag }}</label>
+                <input type="text" placeholder="Введите данные" name="size_particle" id="id_size_particle">
             </div>
             <div class="field">
-                {{ form.speed_collision.label_tag }}
-                {{ form.speed_collision }}
+                <label for="id_speed_collision">{{ form.speed_collision.label_tag }}</label>
+                <input type="text" placeholder="Введите данные" name="speed_collision" id="id_speed_collision">
+            </div>
+            <div class="field">
+                <label for="id_corner_collision">{{ form.corner_collision.label_tag }}</label>
+                <input type="text" placeholder="Введите данные" name="corner_collision" id="id_corner_collision">
             </div>
         </div>
         <div class="two fields">
             <div class="field">
-                {{ form.add_param.label_tag }}
-                {{ form.add_param }}
+                <label for="id_type_particle">{{ form.type_particle.label_tag }}</label>
+                <input type="text" placeholder="Введите данные" name="type_particle" id="id_type_particle">
             </div>
             <div class="field">
-                {{ form.corner_collision.label_tag }}
-                {{ form.corner_collision }}
-            </div>        
+                <label for="id_add_param">{{ form.add_param.label_tag }}</label>
+                <input type="text" placeholder="Введите данные" name="add_param" id="id_add_param">
+            </div>
         </div>
         <div class="two fields">
             <div class="field">
-                {{ form.date_trials.label_tag  }}
+                <label for="id_date_trials">{{ form.date_trials.label_tag  }}</label>
                 <div class="ui calendar" id="rangestart">
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
-                        {{ form.date_trials  }}
+                        <input type="text" placeholder="Выберите дату" name="date_trials" id="id_date_trials">
                     </div>
                 </div>
             </div>
             <div class="field">
-                {{ form.date_end_trials.label_tag  }}
-                <div class='ui calendar' id='rangeend'>
+                <label for="id_date_end_trials">{{ form.date_end_trials.label_tag  }}</label>
+                <div class="ui calendar" id="rangeend">
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
-                        {{ form.date_end_trials }}
+                        <input type="text" placeholder="Выберите дату" name="date_end_trials" id="id_date_end_trials">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="two fields">
-            <div class="field">
-                {{ form.type_particle.label_tag }}
-                {{ form.type_particle }}
-            </div>
-            <div class="field">
-                {{ form.sample.label_tag  }}
-                <div class="ui action input">
-                    {{ form.sample }}
-                </div>
-            </div>
+
+        <div class="field">
+            {{ form.description.label_tag }}
+            {{ form.description }}
         </div>
-        <div class="two fields">
+
+        <div class="ui message info visible">
+            <div class="header">Информация по полю "Образец"</div>
+            <p>Если в поле <b>нет результатов</b> или <b>нет необходимого образца</b>,
+                нужно создать образец для которого данное испытание проводится!
+                <b><a href="{% url 'sample:create' %}">--Создать образец--</a></b>
+            </p>
+
+        </div>
+
+        <div class="three fields">
             <div class="field">
-                {{ form.description.label_tag }}
-                {{ form.description }}
+                <label>{{ form.sample.label_tag  }}</label>
+                    <select name="sample" class="ui fluid search dropdown" id="id_sample">
+                        {% for value in form.sample %}
+                            <option value="{{ value.id }}" id="id_sample_{{ value.id }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
             </div>
         </div>
         <button class='ui orange button' type="submit" value="Save">Сохранить</button>
@@ -70,6 +81,50 @@
 
 {% block scripts %}
 <script>
+
+$('.ui.form')
+    .form({
+        on: 'blur',
+        inline : true,
+        fields: {
+            size_particle: {
+                identifier: 'size_particle',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            speed_collision: {
+                identifier: 'speed_collision',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            corner_collision: {
+                identifier: 'corner_collision',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            sample: {
+                identifier: 'sample',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле! Выберите образец'
+                    },
+                ]
+            },
+        }
+    });
 
 $('#rangestart').calendar({
     type: 'date',
