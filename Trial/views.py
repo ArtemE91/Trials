@@ -72,15 +72,15 @@ class TrialDetail(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         sample_weight = self.object.sample.weight
-        weight_loss = [sample_weight-experiment.change_weight for experiment in self.object.trials_values.all()]
-        times = [experiment.time_trials for experiment in self.object.trials_values.all()]
+        weight_loss = [sample_weight-experiment.change_weight for experiment in context['trials'].experiments]
+        times = [experiment.time_trials for experiment in context['trials'].experiments]
         context['plot_div'] = figure(times, weight_loss)
         return context
 
     def get_object(self):
         trial = super(TrialDetail, self).get_object()
         trial.experiments = trial.trials_values.all().annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
-        trial.experiments = trial.experiments.order_by('-weight_loss')
+        trial.experiments = trial.experiments.order_by('time_trials')
         for e in trial.experiments:
             e.weight_loss = round(e.weight_loss, 5)
         return trial
