@@ -135,8 +135,14 @@ $('.ui.checkbox.all')
             type: 'GET',
             url: '/trial/detail/' + trial_id,
             success: function (response) {
-                $(response)
-                .modal('show');
+                let modal = $(response)
+                let grahUrl = "{% url 'trial:get_graph' 0 %}".replace(0, trial_id)
+                fetch(grahUrl)
+                  .then(response => response.text())
+                  .then(data => {
+                        modal.find('#id_graph').append(data);
+                        modal.modal('show');
+                    });
             }
         });
     }
