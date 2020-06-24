@@ -1,9 +1,9 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.http import JsonResponse
-from django.db.models import F
+from django.db.models import F, Q
 
 from .experiment_graph import figure
-from Sample.models import Trials, ReceivedValues
+from Sample.models import Trials, ReceivedValues, Sample
 from .form import TrialForm, TrialUpdateForm, ExperementForm
 from .filter_queryset import filter_queryset
 
@@ -96,11 +96,16 @@ class TrialDetailTr(AjaxableResponseMixin, DetailView):
     template_name = 'Trial/trial_detail_tr.html'
 
 
-class TrialUpdate(UpdateView):
+class TrialUpdate(AjaxableResponseMixin, UpdateView):
     model = Trials
     template_name = 'Trial/trial_update.html'
     fields = '__all__'
     success_url = '/trial/'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sample'] = Sample.objects.filter(Q(sample=None) | Q(id=context['trials'].sample.id))
+        return context
 
 
 class TrialDelete(DeleteView):

@@ -9,7 +9,7 @@ class TrialForm(forms.ModelForm):
                   'date_trials', 'date_end_trials', 'type_particle', 'description', 'sample']
         labels = {
             'size_particle': 'Размер частицы',
-            'speed_collision': 'Cкорость столкновения',
+            'speed_collision': 'Cкорость соударения',
             'add_param': 'Параметры',
             'corner_collision': 'Угол соударения',
             'date_trials': 'Дата начала испытаний',

@@ -4,7 +4,7 @@
         <div class="field">
             <select name="sample_material" class="ui fluid search dropdown" id="id_sample_material">
                 {% for value in material %}
-                    <option value="{{ value.id }}" id="id_item_material{{ value.id }}">{{ value }}</option>
+                    <option {% if value.id == sample.sample_material.id %}selected{% endif %} value="{{ value.id }}" id="id_item_material{{ value.id }}">{{ value }}</option>
                 {% endfor %}
             </select>
         </div>
