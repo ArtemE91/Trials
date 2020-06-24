@@ -5,73 +5,140 @@
 {% csrf_token %}
     <div class="ui orange segment" id="segment_create_trial">
         <h3 class="ui dividing header">Изменение испытания {{ trials.pk }}</h3>
-        <div class="two fields">
+
+        <div class="three fields">
             <div class="field">
-                {{ form.size_particle.label_tag }}
-                {{ form.size_particle }}
+                <label for="id_size_particle">Размер частицы</label>
+                <input type="text" placeholder="Введите данные" name="size_particle" id="id_size_particle"
+                value="{% if trials.size_particle.value %}{{ trials.size_particle.value }}{% endif %}">
             </div>
             <div class="field">
-                {{ form.speed_collision.label_tag }}
-                {{ form.speed_collision }}
+                <label for="id_speed_collision">Cкорость соударения</label>
+                <input type="text" placeholder="Введите данные" name="speed_collision" id="id_speed_collision"
+                value="{% if trials.speed_collision.value %}{{ trials.speed_collision.value }}{% endif %}">
+            </div>
+            <div class="field">
+                <label for="id_corner_collision">Угол соударения</label>
+                <input type="text" placeholder="Введите данные" name="corner_collision" id="id_corner_collision"
+                value="{% if trials.corner_collision.value %}{{ trials.corner_collision.value }}{% endif %}">
             </div>
         </div>
+
         <div class="two fields">
             <div class="field">
-                {{ form.add_param.label_tag }}
-                {{ form.add_param }}
+                <label for="id_type_particle">Тип частиц</label>
+                <input type="text" placeholder="Введите данные" name="type_particle" id="id_type_particle"
+                value="{% if trials.type_particle.value %}{{ trials.type_particle.value }}{% endif %}">
             </div>
             <div class="field">
-                {{ form.corner_collision.label_tag }}
-                {{ form.corner_collision }}
-            </div>        
+                <label for="id_add_param">Параметры</label>
+                <input type="text" placeholder="Введите данные" name="add_param" id="id_add_param"
+                value="{% if trials.add_param.value %}{{ trials.add_param.value }}{% endif %}">
+            </div>
         </div>
+
         <div class="two fields">
             <div class="field">
-                {{ form.date_trials.label_tag  }}
+                <label for="id_date_trials">Дата начала испытаний</label>
                 <div class="ui calendar" id="rangestart">
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
-                        {{ form.date_trials  }}
+                        <input type="text" placeholder="Выберите дату" name="date_trials" id="id_date_trials"
+                        value="{% if trials.date_trials.value %}{{ trials.date_trials.value }}{% endif %}">
                     </div>
                 </div>
             </div>
             <div class="field">
-                {{ form.date_end_trials.label_tag  }}
-                <div class='ui calendar' id='rangeend'>
+                <label for="id_date_end_trials">Дата окончания испытаний</label>
+                <div class="ui calendar" id="rangeend">
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
-                        {{ form.date_end_trials }}
+                        <input type="text" placeholder="Выберите дату" name="date_end_trials" id="id_date_end_trials"
+                        value="{% if trials.date_end_trials.value %}{{ trials.date_end_trials.value }}{% endif %}">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="two fields">
+
+        <div class="field">
+            <label for="id_description">Описание параметров работы стенда</label>
+            <textarea type="text" placeholder="" name="description" id="id_description">{% if trials.description.value %}{{ trials.description.value }}{% endif %}
+            </textarea>
+        </div>
+
+        <div class="three fields">
             <div class="field">
-                {{ form.type_particle.label_tag }}
-                {{ form.type_particle }}
+                <label>Образец</label>
+                <select name="sample" class="ui fluid search dropdown" id="id_sample">
+                    {% for value in sample %}
+                        <option {% if value.id == trials.sample.id %}selected{% endif %} value="{{ value.id }}" id="id_sample_{{ value.id }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
             </div>
-            <div class="field">
-                {{ form.sample.label_tag  }}
-                <div class="ui action input">
-                    {{ form.sample }}
-                </div>
+            <div class="field" style="display: none;">
+                {{ form.author }}
             </div>
         </div>
-        <div class="two fields">
-            <div class="field">
-                {{ form.description.label_tag }}
-                {{ form.description }}
-            </div>
+
+    <div class="ui aligned grid">
+        <div class="right aligned sixteen wide column">
+            <button class='ui red button' formaction="{% url 'trial:delete' trials.pk %}" type="submit" value="DELETE">Удалить</button>
+            <button class='ui blue button' type="submit" value="Update">Сохранить</button>
         </div>
-        <br>
-        <button class='ui right floated blue button' type="submit" value="Update">Сохранить</button>
-        <button class='ui red button' formaction="{% url 'trial:delete' trials.pk %}" type="submit" value="DELETE">Удалить</button>
+    </div>
+
+
+
     </div>
 </form>
 {% endblock content %}
 
 {% block scripts %}
 <script>
+
+$('.ui.form')
+    .form({
+        on: 'blur',
+        inline : true,
+        fields: {
+            size_particle: {
+                identifier: 'size_particle',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            speed_collision: {
+                identifier: 'speed_collision',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            corner_collision: {
+                identifier: 'corner_collision',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            sample: {
+                identifier: 'sample',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле! Выберите образец'
+                    },
+                ]
+            },
+        }
+    });
 
 $('#rangestart').calendar({
     type: 'date',
