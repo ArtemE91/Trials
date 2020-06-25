@@ -201,6 +201,7 @@ $('#experiment_action_btn').click(function () { // создаю модально
         });
     }
     else if(btn_text === "Изменить"){
+        $('#id_experiment_modal').remove();
         show_update_experiment_modal(checked_experement_pk);
     }
     else if(btn_text === "Создать"){ // создаю модальное окно, с формой для создания эксперемента
@@ -222,7 +223,7 @@ function addRowHandlers() {
     var rows = table.getElementsByTagName("tr");
     for (i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
-        var createClickHandler = 
+        var createClickHandler =
             function(row){
                 return function() {
                     if (checked_experement_pk==row.id){

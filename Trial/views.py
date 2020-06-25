@@ -135,9 +135,11 @@ class ExperimentList(ListView):
 
 
 class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
-    model = ReceivedValues
+    form_class = ExperementForm
     template_name = 'Experiment/ExperimentUpdate.html'
-    fields = '__all__'
+
+    def get_object(self, queryset=None):
+        return ReceivedValues.objects.get(id=self.kwargs['pk'])
 
 
 class TrialGraph(DetailView):
