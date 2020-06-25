@@ -1,35 +1,162 @@
-<div class='ui modal'>
-    <div class='content'>
-        <form  class='ui form' action="{% url 'trial:update_experiment' receivedvalues.pk %}" method='post' id="update_experiment" enctype='multipart/form-data'>
-        {% csrf_token %}
-            {{ form.as_p }}
-            <button class='ui right floated blue button' type="submit" value="Update">Сохранить</button>
+{#<div class='ui modal'>#}
+{#    <div class='content'>#}
+{#        <form  class='ui form' action="{% url 'trial:update_experiment' receivedvalues.pk %}" method='post' id="update_experiment" enctype='multipart/form-data'>#}
+{#        {% csrf_token %}#}
+{#            {{ form.as_p }}#}
+{#            <button class='ui right floated blue button' type="submit" value="Update">Сохранить</button>#}
+{#        </form>#}
+{#    </div>#}
+{#</div>#}
+
+<div class="ui modal material" id="id_experiment_modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Обновить эксперимент
+    </div>
+    <div class="content">
+        <form  class='ui form' id="update_experiment" enctype='multipart/form-data'>
+            {% csrf_token %}
+            <div class="field">
+                <label for="id_change_weight">Изменение массы</label>
+                <input onkeyup="checkParams('id_change_weight')" type="text" name="change_weight" id="id_change_weight" placeholder="Введите данные"
+                value="{{ receivedvalues.change_weight }}">
+            </div>
+            <div class="field">
+                <label for="id_time_trials">Время эксперимента</label>
+                <input onkeyup="checkParams('id_time_trials')" type="text" name="time_trials" id="id_time_trials" placeholder="Введите данные"
+                value="{{ receivedvalues.time_trials }}">
+            </div>
+            <div class="two fields">
+                {% if receivedvalues.image %}
+                    <div class="field">
+                        <label for="id_image_old">Изображение образца после эксперимента:</label>
+                        <div class="media" id="id_image_old">
+                            <img class="ui medium image" src="{{ receivedvalues.image.url}}">
+                        </div>
+                    </div>
+                {% endif %}
+
+                    <div class="field">
+                        <label for="id_image">Загрузить новое изображение</label>
+                        <div class="ui action input">
+                            <input type="text" placeholder="Нажмите для выбора файла" readonly>
+                            <input type="file" name="image" id="id_image" style="display: none;">
+                            <div class="ui icon button">
+                                <i class="attach icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Отмена
+        </div>
+        <div class="ui positive right labeled icon button" id="id_btn_update_experiment">
+            Сохранить
+            <i class="checkmark icon"></i>
+        </div>
     </div>
 </div>
 
 <script>
 
-$("#update_experiment").submit(function(event){
-    event.preventDefault();
-
-    var formData  = new FormData(this);
-    var createPostUrl = $("#update_experiment").attr('action');
-    $.ajax({
-        method   : "POST",
-        url      : createPostUrl,
-        data     : formData,
-        processData:false,
-        contentType:false,
-        success  : function(data){
-            location.reload(true); 
-            //ajax_download_experement_table(); // 
-        },
-        error    : function(data){
-            console.log("ERROR:CH0x2 while fetching after creation form submit");
-            console.log("data :",data.status, data.statusText);
+$('.ui.form')
+    .form({
+        on: 'blur',
+        inline: true,
+        fields: {
+            change_weight: {
+                identifier: 'change_weight',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
+            time_trials: {
+                identifier: 'time_trials',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: 'Это числовая характеристика! Например: 0.234'
+                    },
+                ]
+            },
         }
     });
- });
+
+function isNumber(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+
+    function checkParams(id){
+        let name = $('#' + id).val();
+        if(name.length !== 0 && isNumber(name)){
+            $('#id_btn_save_experiment').attr('class', 'ui positive right labeled icon button');
+        } else {
+            $('#id_btn_save_experiment').attr('class', 'ui positive right labeled icon button disabled');
+        }
+    }
+
+$("input:text").click(function() {
+    $(this).parent().find("input:file").click();
+});
+
+$('input:file', '.ui.action.input')
+  .on('change', function(e) {
+    let name = e.target.files[0].name;
+    $('input:text', $(e.target).parent()).val(name);
+  });
+
+$("#id_btn_update_experiment")
+    .on('click', function () {
+        let form = $('#update_experiment').serialize() + '&trials={{ receivedvalues.trials.pk }}';
+        console.log(form);
+        $.ajax({
+            method: 'post',
+            url: '{% url 'trial:update_experiment' receivedvalues.pk %}',
+            data: form,
+            success: function () {
+                location.href = '{% url 'trial:detail' receivedvalues.trials.pk %}';
+            }
+        })
+    })
+
+{#$("#id_btn_update_experiment").submit(function(event){#}
+{#    event.preventDefault();#}
+{##}
+{#    var formData  = new FormData(this);#}
+{#    var createPostUrl = $("#update_experiment").attr('action');#}
+{#    $.ajax({#}
+{#        method   : "POST",#}
+{#        url      : createPostUrl,#}
+{#        data     : formData,#}
+{#        processData:false,#}
+{#        contentType:false,#}
+{#        success  : function(data){#}
+{#            location.reload(true); #}
+{#            //ajax_download_experement_table(); // #}
+{#        },#}
+{#        error    : function(data){#}
+{#            console.log("ERROR:CH0x2 while fetching after creation form submit");#}
+{#            console.log("data :",data.status, data.statusText);#}
+{#        }#}
+{#    });#}
+{# });#}
+
+// ??? Здесь это нужно?
+{#$('#id_btn_save_experiment')#}
+{#    .on('click', function() {#}
+{#        $.ajax({#}
+{#            headers: { "X-CSRFToken": token },#}
+{#            url: "{% url 'trial:delete_experiment' 0 %}".replace(0, checked_experement_pk),#}
+{#            type: 'post',#}
+{#            success: function(data)#}
+{#            {#}
+{#                ajax_download_experement_table();#}
+{#            }#}
+{#        });#}
+{#    });#}
 
 </script>
