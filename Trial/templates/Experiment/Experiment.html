@@ -1,11 +1,18 @@
-    <div class="ui modal">
+<div class="ui modal" id="id_experiment_modal">
     <div class='content'>
-    <form method="post" class="ui form" action="{% url 'trial:create_experiment' %}" id="create_experiment" enctype="multipart/form-data">
+    <form method="post" class="ui form" id="create_experiment" enctype="multipart/form-data">
         {% csrf_token %}
             {{ form.as_p }}
-            <input class="ui button" type="submit" value="Save">
         </form>
-        
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Отмена
+        </div>
+        <div class="ui positive right labeled icon button" id="id_btn_create_experiment">
+            Сохранить
+            <i class="checkmark icon"></i>
+        </div>
     </div>
 </div>
 
@@ -15,7 +22,7 @@ $("#create_experiment").submit(function(event){
     event.preventDefault();
 
     var formData  = new FormData(this);
-    var createPostUrl = $("#create_experiment").attr('action');
+    var createPostUrl = "{% url 'trial:create_experiment' trial.pk %}";
     $.ajax({
         method   : "POST",
         url      : createPostUrl,
@@ -24,7 +31,6 @@ $("#create_experiment").submit(function(event){
         contentType:false,
         success  : function(data){
             location.reload(true); 
-            //ajax_download_experement_table(); // 
         },
         error    : function(data){
             console.log("ERROR:CH0x2 while fetching after creation form submit");
@@ -32,5 +38,19 @@ $("#create_experiment").submit(function(event){
         }
     });
  });
+
+ $("#id_btn_create_experiment")
+    .on('click', function () {
+        let form = $('#create_experiment').serialize();
+        console.log(form);
+        $.ajax({
+            method: 'post',
+            url: '{% url 'trial:create_experiment' trial.pk %}',
+            data: form,
+            success: function () {
+                location.href = '{% url 'trial:detail' trial.pk %}';
+            }
+        })
+    });
 
 </script>
