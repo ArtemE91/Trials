@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.shortcuts import redirect, render
@@ -20,16 +20,16 @@ class AjaxableResponseMixin:
             return response
 
     def form_valid(self, form):
-        instanse = form.save(commit=False)
-        instanse.author = self.request.user
-        instanse.save()
+        instance = form.save(commit=False)
+        instance.author = self.request.user
+        instance.save()
         if self.request.is_ajax():
             data = {
-                'pk': instanse.pk,
+                'pk': instance.pk,
             }
             return JsonResponse(data, status=200)
         else:
-            return super().form_valid(form)
+            return HttpResponseRedirect(instance.get_absolute_url())
 
 
 # _______________SAMPLE_______________________

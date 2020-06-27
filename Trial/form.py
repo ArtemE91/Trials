@@ -32,13 +32,20 @@ class TrialUpdateForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ExperementForm(forms.ModelForm):
+class ExperementUpdateForm(forms.ModelForm):
     class Meta:
         model = ReceivedValues
         fields = ['change_weight', 'time_trials', 'image']
+
+
+class ExperimentCreateForm(forms.ModelForm):
+    class Meta:
+        model = ReceivedValues
+        fields = ['change_weight', 'time_trials', 'image']
+
         labels = {
             'change_weight': 'Масса после испытания',
             'time_trials': 'Время испытания',
             'image': 'Изображение образца',
-            'trials': 'Угол соударения',
-            }
+        }
+

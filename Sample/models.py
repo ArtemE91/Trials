@@ -116,6 +116,9 @@ class Trials(AbstractModel):
     class Meta:
         db_table = 'trials'
 
+    def get_absolute_url(self):
+        return reverse('trial:detail', kwargs={'pk': self.pk})
+
 
 class ReceivedValues(AbstractModel):
     def experement_image_path(self, filename):

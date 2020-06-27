@@ -83,9 +83,9 @@ function isNumber(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
     function checkParams(id){
         let name = $('#' + id).val();
         if(name.length !== 0 && isNumber(name)){
-            $('#id_btn_save_experiment').attr('class', 'ui positive right labeled icon button');
+            $('#id_btn_update_experiment').attr('class', 'ui positive right labeled icon button');
         } else {
-            $('#id_btn_save_experiment').attr('class', 'ui positive right labeled icon button disabled');
+            $('#id_btn_update_experiment').attr('class', 'ui positive right labeled icon button disabled');
         }
     }
 
@@ -100,18 +100,20 @@ $('input:file', '.ui.action.input')
   });
 
 $("#id_btn_update_experiment")
-    .on('click', function () {
-        let form = $('#update_experiment').serialize() + '&trials={{ receivedvalues.trials.pk }}';
-        console.log(form);
+    .on('click', function (e) {
+        let form = new FormData( $("#update_experiment")[0] )
         $.ajax({
             method: 'post',
             url: '{% url 'trial:update_experiment' receivedvalues.pk %}',
             data: form,
+            processData: false,
+            contentType: false,
             success: function () {
                 location.href = '{% url 'trial:detail' receivedvalues.trials.pk %}';
-            }
+            },
         })
-    })
+        e.preventDefault();
+    });
 
 {#$("#id_btn_update_experiment").submit(function(event){#}
 {#    event.preventDefault();#}
