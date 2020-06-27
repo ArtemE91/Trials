@@ -83,9 +83,9 @@ function isNumber(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
     function checkParams(id){
         let name = $('#' + id).val();
         if(name.length !== 0 && isNumber(name)){
-            $('#id_btn_save_experiment').attr('class', 'ui positive right labeled icon button');
+            $('#id_btn_update_experiment').attr('class', 'ui positive right labeled icon button');
         } else {
-            $('#id_btn_save_experiment').attr('class', 'ui positive right labeled icon button disabled');
+            $('#id_btn_update_experiment').attr('class', 'ui positive right labeled icon button disabled');
         }
     }
 

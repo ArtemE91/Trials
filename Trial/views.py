@@ -1,10 +1,10 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import F, Q
 
 from .experiment_graph import figure
 from Sample.models import Trials, ReceivedValues, Sample
-from .form import TrialForm, TrialUpdateForm, ExperementForm
+from .form import TrialForm, TrialUpdateForm, ExperementUpdateForm, ExperimentCreateForm
 from .filter_queryset import filter_queryset
 
 
@@ -17,16 +17,16 @@ class AjaxableResponseMixin:
             return response
 
     def form_valid(self, form):
-        instanse = form.save(commit=False)
-        instanse.author = self.request.user
-        instanse.save()
+        instance = form.save(commit=False)
+        instance.author = self.request.user
+        instance.save()
         if self.request.is_ajax():
             data = {
-                'pk': instanse.pk,
+                'pk': instance.pk,
             }
             return JsonResponse(data, status=200)
         else:
-            return super().form_valid(form)
+            return HttpResponseRedirect(instance.get_absolute_url())
 
 
 class TrialCreate(AjaxableResponseMixin, CreateView):
@@ -114,23 +114,19 @@ class TrialDelete(DeleteView):
 
 
 class ExperimentCreate(AjaxableResponseMixin, CreateView):
-    form_class = ExperementForm
+    form_class = ExperimentCreateForm
     template_name = 'Experiment/Experiment.html'
 
     def get_context_data(self, **kwargs):
-        ctx = super(ExperimentCreate, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         trial = Trials.objects.get(pk=self.kwargs['pk'])
         ctx['trial'] = trial
         return ctx
 
-
-    def get_form_kwargs(self):
-        kwargs = super(AjaxableResponseMixin, self).get_form_kwargs()
-        if self.request.method in ('POST', 'PUT'):
-            kwargs['initial'].update({
-                'trials': Trials.objects.get(pk=self.kwargs['pk'])
-            })
-        return kwargs
+    def get_form(self, **kwargs):
+        form = super().get_form()
+        form.instance.trials = Trials.objects.get(pk=self.kwargs['pk'])
+        return form
 
 
 class ExperimentDelete(AjaxableResponseMixin, DeleteView):
@@ -150,7 +146,7 @@ class ExperimentList(ListView):
 
 
 class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
-    form_class = ExperementForm
+    form_class = ExperementUpdateForm
     template_name = 'Experiment/ExperimentUpdate.html'
 
     def get_object(self, queryset=None):
