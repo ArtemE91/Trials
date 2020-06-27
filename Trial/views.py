@@ -117,6 +117,21 @@ class ExperimentCreate(AjaxableResponseMixin, CreateView):
     form_class = ExperementForm
     template_name = 'Experiment/Experiment.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super(ExperimentCreate, self).get_context_data(**kwargs)
+        trial = Trials.objects.get(pk=self.kwargs['pk'])
+        ctx['trial'] = trial
+        return ctx
+
+
+    def get_form_kwargs(self):
+        kwargs = super(AjaxableResponseMixin, self).get_form_kwargs()
+        if self.request.method in ('POST', 'PUT'):
+            kwargs['initial'].update({
+                'trials': Trials.objects.get(pk=self.kwargs['pk'])
+            })
+        return kwargs
+
 
 class ExperimentDelete(AjaxableResponseMixin, DeleteView):
     model = ReceivedValues

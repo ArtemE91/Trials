@@ -118,12 +118,3 @@
     </div>
 </div>
 
-{% block scripts %}
-            <script>
-            fetch('/trial/8/get_graph')
-              .then(response => response.text())
-              .then(data => {
-                $('#id_graph').html(data);
-              });
-            </script>
-{% endblock scripts %}
