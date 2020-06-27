@@ -35,4 +35,4 @@ class TrialUpdateForm(forms.ModelForm):
 class ExperementForm(forms.ModelForm):
     class Meta:
         model = ReceivedValues
-        fields = ['change_weight', 'time_trials', 'image', 'trials']
+        fields = ['change_weight', 'time_trials', 'image']

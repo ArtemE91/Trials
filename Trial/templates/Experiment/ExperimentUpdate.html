@@ -110,18 +110,20 @@ $('input:file', '.ui.action.input')
   });
 
 $("#id_btn_update_experiment")
-    .on('click', function () {
-        let form = $('#update_experiment').serialize() + '&trials={{ receivedvalues.trials.pk }}';
-        console.log(form);
+    .on('click', function (e) {
+        let form = new FormData( $("#update_experiment")[0] )
         $.ajax({
             method: 'post',
             url: '{% url 'trial:update_experiment' receivedvalues.pk %}',
             data: form,
+            processData: false,
+            contentType: false,
             success: function () {
                 location.href = '{% url 'trial:detail' receivedvalues.trials.pk %}';
-            }
+            },
         })
-    })
+        e.preventDefault();
+    });
 
 {#$("#id_btn_update_experiment").submit(function(event){#}
 {#    event.preventDefault();#}
