@@ -1,35 +1,10 @@
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.db.models import Q
-from django.shortcuts import redirect, render
 
 from .models import Sample, SampleType, SampleMaterial
-from .filter_queryset import filter_queryset
 from .form import SampleForm, MaterialForm, TypeForm
-
-from .plotly_sample import figure
-
-
-class AjaxableResponseMixin:
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        if self.request.is_ajax():
-            return JsonResponse(form.errors, status=400)
-        else:
-            return response
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.author = self.request.user
-        instance.save()
-        if self.request.is_ajax():
-            data = {
-                'pk': instance.pk,
-            }
-            return JsonResponse(data, status=200)
-        else:
-            return HttpResponseRedirect(instance.get_absolute_url())
+from services.mixin import AjaxableResponseMixin
+from services.filter_queryset import FilterQueryset
 
 
 # _______________SAMPLE_______________________
@@ -37,16 +12,17 @@ class AjaxableResponseMixin:
 class SampleList(ListView):
     model = Sample
     template_name = 'sample/sample.html'
-    search_filter = ('method', 'date_proc_streng', 'struct_coating',
-                     'organization', 'marking')
+    search_filter = {'method': 'method', 'date_proc_streng': 'date_proc_streng',
+                     'struct_coating': 'struct_coating', 'organization': 'organization',
+                     'marking': 'marking', 'material_name': 'sample_material__name',
+                     'material_type': 'sample_material__type', 'type': 'sample_type__name'}
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        for value in self.search_filter:
-            context[value] = context['object_list'].order_by().values_list(value, flat=True).distinct()
-        context['material_name'] = context['object_list'].order_by().values_list('sample_material__name', flat=True).distinct()
-        context['material_type'] = context['object_list'].order_by().values_list('sample_material__type', flat=True).distinct()
-        context['type'] = context['object_list'].order_by().values_list('sample_type__name', flat=True).distinct()
+
+        for key, value in self.search_filter.items():
+            context[key] = context['object_list'].order_by().values_list(value, flat=True).distinct()
+
         return context
 
 
@@ -56,7 +32,8 @@ class SampleTableListView(ListView):
     http_method_names = ['get', 'post']
 
     def get_queryset(self):
-        queryset = filter_queryset(self.request.GET['search'])
+        date_filter = FilterQueryset(self.request.GET['search'], 'sample')
+        queryset = date_filter.filter()
         return queryset
 
 
