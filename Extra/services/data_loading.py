@@ -4,7 +4,8 @@ import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from Sample.models import Sample, SampleMaterial, SampleType, Trials, ReceivedValues
+from Sample.models import Sample, SampleMaterial, SampleType
+from Trial.models import Trials, ReceivedValues
 
 
 class DataLoading:

@@ -1,7 +1,8 @@
 import json
 import datetime
 
-from Sample.models import Sample, Trials
+from Sample.models import Sample
+from Trial.models import Trials
 
 
 class FilterQueryset:

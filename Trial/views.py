@@ -2,7 +2,7 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from django.db.models import F, Q
 
 from .experiment_graph import figure
-from Sample.models import Trials, ReceivedValues, Sample
+from .models import Trials, ReceivedValues, Sample
 from .form import TrialForm, TrialUpdateForm, ExperementUpdateForm, ExperimentCreateForm
 from services.mixin import AjaxableResponseMixin
 from services.filter_queryset import FilterQueryset

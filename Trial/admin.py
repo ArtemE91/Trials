@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Trials, ReceivedValues
 
-# Register your models here.
+admin.site.register(Trials)
+admin.site.register(ReceivedValues)
+

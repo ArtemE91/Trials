@@ -22,7 +22,6 @@ class SampleType(AbstractModel):
     def __str__(self):
         return f'{self.name}'
 
-    # Добавил для AjaxableResponseMixin, для реализции DetailView необходиму возращать url элемента
     @staticmethod
     def get_absolute_url():
         return reverse('sample:type_table')
@@ -97,44 +96,3 @@ class Sample(AbstractModel):
         if self.marking:
             label += f'_{self.marking}'
         return label
-
-
-class Trials(AbstractModel):
-    """Информация по испытанию"""
-    size_particle = models.IntegerField(blank=True, null=True, verbose_name='Размер частиц')
-    speed_collision = models.IntegerField(blank=True, null=True, verbose_name='Скорость соударения')
-    add_param = models.CharField(max_length=255, blank=True, null=True, verbose_name='Дополнительные параметры частицы')
-    corner_collision = models.IntegerField(blank=True, null=True, verbose_name='Угол соударения ')
-    date_trials = models.DateField(blank=True, null=True, verbose_name='Дата проведения испытания')
-    date_end_trials = models.DateField(blank=True, null=True, verbose_name='Время окончания испытания')
-    type_particle = models.CharField(max_length=255, blank=True, null=True, verbose_name='Тип частицы')
-    description = models.TextField(blank=True, null=True)
-
-    sample = models.OneToOneField(Sample, blank=True, null=True, on_delete=models.CASCADE, related_name='sample')
-
-    class Meta:
-        db_table = 'trials'
-
-    def get_absolute_url(self):
-        return reverse('trial:detail', kwargs={'pk': self.pk})
-
-
-class ReceivedValues(AbstractModel):
-    """Информация по эксперементу"""
-    def experement_image_path(self, filename):
-        return f"experement/trial_{self.trials.id}/{filename}"
-
-    change_weight = models.FloatField(verbose_name='Масса образца после эксперимента', default=0)
-    time_trials = models.IntegerField(verbose_name='Длительность эксперимента', default=0)
-    image = models.FileField(upload_to=experement_image_path, null=True, blank=True,
-                             verbose_name='Изображение образца после эксперимента')
-
-    trials = models.ForeignKey(Trials, on_delete=models.CASCADE,
-                               blank=True, null=True, related_name="trials_values")
-
-    class Meta:
-        db_table = 'received_values'
-
-    @staticmethod
-    def get_absolute_url():
-        return reverse('trial:list')
