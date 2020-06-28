@@ -3,10 +3,6 @@ import datetime
 
 from .models import Sample
 
-'''Выбираем все не пустые фильтры'''
-'''Приводим к необходимому формату для запроса в бд'''
-'''Первый фильтр делает запрос в бд остальные фильтруют пришедший queryset'''
-
 
 def filter_queryset(data):
     value_dict = {key: name for key, name in json.loads(data).items()}
