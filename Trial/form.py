@@ -1,5 +1,5 @@
 from django import forms
-from Sample.models import Trials, Sample, ReceivedValues
+from .models import Trials, Sample, ReceivedValues
 
 
 class TrialForm(forms.ModelForm):
