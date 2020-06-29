@@ -21,6 +21,10 @@
                     <i class="exclamation icon"></i>
                     Детально
                 </button>
+                <button class="ui button disabled" id="id_btn_compare_graphs" style="display: none;">
+                    <i class="chart line icon"></i>
+                    Сравнить
+                </button>
             </div>
         </div>
         <div class="ui visible info message" id="id_message_table_select">
@@ -65,12 +69,14 @@ const check_sample = []; // Выбранные элементы в таблиц�
 function show_select_table() {
     if (select_sample.length > 0){
         $('#id_btn_detail_sample').removeAttr('style');
+        $('#id_btn_compare_graphs').removeAttr('style');
         $('#sample_table_select').removeAttr('hidden');
         $('#id_message_table_select').attr('style', 'display: none');
 
     }
     else {
         $('#id_btn_detail_sample').attr('style', 'display: none');
+        $('#id_btn_compare_graphs').attr('style', 'display: none');
         $('#sample_table_select').attr('hidden', 'display: none');
         $('#id_message_table_select').removeAttr('style');
     }
@@ -112,6 +118,13 @@ $('#id_btn_detail_sample')
         }
 
     })
+
+
+$('#id_btn_compare_graphs')
+    .on('click', function() {
+        let query_params = jQuery.param({'samples': check_sample});
+        document.location="{% url 'trial:compare_graphs' %}?"+query_params;
+    });
 
 $('.ui.checkbox.all')
     .checkbox({

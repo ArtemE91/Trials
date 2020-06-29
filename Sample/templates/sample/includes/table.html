@@ -73,6 +73,13 @@
                      else{
                          $('#id_btn_detail_sample').attr('class', 'ui button disabled');
                      }
+                     // Eсли выбрано несколько элементов делаем активной кнопку сравнения графиков
+                     if (check_sample.length > 1){
+                         $('#id_btn_compare_graphs').attr('class', 'ui button');
+                     }
+                     else {
+                         $('#id_btn_compare_graphs').attr('class', 'ui button disabled');
+                     }
                 });
                  // Вставляем в таблицу sample_table_select sample_detail_tr.html
                 $('#sample_table_select > tbody:last-child').append(line_table);

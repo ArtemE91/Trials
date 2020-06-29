@@ -1,8 +1,9 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import F, Q
+from django.shortcuts import render
 
-from .experiment_graph import figure
+from .experiment_graph import figure, multigraf
 from Sample.models import Trials, ReceivedValues, Sample
 from .form import TrialForm, TrialUpdateForm, ExperementUpdateForm, ExperimentCreateForm
 from .filter_queryset import filter_queryset
@@ -160,7 +161,23 @@ class TrialGraph(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         sample_weight = self.object.sample.weight
-        weight_loss = [sample_weight-experiment.change_weight for experiment in self.object.trials_values.all()]
-        times = [experiment.time_trials for experiment in self.object.trials_values.all()]
+        related_experiments = self.object.trials_values.all().order_by('time_trials')
+        weight_loss = [sample_weight-experiment.change_weight for experiment in related_experiments]
+        times = [experiment.time_trials for experiment in related_experiments]
         context['plot_div'] = figure(times, weight_loss)
         return context
+
+
+def compare_graphs(request):
+    sample_ids = request.GET.getlist('samples[]')
+    samples = Sample.objects.filter(pk__in=sample_ids)
+    related_trials = [sample.sample for sample in samples if hasattr(sample, 'sample')]
+    coordinates = []
+    for trial in related_trials:
+        related_experiments = trial.trials_values.all().order_by('time_trials')
+        weight_loss = [trial.sample.weight-experiment.change_weight for experiment in related_experiments]
+        times = [experiment.time_trials for experiment in related_experiments]
+        graph_name = 'Испытание:' + str(trial.sample)
+        coordinates.append((times, weight_loss, graph_name))
+    graph = multigraf(coordinates)
+    return render(request, 'Experiment/CompareGraphs.html', {'plot_div': graph})
