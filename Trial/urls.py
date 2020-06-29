@@ -3,7 +3,7 @@ from .views import (TrialCreate, TrialList, TrialDetail,
                     TrialUpdate, TrialDelete, ExperimentCreate,
                     TrialDetailTr,TrialModalDetail, ExperimentList,
                     ExperimentDelete, ExperimentUpdate, TrialGraph,
-                    TrialTableListView)
+                    TrialTableListView, compare_graphs)
 
 app_name = 'trial'
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     path('<int:pk>/experement_list/', ExperimentList.as_view(), name='list_experiment'),
     path('<int:pk>/delete/', TrialDelete.as_view(), name='delete'),
     path('<int:pk>/get_graph/', TrialGraph.as_view(), name='get_graph'),
+    path('copmpare_graphs/', compare_graphs, name='compare_graphs'),
     path('<int:pk>/update/', TrialUpdate.as_view(), name='update'),
     path('<int:pk>/', TrialDetail.as_view(), name='detail'),
     path('detail/tr/<int:pk>/', TrialDetailTr.as_view(), name='detail_tr'),

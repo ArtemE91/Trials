@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div style='margin-top: 55px;'></div>
+        {% if plot_div %}
+            {{ plot_div|safe }}
+        {% endif %}
+</div>
+{% endblock %}
