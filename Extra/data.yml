@@ -13,7 +13,7 @@
 #sample:
 #    method:
 #    exp_param:
-#    date_proc_streng:
+#    date_proc_streng: YYYY-mm-dd
 #    depth_coating:
 #    roughness:
 #    hardness_coating:
@@ -22,6 +22,7 @@
 #    organization:
 #    weight:
 #    marking:
+#    image:
 #    material_id:
 #    type_id:
 #-----------------------------------
@@ -30,8 +31,8 @@
 #  speed_collision:
 #  add_param:
 #  corner_collision:
-#  date_trials:
-#  date_end_trials:
+#  date_trials: YYYY-mm-dd
+#  date_end_trials: YYYY-mm-dd
 #  type_particle:
 #  description:
 #  sample_id:
@@ -39,6 +40,7 @@
 #received_values:
 #  change_weight:
 #  time_trials:
+#  image:
 #  trials_id:
 
 sample_type:
@@ -56,6 +58,8 @@ sample:
     roughness: 0.2
     sub_hardness: 250
     weight: 14.1736
+    image: 'Sample_1.png'
+    date_proc_streng: '2020-05-03'
     sample_material_id: 1
     sample_type_id: 1
   2:
@@ -63,6 +67,8 @@ sample:
     sub_hardness: 250
     weight: 14.42878
     marking: '79Х17'
+    image: 'Sample_2.png'
+    date_proc_streng: '2020-05-03'
     sample_material_id: 1
     sample_type_id: 1
 
@@ -73,6 +79,8 @@ trials:
     add_param: 'монодисперсный поток, вода (конденсат), расстояние между каплями – 500 мкм'
     type_particle: 'капля воды'
     description: 'давление в камере стенда – 5 кПа, частота генератора сигналов – 2 кГц, частота по двигателю – 165 Гц, частота вращения – 5200 об/мин'
+    date_trials: '2020-05-03'
+    date_end_trials: '2020-05-04'
     sample_id: 1
   2:
     size_particle: 500
@@ -87,10 +95,12 @@ received_values:
   1:
     change_weight: 14.17272
     time_trials: 20
+    image: 'exp_1_1.png'
     trials_id: 1
   2:
     change_weight: 14.17272
     time_trials: 30
+    image: 'exp_1_2.png'
     trials_id: 1
   3:
     change_weight: 14.17272
@@ -99,6 +109,7 @@ received_values:
   4:
     change_weight: 14.17192
     time_trials: 50
+    image: 'exp_1_4.png'
     trials_id: 1
   5:
     change_weight: 14.16936

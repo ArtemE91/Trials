@@ -12,9 +12,19 @@
             <div class="field">
                 <label for="id_file">Файл</label>
                 <div class="ui action input">
-                    <input type="text" placeholder="Нажмите для выбора файла" readonly>
+                    <input type="text" id="id_input_file" placeholder="Нажмите для выбора файла" readonly>
                     <input type="file" name="file" id="id_file" style="display: none;">
-                    <div class="ui icon button">
+                    <div class="ui icon button" id="id_btn_file">
+                        <i class="attach icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label for="id_image">Изображения</label>
+                <div class="ui action input">
+                    <input type="text" id="id_input_image" placeholder="Нажмите для выбора файла" readonly>
+                    <input type="file" name="image" id="id_image" style="display: none;" multiple>
+                    <div class="ui icon button" id="id_btn_image" data-content="Add users to your feed">
                         <i class="attach icon"></i>
                     </div>
                 </div>
@@ -58,15 +68,34 @@
         }
     });
 
-    $("input:text").click(function() {
-    $(this).parent().find("input:file").click();
+    $("#id_input_file").click(function() {
+        $(this).parent().find($("#id_file")).click();
     });
 
-$('input:file', '.ui.action.input')
+    $("#id_btn_file").click(function() {
+        $(this).parent().find($("#id_file")).click();
+    });
+
+
+$('#id_file')
   .on('change', function(e) {
     let name = e.target.files[0].name;
     $('input:text', $(e.target).parent()).val(name);
     });
 
+    $("#id_input_image").click(function() {
+        $(this).parent().find($("#id_image")).click();
+    });
+
+    $("#id_btn_image").click(function() {
+        $(this).parent().find($("#id_image")).click();
+    });
+
+
+$('#id_image')
+  .on('change', function(e) {
+      let col = e.target.files.length;
+      $('input:text', $(e.target).parent()).val('Количество добавленных файлов: ' + col);
+  });
     </script>
 {% endblock %}

@@ -1,33 +1,12 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import F, Q
 from django.shortcuts import render
 
 from .experiment_graph import figure, multigraf
-from Sample.models import Trials, ReceivedValues, Sample
-from .form import TrialForm, TrialUpdateForm, ExperementUpdateForm, ExperimentCreateForm
-from .filter_queryset import filter_queryset
-
-
-class AjaxableResponseMixin:
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        if self.request.is_ajax():
-            return JsonResponse(form.errors, status=400)
-        else:
-            return response
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.author = self.request.user
-        instance.save()
-        if self.request.is_ajax():
-            data = {
-                'pk': instance.pk,
-            }
-            return JsonResponse(data, status=200)
-        else:
-            return HttpResponseRedirect(instance.get_absolute_url())
+from .models import Trials, ReceivedValues, Sample
+from .form import TrialForm, ExperementUpdateForm, ExperimentCreateForm
+from services.mixin import AjaxableResponseMixin
+from services.filter_queryset import FilterQueryset
 
 
 class TrialCreate(AjaxableResponseMixin, CreateView):
@@ -62,7 +41,8 @@ class TrialTableListView(ListView):
     http_method_names = ['get', 'post']
 
     def get_queryset(self):
-        queryset = filter_queryset(self.request.GET['search'])
+        date_filter = FilterQueryset(self.request.GET['search'], 'trials')
+        queryset = date_filter.filter()
         return queryset
 
 

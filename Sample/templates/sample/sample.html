@@ -170,7 +170,6 @@ $('.ui.checkbox.all')
     }
 
     function ajax_get_graph(trial_id, sample_id){
-        // Реализовать проверку если trial_id отсутствует
         $.ajax({
             type: 'GET',
             url: '/trial/' + trial_id + '/get_graph',
@@ -185,6 +184,7 @@ $('.ui.checkbox.all')
             type: 'GET',
             url: '/sample/detail/' + sample_id,
             success: function (response) {
+                $('#id_sample_modal').remove(); // Удаляем модальное окно из кеша
                 let modal = $(response);
                 modal.find('#id_graph').append(graph);
                 modal.modal('show');
