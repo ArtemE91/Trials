@@ -4,8 +4,29 @@
     Загрузка данных
 {% endblock %}
 
+{% block style %}
+<style>
+    p {
+        font-size: 105%;
+    }
+    span {
+        font-size: 105%;
+        margin-left: 10px;
+    }
+
+</style>
+{% endblock %}
+
 {% block content %}
     <div class="ui orange segment" style="margin-top: 3%;">
+    <div class="ui message info">
+        <div class="header">Загрузка данных</div>
+        <p>Для загрузки данных ознакомтесь с инструкцией!
+            <a href="{% url 'extra:info_fill_config' %}">
+                <b><span>Перейти к инструкции</span></b>
+            </a>
+        </p>
+    </div>
     <form id="id_form_loading_data" method="post" action="{% url 'extra:data_loading' %}" class="ui form" style="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class=" three fields">

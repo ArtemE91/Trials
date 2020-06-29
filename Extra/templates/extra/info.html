@@ -1,0 +1,679 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Sample
+{% endblock %}
+
+{% block style %}
+<style>
+    p {
+        font-size: 115%;
+    }
+    span {
+        font-size: 110%;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="ui orange segment" style="margin-top: 3%;">
+        <h2 class="ui dividing header">Синтаксис файла для загрузки данных на сервер</h2>
+        <p>Для загрузки данных на сервер необходимо описать конфигурационный файл YAML
+            (выбирается в поле "Файл") и если есть изображения (выбираются в поле "Изображения").</p>
+        <h3 class="ui dividing header">Основы YAML</h3>
+        <p>Для передачи серверу данных мы используем конфигурационный файл в формате YAML.</p>
+        <p>Наш конфигурационный файл YAML состоит из словарей. Посмотрим как писать словари в YAML. Словарь представляется в виде
+            <span class="ui green text"><b>ключ:</b></span> <span class="ui blue text"><b>значение</b></span> (двоеточие должно сопровождаться пробелом).</p>
+        <p>В файле можно оставлять комментарии  поставив знак  <b><span class="ui grey text medium"><i>#</i></span></b>.
+            Все что будет на строке после данного знака является комментарием и при обработке файла не учитывается. </p>
+
+        <div class="ui message">
+            <span class="ui grey text medium"><i># Запись одного образца</i></span>
+            <br>
+            <span class="ui green text">sample:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">roughness:</span>
+            <span class="ui blue text" style="margin-left: 5px;">0.2</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.1736</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">"sample.png"</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">date_proc_streng:</span>
+            <span class="ui teal text" style="margin-left: 5px;">"2020-05-03"</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_material_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_type_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+        </div>
+
+        <h3 class="ui dividing header">Блоки</h3>
+        <p>Файл конфигурации состоит из 5 блоков. Все блоки <b>обязательны</b> для заполнения.</p>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название блока</th>
+            <th>Описание</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>sample_type</td>
+              <td>Тип образца</td>
+            </tr>
+            <tr>
+              <td>sample_material</td>
+              <td>Материал из которого изготовлен образец</td>
+            </tr>
+            <tr>
+              <td>sample</td>
+              <td>Информация по образцу</td>
+            </tr>
+            <tr>
+              <td>trials</td>
+              <td>Информация по испытанию</td>
+            </tr>
+            <tr>
+              <td>received_values</td>
+              <td>Информация по эксперементу</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Ниже блока вводится id объекта. Ниже id вводятся названия аттрибутов и их значения.
+            В примере ниже мы зададим 2 объекта для
+        блока sample.</p>
+
+        <div class="ui message">
+            <span class="ui green text">sample:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:
+                <span class="ui grey text medium"><i># sample_id = 1</i></span>
+            </span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">method</span>
+            <span class="ui teal text" style="margin-left: 5px;">"азотирование"</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.1736</span>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">2:
+                <span class="ui grey text medium"><i># sample_id = 2</i></span>
+            </span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.276</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">"sample.png"</span>
+        </div>
+
+        <h3 class="ui dividing header">Тип данных аттрибута</h3>
+        <p>Каждый аттрибут имеет свой тип данных.</p>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название типа</th>
+            <th>Правило заполнения</th>
+            <th>Пример</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>строка</td>
+              <td>Пишется в кавычках " "</td>
+              <td>"азотирование"</td>
+            </tr>
+            <tr>
+              <td>целое число</td>
+              <td>Пишется без кавычек</td>
+              <td>60</td>
+            </tr>
+            <tr>
+              <td>число с плавающей точкой</td>
+              <td>Пишется без кавычек. Разделитель целого - точка.</td>
+              <td>14.234</td>
+            </tr>
+            <tr>
+              <td>дата</td>
+              <td>Пишется в кавычках. Формат записи - ГГГГ-мм-дд</td>
+              <td>"2018-03-27"</td>
+            </tr>
+            <tr>
+              <td>картинка</td>
+              <td>Пишется в кавычках. Указать имя файла. Имена файлов не должны совпадать.</td>
+              <td>"sample_1.png"</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 class="ui dividing header">Аттрибуты</h3>
+        <b><p>sample_type</p></b>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название аттрибута</th>
+            <th>Тип</th>
+            <th>Описание</th>
+            <th>Обязательный</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>name</td>
+              <td>строка</td>
+              <td>Название типа образца</td>
+              <td class="green">Да</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <b><p>sample_material</p></b>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название аттрибута</th>
+            <th>Тип</th>
+            <th>Описание</th>
+            <th>Обязательный</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>name</td>
+              <td>строка</td>
+              <td>Материал из которого изготовлен образец</td>
+              <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>строка</td>
+              <td>Тип материала</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>description</td>
+              <td>строка</td>
+              <td>Дополнительное описание</td>
+              <td class="red">Нет</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <b><p>sample</p></b>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название аттрибута</th>
+            <th>Тип</th>
+            <th>Описание</th>
+            <th>Обязательный</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>method</td>
+              <td>строка</td>
+              <td>Способ упрочнения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>exp_param</td>
+              <td>строка</td>
+              <td>Параметры упрочнения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>date_proc_streng</td>
+              <td>дата</td>
+              <td>Дата процесса упрочнения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>depth_coating</td>
+              <td>число с плавающей точкой</td>
+              <td>Толщина упрочнения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>roughness</td>
+              <td>число с плавающей точкой</td>
+              <td>Шероховатость поверхности</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>hardness_coating</td>
+              <td>число с плавающей точкой</td>
+              <td>Твердость упрочнения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>struct_coating</td>
+              <td>строка</td>
+              <td>Состав покрытия</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>sub_hardness</td>
+              <td>число с плавающей точкой</td>
+              <td>Твердость подложки</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>organization</td>
+              <td>строка</td>
+              <td>Организация, которая провела упрочнение</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>weight</td>
+              <td>строка</td>
+              <td>Первоначальная масса образца</td>
+              <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>weight</td>
+              <td>число с плавающей точкой</td>
+              <td>Первоначальная масса образца</td>
+              <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>marking</td>
+              <td>строка</td>
+              <td>Маркировка образца</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>marking</td>
+              <td>строка</td>
+              <td>Маркировка образца</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>description</td>
+              <td>строка</td>
+              <td>Дополнительное описание</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>image</td>
+              <td>картинка</td>
+              <td>Внешний вид образца, начальный</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>material_id</td>
+              <td>число</td>
+              <td>id объекта из блока sample_material</td>
+              <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>type_id</td>
+              <td>число</td>
+              <td>id объекта из блока type_material</td>
+              <td class="green">Да</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <b><p>trials</p></b>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название аттрибута</th>
+            <th>Тип</th>
+            <th>Описание</th>
+            <th>Обязательный</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>size_particle</td>
+              <td>число</td>
+              <td>Размер частиц</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>speed_collision</td>
+              <td>число</td>
+              <td>Скорость соударения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>add_param</td>
+              <td>строка</td>
+              <td>Дополнительные параметры частицы</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>corner_collision</td>
+              <td>число</td>
+              <td>Угол соударения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>date_trials</td>
+              <td>дата</td>
+              <td>Дата проведения испытания</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>date_end_trials</td>
+              <td>дата</td>
+              <td>Время окончания испытания</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>type_particle</td>
+              <td>строка</td>
+              <td>Тип частицы</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>description</td>
+              <td>строка</td>
+              <td>Дополнительное описание</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>sample_id</td>
+              <td>число</td>
+              <td>id объекта из блока sample</td>
+              <td class="green">Да</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <b><p>received_values</p></b>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название аттрибута</th>
+            <th>Тип</th>
+            <th>Описание</th>
+            <th>Обязательный</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>change_weight</td>
+              <td>число с плавающей точкой</td>
+              <td>Масса образца после эксперимента</td>
+              <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>time_trials</td>
+              <td>число</td>
+              <td>Длительность эксперимента</td>
+              <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>image</td>
+              <td>картинка</td>
+              <td>Изображение образца после эксперимента</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>trials_id</td>
+              <td>число</td>
+              <td>id объекта из блока trials</td>
+              <td class="green">Да</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <h3 class="ui dividing header">Пример</h3>
+
+        <div class="ui message">
+
+            <span class="ui green text">sample_type:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">name:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'грибок'</span>
+            <br>
+            <br>
+
+
+            <span class="ui green text">sample_material:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">name:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'сталь'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">type:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'20Х13'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">description:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'Горячекатаный пруток, изготовление токарное, сталь по ГОСТ'</span>
+            <br>
+            <br>
+
+
+            <b><span class="ui green text">sample:</span></b>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">roughness:</span>
+            <span class="ui blue text" style="margin-left: 5px;">0.2</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sub_hardness:</span>
+            <span class="ui blue text" style="margin-left: 5px;">250</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.1736</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'Sample_1.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">date_proc_streng:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'2020-05-03'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_material_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_type_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">2:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">roughness:</span>
+            <span class="ui blue text" style="margin-left: 5px;">0.2</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sub_hardness:</span>
+            <span class="ui blue text" style="margin-left: 5px;">250</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.42878</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">marking:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'79Х17'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'Sample_2.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">date_proc_streng:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'2020-05-03'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_material_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_type_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+            <br>
+
+
+            <span class="ui green text">trials:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">size_particle:</span>
+            <span class="ui blue text" style="margin-left: 5px;">500</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">speed_collision:</span>
+            <span class="ui blue text" style="margin-left: 5px;">300</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">add_param:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'монодисперсный поток, вода (конденсат), расстояние между каплями – 500 мкм'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">type_particle:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'капля воды'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">description:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'давление в камере стенда – 5 кПа, частота генератора сигналов – 2 кГц, частота по двигателю – 165 Гц, частота вращения – 5200 об/мин'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">date_trials:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'2020-05-03'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">date_end_trials:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'2020-05-04'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">2:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">size_particle:</span>
+            <span class="ui blue text" style="margin-left: 5px;">500</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">speed_collision:</span>
+            <span class="ui blue text" style="margin-left: 5px;">300</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">add_param:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'монодисперсный поток, вода (конденсат), расстояние между каплями – 500 мкм'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">type_particle:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'капля воды'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">description:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'давление в камере стенда – 5 кПа, частота генератора сигналов – 2 кГц, частота по двигателю – 165 Гц, частота вращения – 5200 об/мин'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">sample_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">2</span>
+            <br>
+            <br>
+
+
+            <span class="ui green text">received_values:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.17272</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">20</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_1_1.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">2:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.17272</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">30</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_1_2.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">3:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.17272</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">40</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_1_3.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">4:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.17192</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">50</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_1_4.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">5:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.4282</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">20</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_2_1.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">2</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">6:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.4274</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">30</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_2_2.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">2</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">7:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.42662</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">40</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_2_3.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">2</span>
+            <br>
+
+            <span class="ui green text" style="margin-left: 15px;">7:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">change_weight:</span>
+            <span class="ui blue text" style="margin-left: 5px;">14.42416</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">time_trials:</span>
+            <span class="ui blue text" style="margin-left: 5px;">50</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">image:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'exp_2_4.png'</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">trials_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">2</span>
+            <br>
+
+        </div>
+    </div>
+{%  endblock %}
