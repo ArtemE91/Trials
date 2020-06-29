@@ -15,3 +15,9 @@ class DataLoadingTemplateView(TemplateView):
     def post(self, request, *args, **kwargs):
         context = data_loading.get_data_load_context(request)
         return render(request, self.template_name, context)
+
+
+class InfoFIllTemplateView(TemplateView):
+    """ Информация по заполнению yml конфига"""
+    http_method_names = ['get']
+    template_name = 'extra/info.html'
