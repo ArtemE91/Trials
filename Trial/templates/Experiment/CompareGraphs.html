@@ -8,6 +8,13 @@
 
         <div id="myPlot" style="width: 100%; height: 100%;">
         </div>
+
+        <div class="ui message" style="display: none;">
+            <div class="header" id="header_answer">
+            </div>
+            <div id="answer">
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -21,8 +28,9 @@
         title:'Выбранные эксперименты'
      };
 
+    var list_trace = []
+
 function forming_data(data){
-    let list_trace = []
     for (let name_trace in data){
         let trace = {type: 'scatter'}
         trace['name'] = name_trace;
@@ -36,7 +44,41 @@ function forming_data(data){
         }
         list_trace.push(trace)
     }
-    return list_trace;
+}
+
+function point_comparison(standard_point){
+    // Перебираем элементы и получаем y в точке x_standard_point только не эталоных элементов
+    // Затем производим расчеты по полученным y с y_standard_point
+    let answer = {'header': '', 'body': ''}
+    let y_other_point = {}
+    for (let trace of list_trace){
+       if(trace['name'] !== standard_point.data['name']){
+           y_other_point[trace['name']] = trace['y'][trace['x'].indexOf(standard_point['x'])]
+       }
+    }
+
+    answer['header'] = 'За эталон выбран образец ' + standard_point.data['name'] +
+        ', Время = ' + standard_point['x'] + '\n'
+
+    for (let name_trace in y_other_point){
+        let y_ratio = (standard_point['y']/y_other_point[name_trace]).toFixed(2);
+        let line = 'Стойкость образца ' + name_trace
+        if (y_ratio > 1){
+            line += ' лучше на ' + Math.round((y_ratio - 1) * 100) + '%'
+        } else if (y_ratio === 1) {
+            line += ' равна стойкости эталонного образца'
+        } else {
+            line += ' хуже на ' + Math.round((1 - y_ratio) * 100) + '%'
+        }
+        answer['body'] += line + '<br>'
+    }
+    return answer;
+}
+
+function show_message(message){
+    $('#header_answer').text(message['header']);
+    $('#answer').html(message['body']);
+    $('.ui.message').attr('style', '');
 }
 
     function ajax_get_list_graph(){
@@ -48,11 +90,17 @@ function forming_data(data){
             type: 'GET',
             url: "{% url 'trial:compare_graphs_list' %}?"+query_params,
             success: function (response) {
-                let list_trace = forming_data(response);
+                forming_data(response);
                 Plotly.newPlot(myPlot, list_trace, layout)
+                myPlot.on('plotly_click', function(data){
+                   let answer = point_comparison(data.points[0]);
+                   show_message(answer);
+                });
             }
         })
     }
+
     ajax_get_list_graph();
+
     </script>
 {% endblock %}
