@@ -1,9 +1,58 @@
 {% extends 'index.html' %}
-{% block content %}
 
-<div style='margin-top: 55px;'></div>
-        {% if plot_div %}
-            {{ plot_div|safe }}
-        {% endif %}
-</div>
+{% block content %}
+    <div class="ui orange segment" style='margin-top: 55px;'>
+
+        <input disabled id="sample_ids" style="display: none"
+               value="{% for id in sample_ids %}{{ id }} {% endfor %}">
+
+        <div id="myPlot" style="width: 100%; height: 100%;">
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+
+
+    var myPlot = document.getElementById("myPlot"),
+        layout = {
+        hovermode:'closest',
+        title:'Выбранные эксперименты'
+     };
+
+function forming_data(data){
+    let list_trace = []
+    for (let name_trace in data){
+        let trace = {type: 'scatter'}
+        trace['name'] = name_trace;
+        for (let name_field in data[name_trace]){
+            if (name_field === 'weight'){
+                trace['y'] = data[name_trace][name_field]
+            }
+            if (name_field === 'times'){
+                trace['x'] = data[name_trace][name_field]
+            }
+        }
+        list_trace.push(trace)
+    }
+    return list_trace;
+}
+
+    function ajax_get_list_graph(){
+        let ids = $('#sample_ids').val().split(" ");
+        $('#sample_ids').remove();
+        ids.splice(ids.length - 1);
+        let query_params = jQuery.param({'samples': ids});
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'trial:compare_graphs_list' %}?"+query_params,
+            success: function (response) {
+                let list_trace = forming_data(response);
+                Plotly.newPlot(myPlot, list_trace, layout)
+            }
+        })
+    }
+    ajax_get_list_graph();
+    </script>
 {% endblock %}

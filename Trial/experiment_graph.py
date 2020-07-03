@@ -11,12 +11,13 @@ def multigraf(coordinates):
             name=c[2],
             mode='lines+markers',
         ))
+
     figure.update_layout(
         xaxis_title="Изменение времени, мин",
         yaxis_title="Изменение массы, г",
-        title='Сравнение испытаний'
+        title='Сравнение испытаний',
     )
-    plt_div = figure.to_html(config=config,)
+    plt_div = figure.to_html(config=config, )
     return plt_div
 
 
