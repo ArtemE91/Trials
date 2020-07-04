@@ -17,7 +17,7 @@
                 <h3 class="ui header">Таблица выбранных образцов</h3>
             </div>
             <div class="ten wide column">
-                <button class="ui button disabled" id="id_btn_detail_sample"  style="display: none;">
+                <button class="ui button disabled" id="id_btn_detail"  style="display: none;">
                     <i class="exclamation icon"></i>
                     Детально
                 </button>
@@ -62,112 +62,9 @@
 
 {% block scripts %}
 <script>
+click_btn('sample_table_select', "{% url 'trial:compare_graphs' %}?");
+click_all_checkbox('sample_table_select');
 
-const select_sample = []; // Выбранные элементы в таблице sample_table
-const check_sample = []; // Выбранные элементы в таблице sample_table_select
-
-function show_select_table() {
-    if (select_sample.length > 0){
-        $('#id_btn_detail_sample').removeAttr('style');
-        $('#id_btn_compare_graphs').removeAttr('style');
-        $('#sample_table_select').removeAttr('hidden');
-        $('#id_message_table_select').attr('style', 'display: none');
-
-    }
-    else {
-        $('#id_btn_detail_sample').attr('style', 'display: none');
-        $('#id_btn_compare_graphs').attr('style', 'display: none');
-        $('#sample_table_select').attr('hidden', 'display: none');
-        $('#id_message_table_select').removeAttr('style');
-    }
-}
-
-
-// Функция для подсвечивания выбранной строки
-function check_select_tr(action, sample_id){
-    if (action === 'check') {
-        $('#tr_select_' + sample_id).attr('class', 'green');
-        $('#select_checkbox_' + sample_id).checkbox('set checked');
-        check_sample.push(sample_id);
-    }
-    else {
-        $('#tr_select_' + sample_id).removeAttr('class');
-        $('#select_checkbox_' + sample_id).checkbox('set unchecked');
-        check_sample.splice(check_sample.indexOf(sample_id), 1);
-    }
-}
-
-// Функция сравнения массивов, возращает элементы которых нет во 2 массиве
-function diff(a1, a2) {
-    return a1.filter(i=>!a2.includes(i))
-    .concat(a2.filter(i=>!a1.includes(i)))
-}
-
-// Обработка checkbox в шапке таблицы sample_table_select
-$('#id_btn_detail_sample')
-    .on('click', function () {
-        $('#id_segment_select_table').append(dimmer);
-        let trial_id = $('#tr_select_' + check_sample[0]).attr('name').slice('id_trials_'.length);
-        if (trial_id){
-            ajax_get_graph(trial_id, check_sample[0]);
-        }else {
-            let message = $('<div class="ui message info visible">\n' +
-                '        <div class="ui text">У данного образца нет испытаний!</div>\n' +
-                '    </div>')
-            ajax_get_detail_sample(check_sample[0], message);
-        }
-
-    })
-
-
-$('#id_btn_compare_graphs')
-    .on('click', function() {
-        let query_params = jQuery.param({'samples': check_sample});
-        document.location="{% url 'trial:compare_graphs' %}?"+query_params;
-    });
-
-$('.ui.checkbox.all')
-    .checkbox({
-        onChecked: function(){
-            // Если выбранных элементов sample_table_select нет то делаем их все активными
-            if (check_sample.length === 0) {
-                for (let sample_id of select_sample) {
-                    check_select_tr('check', sample_id);
-                }
-            }
-            else { // Делаем активными только те которые еще не были выбраны
-                let uncheck_sample = diff(select_sample, check_sample);
-                for (let sample_id of uncheck_sample) {
-                    check_select_tr('check', sample_id);
-                }
-            }
-        },
-        // Будет активным только если все элементы в таблице sample_table_select выбраны
-        onUnchecked: function(){
-            // Убираем подсветку всем выбранным элементам
-            if (check_sample.length === select_sample.length) {
-                for (let sample_id of select_sample) {
-                    check_select_tr('uncheck', sample_id);
-                }
-            }
-        }
-    })
-
-    // Функция проверяет был ли это элемент уже выбран
-    function check_select_sample(id){
-        const index = check_sample.indexOf(id);
-        return index <= -1;
-    }
-
-    function change_select_sample(id){
-        const index = select_sample.indexOf(id);
-        if (index > -1){
-            select_sample.splice(index, 1);
-        }
-        else{
-            select_sample.push(id);
-        }
-    }
 
     function ajax_get_graph(trial_id, sample_id){
         $.ajax({
@@ -188,7 +85,7 @@ $('.ui.checkbox.all')
                 let modal = $(response);
                 modal.find('#id_graph').append(graph);
                 modal.modal('show');
-                $('#id_dimmer_sample').remove()
+                $('#id_dimmer').remove()
             }
         });
     }

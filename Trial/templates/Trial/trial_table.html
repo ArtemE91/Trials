@@ -33,7 +33,12 @@
   </table>
 </div>
 
+{% load static %}
+
+<script src="{% static 'js/table_click.js' %}"></script>
+
 <script>
+
     {# https://datatables.net/ - Примеры таблиц #}
     $(document).ready(function() {
         $('#trial_table').DataTable({
