@@ -1,13 +1,13 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
 from django.db.models import F, Q
 from django.shortcuts import render
-import json
 from django.http import JsonResponse
 
 from .experiment_graph import figure, multigraf
 from .models import Trials, ReceivedValues, Sample
 from .form import TrialForm, ExperementUpdateForm, ExperimentCreateForm
 from services.mixin import AjaxableResponseMixin
+from services.list_coordinate import get_list_coordinate
 from services.filter_queryset import FilterQueryset
 
 
@@ -161,13 +161,5 @@ class CompareGraphsTemplate(TemplateView):
 class AjaxCompareGraphs(TemplateView):
     def get(self, request, *args, **kwargs):
         sample_ids = request.GET.getlist('samples[]')
-        samples = Sample.objects.filter(pk__in=sample_ids)
-        related_trials = [sample.sample for sample in samples if hasattr(sample, 'sample')]
-        coordinates = {}
-
-        for trial in related_trials:
-            related_experiments = trial.trials_values.all().order_by('time_trials')
-            weight_loss = [round(trial.sample.weight - experiment.change_weight, 5) for experiment in related_experiments]
-            times = [experiment.time_trials for experiment in related_experiments]
-            coordinates[str(trial.sample)] = {'times': times, 'weight': weight_loss}
+        coordinates = get_list_coordinate(sample_ids)
         return JsonResponse(coordinates, status=200)
