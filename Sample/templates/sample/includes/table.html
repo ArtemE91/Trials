@@ -1,9 +1,9 @@
 <div class="ui orange segment" id="segment_table">
     <h3 class="ui header">Таблица образцов</h3>
     <div class="ui visible info message">
-            <p>Выберите необходимые образцы нажав кнопку "Выбрать"!</p>
+            <p>Выберите необходимые образцы нажав на строку!</p>
     </div>
-        <table class="ui celled striped table green compact" style="width:100%" id="sample_table">
+        <table class="ui celled striped table green compact selectable" style="width:100%" id="sample_table">
             <thead>
             <tr>
                 <th>Материал</th>
@@ -11,7 +11,6 @@
                 <th>Организация</th>
                 <th>Дата упрочнения</th>
                 <th>Состав покрытия</th>
-                <th>Выбрать</th>
             </tr>
             </thead>
             <tbody>
@@ -22,19 +21,19 @@
                     <td>{{ sample.organization }}</td>
                     <td>{{ sample.date_proc_streng }}</td>
                     <td>{{ sample.struct_coating }}</td>
-                    <td class="collapsing">
-                        <div class="ui toggle checkbox" id="{{ sample.id }}">
-                          <input type="checkbox">
-                          <label></label>
-                        </div>
-                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
 </div>
 
+{% load static %}
+
+<script src="{% static 'js/table_click.js' %}"></script>
+
 <script>
+
+    click_table('sample');
 
     {# https://datatables.net/ - Примеры таблиц #}
     $(document).ready(function() {
@@ -43,84 +42,5 @@
         });
     });
 
-    function ajax_get_detail_tr(sample_id){
-        $.ajax({
-            url: '/sample/detail/tr/' + sample_id,
-            type: 'get',
-            success: function (response) {
-                // Получаем sample_detail в виде строки таблицы
-                let line_table = $(response).clone();
-                 line_table.bind('click', function(){ // Обработчик checkbox строк в таблице sample_table_select
-                     if (check_select_sample(sample_id)) { // Проверяем выбран ли элемент
-                         check_select_tr('check', sample_id); // Если нет то подсвечиваем
-                     }
-                     else {
-                          // Если да то убираем цвет и ставим checkbox - uncheck
-                         check_select_tr('uncheck', sample_id);
-                     }
-                     // Если выбранны все строки то выставляем checkbox_all_select - checked
-                     if (check_sample.length === select_sample.length){
-                         $('#id_checkbox_all_select').checkbox('set checked');
-                     }
-                     else {
-                         $('#id_checkbox_all_select').checkbox('set unchecked');
-                     }
-                     // Делаем активной кнопку для просмотра детальной информации
-                     // по Sample только если выбран один элемент
-                     if (check_sample.length === 1){
-                         $('#id_btn_detail_sample').attr('class', 'ui button');
-                     }
-                     else{
-                         $('#id_btn_detail_sample').attr('class', 'ui button disabled');
-                     }
-                     // Eсли выбрано несколько элементов делаем активной кнопку сравнения графиков
-                     if (check_sample.length > 1){
-                         $('#id_btn_compare_graphs').attr('class', 'ui button');
-                     }
-                     else {
-                         $('#id_btn_compare_graphs').attr('class', 'ui button disabled');
-                     }
-                });
-                 // Вставляем в таблицу sample_table_select sample_detail_tr.html
-                $('#sample_table_select > tbody:last-child').append(line_table);
-                // Записываем в массив id выбранного элемента
-                select_sample.push(sample_id);
-                show_select_table();
-                $('#id_dimmer_sample').remove();
-            }
-        });
-    }
-
-    $(' .ui.toggle.checkbox')
-        .checkbox({
-            onChecked: function(){
-                $('#id_segment_select_table').append(dimmer);
-                let id_sample = $(this).closest('.checkbox').attr('id'); // Получаем id объекта
-                ajax_get_detail_tr(id_sample);
-                $('#id_checkbox_all_select').checkbox('set unchecked');
-            },
-            onUnchecked: function(){ // При отмене checbox в таблице sample_table удаляем что добавляли
-                let id_sample = $(this).closest('.checkbox').attr('id');
-                $('#sample_table_select').find('#tr_select_' + id_sample ).remove();
-                select_sample.splice(select_sample.indexOf(id_sample), 1);
-                // При удалении из select_table проверяем был ли этот элемент активным
-                let index = check_sample.indexOf(id_sample);
-                if (index > -1){
-                    check_sample.splice(index, 1); // Если был то удаляем из массива
-                }
-                if (check_sample.length === select_sample.length){
-                    // Если выбранны все элементы то при уборе одного
-                    // checkbox_all_select делаем checked
-                    if (select_sample.length === 0){
-                        $('#id_checkbox_all_select').checkbox('set unchecked');
-                    }
-                    else {
-                        $('#id_checkbox_all_select').checkbox('set checked');
-                    }
-
-                }
-                show_select_table();
-            }
-        })
 
 </script>

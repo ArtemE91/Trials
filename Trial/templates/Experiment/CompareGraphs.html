@@ -3,12 +3,14 @@
 {% block content %}
     <div class="ui orange segment" style='margin-top: 55px;'>
 
-        <!-- <input disabled id="sample_ids" style="display: none"
-               value="{% for id in sample_ids %}{{ id }} {% endfor %}"> -->
+        <div id="myPlot" style="width: 100%; height: 100%;"></div>
 
-        <div id="myPlot" style="width: 100%; height: 100%;">
-        </div>
-
+        <select class="ui dropdown compact" id="action_type">
+            <option value="">Действие по клику</option>
+            <option value="point_comparison">Сравнение</option>
+            <option value="make_tangent">Касательные</option>
+          </select>
+          
         <div class="ui message answer" style="display: none;">
             <div class="header" id="header_answer">
             </div>
@@ -24,7 +26,14 @@
 
 {% block scripts %}
     <script>
-
+var clickHandler=point_comparison;
+$('#action_type')
+.dropdown({
+    onChange: function(value, text, $selectedItem) {
+        clickHandler=window[value];
+    }
+  })
+;
 
     var myPlot = document.getElementById("myPlot")
     var layout = { hovermode:'closest', title:'Выбранные эксперименты'};
@@ -73,7 +82,35 @@
             }
             answer['body'] += line + '<br>'
         }
-        return answer;
+        show_message(answer);;
+    }
+
+    var tangent_trace = {x: [], y :[], type: 'scatter', mode: 'lines', showlegend: false,
+                          line: {color: 'rgb(0, 0, 0)', width: 1}};
+    function make_tangent(point){
+        tangent_trace['x'].push(point['x']);
+        tangent_trace['y'].push(point['y']);
+        // 2 клика в одну точку очистят список координат
+        if (tangent_trace['x'][0]==tangent_trace['x'][1] && tangent_trace['y'][0]==tangent_trace['y'][1]){
+            tangent_trace['x']=[];
+            tangent_trace['y']=[];
+        }
+        if (tangent_trace['x'].length == 2){
+            tangent_trace['x'].push(calc_x0(tangent_trace));
+            tangent_trace['y'].push(0);
+            Plotly.addTraces(myPlot, tangent_trace);
+            tangent_trace['x']=[];
+            tangent_trace['y']=[];
+        }
+    }
+
+    function calc_x0(tangent_trace){ //расчет пересечения прмой с 0Х
+        let x1=tangent_trace['x'][0];
+        let x2=tangent_trace['x'][1];
+        let y1=tangent_trace['y'][0];
+        let y2=tangent_trace['y'][1];
+        let x = -y1*(x2-x1)/(y2-y1)+x1; // Уравнение прямой проходящей через 2 точки
+        return x;
     }
 
     function show_message(message){
@@ -98,8 +135,7 @@
                     forming_data(response);
                     Plotly.newPlot(myPlot, list_trace, layout)
                     myPlot.on('plotly_click', function (data) {
-                        let answer = point_comparison(data.points[0]);
-                            show_message(answer);
+                        clickHandler(data.points[0]);
                     });
                 }
             }
