@@ -224,55 +224,11 @@
 </div>
 
 
+{% load static %}
+
+<script src="{% static 'js/block_search.js' %}"></script>
+
 <script>
-
-    const search_list = {};
-
-    const dimmer = $('<div class="ui active inverted dimmer" id="id_dimmer_trial">' +
-        '<div class="ui active green inline slow text loader">' +
-        'Загрузка</div></div>')
-
-    $('.ui.pointing.dropdown')
-    .dropdown({
-        onChange: function(value, text, $selectedItem){
-                search_list['date'] = value;
-                ajax_get_table();
-            }
-        }
-    )
-
-    function ajax_get_table(){
-        $.ajax({
-                  type: "GET",
-                  url: "/trial/table",
-                  data: {
-                      'search': JSON.stringify(search_list),
-                  },
-                  success: function(msg){
-                      $("#segment_trials_table").replaceWith(msg);
-                      {# Выставляю в пришедщей таблице checked на элементы которые были выбраны до этого #}
-                      if (select_sample) {
-                          for (let i in select_sample) {
-                                let checkbox = $('#' + select_sample[i])
-                                checkbox.children('input').attr('checked', 'checked');
-                          }
-                      }
-                  }
-                });
-    }
-
-    $('.ui.normal.dropdown')
-      .dropdown({
-          onChange: function(value, text, $selectedItem) {
-              $('#segment_trials_table').append(dimmer);
-              const name_dropdown = $(this).closest('.ui.normal.dropdown').attr('name');
-              {# Записываю выбранный элемент в список для поиска если элемент удален то удаляю его из списка #}
-              search_list[name_dropdown + '__in'] = value.split(',');
-              if (value === ''){
-                  delete search_list[name_dropdown + '__in'];
-              }
-              ajax_get_table();
-          },
-      });
-
+    change_add_dropdown('trials');
+    change_dropdown('trials');
 </script>

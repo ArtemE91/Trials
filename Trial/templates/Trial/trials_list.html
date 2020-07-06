@@ -11,22 +11,30 @@
 {% block content %}
 {% include 'trial/trial_table.html' %}
 
-<div class="ui orange segment" segment_card_id>
+<div class="ui orange segment" id="id_segment_select_table">
     <div class="ui grid">
         <div class="six wide column">
             <h3 class="ui header">Таблица выбранных испытаний</h3>
         </div>
         <div class="ten wide column">
-            <button class="ui button disabled" id="id_btn_detail_trial">
+            <button class="ui button disabled" id="id_btn_detail" style="display: none;">
                 <i class="exclamation icon"></i>
                 Детально
             </button>
+            <button class="ui button disabled" id="id_btn_compare_graphs" style="display: none;">
+            <i class="chart line icon"></i>
+                Сравнить
+            </button>
         </div>
     </div>
-    <br>
+
+    <div class="ui visible info message" id="id_message_table_select">
+            <p>Здесь будут отображаться выбранные вами испытания!</p>
+        </div>
+        <br>
     <div class="sixteen wide column">
         <div class="select table">
-            <table class="ui celled striped table green compact selectable" style="width:100%" id="trial_table_select">
+            <table hidden class="ui celled striped table green compact selectable" style="width:100%" id="trial_table_select">
                 <thead>
                 <tr>
                     <th>Размер частиц</th>
@@ -55,97 +63,15 @@
 {% endblock content %}
 
 {% block scripts %}
+    {% load static %}
+
+<script src="{% static 'js/variables.js' %}"></script>
+
 <script>
 
-const select_trial = []; // Выбранные элементы в таблице trial_table
-const check_trial = []; // Выбранные элементы в таблице trial_table_select
+    click_btn('trial_table_select', "{% url 'trial:compare_graphs' %}?");
+    click_all_checkbox('trial_table_select');
 
-
-// Функция для подсвечивания выбранной строки
-function check_select_tr(action, trial_id){
-    if (action === 'check') {
-        $('#tr_select_' + trial_id).attr('class', 'green');
-        $('#select_checkbox_' + trial_id).checkbox('set checked');
-        check_trial.push(trial_id);
-    }
-    else {
-        $('#tr_select_' + trial_id).removeAttr('class');
-        $('#select_checkbox_' + trial_id).checkbox('set unchecked');
-        check_trial.splice(check_trial.indexOf(trial_id), 1);
-    }
-}
-
-// Функция сравнения массивов, возращает элементы которых нет во 2 массиве
-function diff(a1, a2) {
-    return a1.filter(i=>!a2.includes(i))
-    .concat(a2.filter(i=>!a1.includes(i)))
-}
-
-// Обработка checkbox в шапке таблицы trial_table_select
-$('#id_btn_detail_trial')
-    .on('click', function () {
-        ajax_get_detail_trial(check_trial[0]);
-    })
-
-$('.ui.checkbox.all')
-    .checkbox({
-        onChecked: function(){
-            // Если выбранных элементов trial_table_select нет то делаем их все активными
-            if (check_trial.length === 0) {
-                for (let trial_id of select_trial) {
-                    check_select_tr('check', trial_id);
-                }
-            }
-            else { // Делаем активными только те которые еще не были выбраны
-                let uncheck_trial = diff(select_trial, check_trial);
-                for (let trial_id of uncheck_trial) {
-                    check_select_tr('check', trial_id);
-                }
-            }
-        },
-        // Будет активным только если все элементы в таблице trial_table_select выбраны
-        onUnchecked: function(){
-            // Убираем подсветку всем выбранным элементам
-            if (check_trial.length === select_trial.length) {
-                for (let trial_id of select_trial) {
-                    check_select_tr('uncheck', trial_id);
-                }
-            }
-        }
-    })
-
-    // Функция проверяет был ли это элемент уже выбран
-    function check_select_trial(id){
-        const index = check_trial.indexOf(id);
-        return index <= -1;
-    }
-
-    function change_select_trial(id){
-        const index = select_trial.indexOf(id);
-        if (index > -1){
-            select_trial.splice(index, 1);
-        }
-        else{
-            select_trial.push(id);
-        }
-    }
-
-    function ajax_get_detail_trial(trial_id){
-        $.ajax({
-            type: 'GET',
-            url: '/trial/detail/' + trial_id,
-            success: function (response) {
-                let modal = $(response)
-                let grahUrl = "{% url 'trial:get_graph' 0 %}".replace(0, trial_id)
-                fetch(grahUrl)
-                  .then(response => response.text())
-                  .then(data => {
-                        modal.find('#id_graph').append(data);
-                        modal.modal('show');
-                    });
-            }
-        });
-    }
 </script>
 {% endblock scripts %}
 
