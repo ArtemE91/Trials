@@ -8,6 +8,7 @@
     {% include 'sample/includes/search.html' %}
 {% endblock %}
 
+
 {% block content %}
     {% include 'sample/includes/table.html' %}
 
@@ -61,36 +62,10 @@
 {% endblock %}
 
 {% block scripts %}
+
 <script>
-click_btn('sample_table_select', "{% url 'trial:compare_graphs' %}?");
-click_all_checkbox('sample_table_select');
-
-
-    function ajax_get_graph(trial_id, sample_id){
-        $.ajax({
-            type: 'GET',
-            url: '/trial/' + trial_id + '/get_graph',
-            success: function (response) {
-                ajax_get_detail_sample(sample_id, $(response))
-            }
-        })
-    }
-
-    function ajax_get_detail_sample(sample_id, graph){
-        $.ajax({
-            type: 'GET',
-            url: '/sample/detail/' + sample_id,
-            success: function (response) {
-                $('#id_sample_modal').remove(); // Удаляем модальное окно из кеша
-                let modal = $(response);
-                modal.find('#id_graph').append(graph);
-                modal.modal('show');
-                $('#id_dimmer').remove()
-            }
-        });
-    }
-
-
+    click_btn('sample_table_select', "{% url 'trial:compare_graphs' %}?");
+    click_all_checkbox('sample_table_select');
 </script>
 
 {% endblock %}

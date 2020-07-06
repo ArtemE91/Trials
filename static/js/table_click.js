@@ -1,32 +1,4 @@
 
-const select_tr = []; // Выбранные элементы в общей таблице
-const check_tr = []; // Выбранные элементы в 'корзине' (таблица с выбранными элементами)
-const id_btn_detail = 'id_btn_detail'
-const id_btn_graphs = 'id_btn_compare_graphs'
-const id_checkbox_all = 'id_checkbox_all_select' // checkbox в шапке корзины
-const all_table = ['sample'] // Список таблиц
-const main_field = { // Основные поля для изменения
-    'sample': {
-        'tr': 'tr_',
-        'basket_tr': 'tr_select_',
-        'segment_select_table': 'id_segment_select_table',
-        'basket_table': 'sample_table_select',
-        'url': '/sample/detail/tr/',
-        'arr_el': select_tr,
-    },
-    'sample_table_select': {
-        'tr': 'tr_select_',
-        'arr_el': check_tr,
-        'checkbox': 'select_checkbox_',
-        'btn_detail': 'id_btn_detail',
-        'btn_graphs': 'id_btn_compare_graphs',
-        'message': 'id_message_table_select',
-    }
-}
-
-const dimmer = $('<div class="ui active inverted dimmer" id="id_dimmer">' +
-        '<div class="ui active green inline slow text loader">' +
-        'Загрузка</div></div>')
 
 // Проверка выбран ли элемент в таблице
 function check_action(id, table){
@@ -81,7 +53,7 @@ function add_or_remove_line_basket(action, table, id) {
 
 // Клик основных таблиц
 function click_table(table){
-    $(".table tbody tr").on("click", function (data) {
+    $("#" + main_field[table]['main_table'] + " tbody tr").on("click", function (data) {
         let id = data.currentTarget.attributes.id.value.slice(main_field[table]['tr'].length);
         let action = check_action(id, table)
         line_highlight(action, id, table); // Подсвечиваем строку
@@ -145,9 +117,9 @@ function click_btn(table, url=null) {
     $('.ui .button')
         .on('click', function (){
             let name_btn = $(this).attr('id');
-            if (id_btn_detail === name_btn)
+            if ('id_btn_detail' === name_btn)
                 btn_detail(table);
-            if (id_btn_graphs === name_btn)
+            if ('id_btn_compare_graphs' === name_btn)
                 btn_graphs(url);
         })
 }
@@ -157,15 +129,18 @@ function btn_detail(table) {
     $('#id_segment_select_table').append(dimmer);
         let id_tr = main_field[table]['tr'] + check_tr[0];
         let trial_id = ''
-        if (table === 'sample_table_select')
+        if (table === 'sample_table_select') {
             trial_id = $('#' + id_tr).attr('name').slice('id_trials_'.length);
+        } else {
+            trial_id = check_tr[0]
+        }
         if (trial_id){
-            ajax_get_graph(trial_id, check_tr[0]);
+            ajax_get_graph(trial_id, check_tr[0], table);
         }else {
             let message = $('<div class="ui message info visible">\n' +
                 '        <div class="ui text">У данного образца нет испытаний!</div>\n' +
                 '    </div>')
-            ajax_get_detail_sample(check_tr[0], message);
+            ajax_get_detail(check_tr[0], message);
         }
 }
 
@@ -177,7 +152,7 @@ function btn_graphs(url){
 
 // Активация кнопок
 function active_btn() {
-    if(check_tr.length > 0){
+    if(check_tr.length === 1){
         $('#id_btn_detail').attr('class', 'ui button')
     } else {
         $('#id_btn_detail').attr('class', 'ui button disabled')
@@ -221,7 +196,7 @@ function click_all_checkbox(table){
 
 function ajax_get_detail_tr_all(id, table){
         $.ajax({
-            url: main_field[table]['url'] + id,
+            url: main_field[table]['url_tr'] + id,
             type: 'get',
             success: function (response) {
                 // Получаем detail в виде строки таблицы
@@ -234,4 +209,49 @@ function ajax_get_detail_tr_all(id, table){
             }
         });
     }
+
+ function ajax_get_graph(trial_id, sample_id, table){
+        $.ajax({
+            type: 'GET',
+            url: '/trial/' + trial_id + '/get_graph',
+            success: function (response) {
+                if (table === 'sample_table_select') {
+                    ajax_get_detail(sample_id, $(response), table)
+                } else {
+                    ajax_get_detail(trial_id, $(response), table)
+                }
+            }
+        })
+    }
+
+    function ajax_get_detail(id, graph, table){
+        $.ajax({
+            type: 'GET',
+            url: main_field[table]['url_detail'] + id,
+            success: function (response) {
+                $('#' + main_field[table]['modal_detail']).remove(); // Удаляем модальное окно из кеша
+                let modal = $(response);
+                modal.find('#id_graph').append(graph);
+                modal.modal('show');
+                $('#id_dimmer').remove()
+            }
+        });
+    }
+
+    // function ajax_get_detail_trial(trial_id){
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: '/trial/detail/' + trial_id,
+    //         success: function (response) {
+    //             let modal = $(response)
+    //             let grahUrl = "{% url 'trial:get_graph' 0 %}".replace(0, trial_id)
+    //             fetch(grahUrl)
+    //               .then(response => response.text())
+    //               .then(data => {
+    //                     modal.find('#id_graph').append(data);
+    //                     modal.modal('show');
+    //                 });
+    //         }
+    //     });
+    // }
 

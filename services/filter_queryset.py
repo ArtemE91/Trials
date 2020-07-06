@@ -1,5 +1,6 @@
 import json
 import datetime
+from django.db.models.query import QuerySet
 
 from Sample.models import Sample
 from Trial.models import Trials
@@ -18,6 +19,9 @@ class FilterQueryset:
             return self.list_model[self.name_model].objects.all()
 
         queryset = self.filter_date()
+
+        if not queryset and isinstance(queryset, QuerySet):
+            return queryset
 
         for key, value in self.value_dict.items():
             if not queryset:
