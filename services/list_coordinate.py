@@ -1,14 +1,73 @@
 from Sample.models import Sample
+from Trial.models import Trials
+import numpy as np
 
 
+""" 
+list = {'data':
+    {
+     'coordinates': [ (times, weights, name), (times1, weights1, name) ],
+     'poly_trend1': [times, weights, function_str]
+    },
+    {
+     'coordinates': [(times, weight, name)]
+    }
+}
+"""
 def get_list_coordinate(sample_ids: list) -> dict:
-    samples = Sample.objects.filter(pk__in=sample_ids)
-    related_trials = [sample.sample for sample in samples if hasattr(sample, 'sample')]
-    coordinates = {}
+    related_trials = Trials.objects.filter(sample__pk__in=sample_ids)
+    grouped_trials = group_by_material(related_trials)
+    trials_info = []
+    for trial_group in grouped_trials:
+        if len(trial_group) > 1:
+            trial_group_info = {'coordinates': []}
+            for trial in trial_group:
+                related_experiments = trial.trials_values.all().order_by('time_trials')
+                weight_loss = [round(trial.sample.weight - experiment.change_weight, 5) for experiment in related_experiments]
+                times = [experiment.time_trials for experiment in related_experiments]
+                trial_group_info['coordinates'].append((times, weight_loss, str(trial.sample)))
+            trials_info.append(trial_group_info)
+    trials_info = add_trend_line_info(trials_info)
+    return {'data': trials_info}
 
-    for trial in related_trials:
-        related_experiments = trial.trials_values.all().order_by('time_trials')
-        weight_loss = [round(trial.sample.weight - experiment.change_weight, 5) for experiment in related_experiments]
-        times = [experiment.time_trials for experiment in related_experiments]
-        coordinates[str(trial.sample)] = {'times': times, 'weight': weight_loss}
-    return coordinates
+
+def add_trend_line_info(trials_info):
+    for trial_group in trials_info:
+        coordinates = trial_group['coordinates']
+        if len(coordinates) > 1:
+            union_times = list(sum([c[0] for c in coordinates], []))
+            union_times.sort()
+            union_weights = []
+            time_no_duplicates = sorted(list(set(union_times)))
+            for time in time_no_duplicates:
+                for c in coordinates:
+                    if time in c[0]:
+                        index = c[0].index(time)
+                        weight = c[1][index]
+                        union_weights.append(weight)
+            poly_trend = calculate_poly_trend(union_times, union_weights)
+            trial_group['poly_trend2'] = [union_times, poly_trend, 'function']
+    return trials_info
+
+
+def calculate_poly_trend(x, y, deg=2):
+    if deg == 1:
+        p = np.polyfit(x, y, 1)
+        return [p[0]*x+p[1] for x in x]
+    if deg == 2:
+        p = np.polyfit(x, y, 2)
+        return [p[0]*x**2+p[1]*x+p[2] for x in x]
+
+
+def group_by_material(trials):
+    ''' Разбиваю QuerySet на список QuerySet-ов с выбранными одинаковыми полями '''
+    grouped_trials = []
+    for q in trials:
+        if any([q in sub_qs for sub_qs in grouped_trials]):
+            continue
+        filtered_trials = trials.filter(sample__sample_material=q.sample.sample_material, 
+                                        size_particle=q.size_particle, 
+                                        speed_collision=q.speed_collision,
+                                        corner_collision=q.corner_collision)
+        grouped_trials.append(filtered_trials)
+    return grouped_trials
