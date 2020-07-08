@@ -40,19 +40,35 @@ $('#action_type')
 
     var list_trace = []
 
-    function forming_data(data){
-        for (let name_trace in data){
-            let trace = {type: 'scatter'}
-            trace['name'] = name_trace;
-            for (let name_field in data[name_trace]){
-                if (name_field === 'weight'){
-                    trace['y'] = data[name_trace][name_field]
-                }
-                if (name_field === 'times'){
-                    trace['x'] = data[name_trace][name_field]
-                }
+    function forming_data(plots_info){
+        for (var i = 0; i < plots_info.length; i++){
+            let plot = plots_info[i]
+            let coordinates = plot['coordinates']
+            let mode = 'lines+markers';
+            if (coordinates.length > 1){ 
+                mode = 'markers'}
+            for (var c = 0; c < coordinates.length; c++){
+                let coordinate = coordinates[c];
+                trace = {
+                    'x': coordinate[0],
+                    'y': coordinate[1],
+                    'name': coordinate[2],
+                    'mode': mode
+                };
+                list_trace.push(trace);
             }
-            list_trace.push(trace)
+            
+            let trend_name = 'poly_trend';
+            if (trend_name in plot){
+                trend_info = plot[trend_name];
+                trend_trace = {
+                    'x': trend_info[0],
+                    'y': trend_info[1],
+                    'name': trend_info[2],
+                    'mode': 'lines'
+                };
+                list_trace.push(trend_trace);
+            }
         }
     }
 
@@ -132,7 +148,8 @@ $('#action_type')
                     $('.ui.negative.message').attr('style', '');
                 }
                 else {
-                    forming_data(response);
+                    forming_data(response['data']);
+                    //forming_data(response);
                     Plotly.newPlot(myPlot, list_trace, layout)
                     myPlot.on('plotly_click', function (data) {
                         clickHandler(data.points[0]);
@@ -141,7 +158,6 @@ $('#action_type')
             }
         })
     }
-
     ajax_get_list_graph();
 
 
