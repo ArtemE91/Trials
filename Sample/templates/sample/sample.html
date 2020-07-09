@@ -26,6 +26,10 @@
                     <i class="chart line icon"></i>
                     Сравнить
                 </button>
+                <button class="ui button disabled" id="id_btn_download_excel" style="display: none;">
+                    <i class="file excel icon"></i>
+                    Скачать
+                </button>
             </div>
         </div>
         <div class="ui visible info message" id="id_message_table_select">
@@ -64,7 +68,7 @@
 {% block scripts %}
 
 <script>
-    click_btn('sample_table_select', "{% url 'trial:compare_graphs' %}?");
+    click_btn('sample_table_select');
     click_all_checkbox('sample_table_select');
 </script>
 
