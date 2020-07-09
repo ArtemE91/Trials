@@ -92,6 +92,7 @@ function show_select_table(table) {
     if (select_tr.length > 0){
         $('#' + main_field[table]['btn_detail']).removeAttr('style');
         $('#' + main_field[table]['btn_graphs']).removeAttr('style');
+        $('#' + main_field[table]['btn_excel']).removeAttr('style');
         $('#' + table).removeAttr('hidden');
         $('#' + main_field[table]['message']).attr('style', 'display: none');
 
@@ -99,6 +100,7 @@ function show_select_table(table) {
     else {
         $('#' + main_field[table]['btn_detail']).attr('style', 'display: none');
         $('#' + main_field[table]['btn_graphs']).attr('style', 'display: none');
+        $('#' + main_field[table]['btn_excel']).attr('style', 'display: none');
         $('#' + table).attr('hidden', 'display: none');
         $('#' + main_field[table]['message']).removeAttr('style');
     }
@@ -113,14 +115,14 @@ function action_checkbox_all(){
 }
 
 // обработка кнопок корзины
-function click_btn(table, url=null) {
+function click_btn(table) {
     $('.ui .button')
         .on('click', function (){
             let name_btn = $(this).attr('id');
             if ('id_btn_detail' === name_btn)
                 btn_detail(table);
-            if ('id_btn_compare_graphs' === name_btn)
-                btn_graphs(url);
+            if ('id_btn_compare_graphs' === name_btn || 'id_btn_download_excel' === name_btn)
+                btn_graphs_or_excel(main_field[table][name_btn]);
         })
 }
 
@@ -145,7 +147,7 @@ function btn_detail(table) {
 }
 
 // кнопка перехода на сравнение графиков
-function btn_graphs(url){
+function btn_graphs_or_excel(url){
     let query_params = jQuery.param({'samples': check_tr});
         document.location=url + query_params;
 }
@@ -161,6 +163,11 @@ function active_btn() {
         $('#id_btn_compare_graphs').attr('class', 'ui button')
     } else {
         $('#id_btn_compare_graphs').attr('class', 'ui button disabled')
+    }
+    if(check_tr.length !== 0){
+        $('#id_btn_download_excel').attr('class', 'ui button')
+    } else {
+        $('#id_btn_download_excel').attr('class', 'ui button disabled')
     }
 }
 

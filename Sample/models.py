@@ -4,8 +4,9 @@ from django.conf import settings
 
 
 class AbstractModel(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    date_create = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                               verbose_name='Автор записи')
+    date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания записи')
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
