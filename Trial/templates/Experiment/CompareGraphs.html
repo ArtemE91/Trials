@@ -69,6 +69,18 @@ $('#action_type')
                 };
                 list_trace.push(trend_trace);
             }
+
+            let linear_approximation = 'linear_approximation'
+            if (linear_approximation in plot){
+                line_info = plot[linear_approximation];
+                linear_trace = {
+                    'x': line_info[0],
+                    'y': line_info[1],
+                    'name': line_info[2],
+                    'mode': 'lines'
+                };
+                list_trace.push(linear_trace);
+            }
         }
     }
 
