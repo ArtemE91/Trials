@@ -48,6 +48,8 @@ def add_trend_line_info(trials_info):
             poly_trend, function = calculate_poly_trend(union_times, union_weights, 3)
             times = list(dict.fromkeys(union_times))
             trial_group['poly_trend'] = [times, poly_trend, function]
+            linear_approximation = calculate_linear_approximation(times, poly_trend)
+            trial_group['linear_approximation'] = [linear_approximation[0], linear_approximation[1], 'approximation']
     return trials_info
 
 
@@ -55,12 +57,20 @@ def calculate_poly_trend(x, y, deg=2):
     p = np.polyfit(x, y, deg)
     x = list(dict.fromkeys(x))
     if deg == 1:
+        x = [0, x[-1]]
         return [p[0]*x+p[1] for x in x], 'Полином 1 степени' #f'{p[0]}*x+{p[1]}'
     if deg == 2:
         return [p[0]*x**2+p[1]*x+p[2] for x in x], 'Полином 2 степени' #f'{p[0]}*x^2+{p[1]}*x+{p[2]}'
     if deg == 3:
         return [p[0]*x**3+p[1]*x**2+p[2]*x+p[3] for x in x], "Полином 3 степени" #f'{p[0]}*x^3+{p[1]}*x^2+{p[2]}*x+{p[3]}'
 
+
+def calculate_linear_approximation(x, y):
+    p = np.polyfit(x, y, 1)
+    x0 = -p[1]/p[0]
+    x_list = [x0, x[-1]]
+    y_list = [0, p[0]*x[-1]+p[1]]
+    return x_list, y_list
 
 def group_by_material(trials):
     ''' Разбиваю QuerySet на список QuerySet-ов с выбранными одинаковыми полями '''
