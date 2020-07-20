@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.db import transaction
 from django.http import HttpResponse
@@ -6,7 +7,7 @@ from django.http import HttpResponse
 from .services import data_loading, data_download
 
 
-class DataLoadingTemplateView(TemplateView):
+class DataLoadingTemplateView(LoginRequiredMixin, TemplateView):
     """ Загрузка данных в базу из yml файла """
     http_method_names = ['get', 'post']
     template_name = 'extra/data_loading.html'
@@ -17,13 +18,13 @@ class DataLoadingTemplateView(TemplateView):
         return render(request, self.template_name, context)
 
 
-class InfoFIllTemplateView(TemplateView):
+class InfoFIllTemplateView(LoginRequiredMixin, TemplateView):
     """ Информация по заполнению yml конфига"""
     http_method_names = ['get']
     template_name = 'extra/info.html'
 
 
-class DownloadDataTemplateView(TemplateView):
+class DownloadDataTemplateView(LoginRequiredMixin, TemplateView):
     """ Выгрузка данных из базы в excel"""
     http_method_names = ['get']
 

@@ -26,8 +26,12 @@
             </div>
         </div>
 
-        <button type="submit" class="ui button orange">Сохранить</button>
-        <button class='ui red button' formaction="{% url 'sample:material_delete' object.pk %}" type="submit" value="DELETE">Удалить</button>
+        <div class="ui aligned grid">
+            <div class="right aligned sixteen wide column">
+                <button type="submit" class="ui button orange">Сохранить</button>
+                <button class='ui red button' formaction="{% url 'sample:material_delete' object.pk %}" type="submit" value="DELETE">Удалить</button>
+            </div>
+        </div>
 
 </div>
 </form>

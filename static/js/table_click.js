@@ -93,14 +93,15 @@ function show_select_table(table) {
         $('#' + main_field[table]['btn_detail']).removeAttr('style');
         $('#' + main_field[table]['btn_graphs']).removeAttr('style');
         $('#' + main_field[table]['btn_excel']).removeAttr('style');
+        $('#' + main_field[table]['btn_experiment']).removeAttr('style');
         $('#' + table).removeAttr('hidden');
         $('#' + main_field[table]['message']).attr('style', 'display: none');
-
     }
     else {
         $('#' + main_field[table]['btn_detail']).attr('style', 'display: none');
         $('#' + main_field[table]['btn_graphs']).attr('style', 'display: none');
         $('#' + main_field[table]['btn_excel']).attr('style', 'display: none');
+        $('#' + main_field[table]['btn_experiment']).attr('style', 'display: none');
         $('#' + table).attr('hidden', 'display: none');
         $('#' + main_field[table]['message']).removeAttr('style');
     }
@@ -123,6 +124,8 @@ function click_btn(table) {
                 btn_detail(table);
             if ('id_btn_compare_graphs' === name_btn || 'id_btn_download_excel' === name_btn)
                 btn_graphs_or_excel(main_field[table][name_btn]);
+            if ('id_btn_experiment' === name_btn)
+                btn_experiment(main_field[table][name_btn], check_tr[0]);
         })
 }
 
@@ -152,12 +155,19 @@ function btn_graphs_or_excel(url){
         document.location=url + query_params;
 }
 
+// кнопка перехода на эксперименты
+function btn_experiment(url, trial_id) {
+    document.location=url + trial_id;
+}
+
 // Активация кнопок
 function active_btn() {
     if(check_tr.length === 1){
         $('#id_btn_detail').attr('class', 'ui button')
+        $('#id_btn_experiment').attr('class', 'ui button')
     } else {
         $('#id_btn_detail').attr('class', 'ui button disabled')
+        $('#id_btn_experiment').attr('class', 'ui button disabled')
     }
     if(check_tr.length > 1) {
         $('#id_btn_compare_graphs').attr('class', 'ui button')

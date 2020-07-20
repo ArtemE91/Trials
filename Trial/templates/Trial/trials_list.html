@@ -21,9 +21,9 @@
                 <i class="exclamation icon"></i>
                 Детально
             </button>
-            <button class="ui button disabled" id="id_btn_compare_graphs" style="display: none;">
-            <i class="chart line icon"></i>
-                Сравнить
+            <button class="ui button disabled" id="id_btn_experiment" style="display: none;">
+            <i class="flask icon"></i>
+                Эксперименты
             </button>
         </div>
     </div>
@@ -69,7 +69,7 @@
 
 <script>
 
-    click_btn('trial_table_select', "{% url 'trial:compare_graphs' %}?");
+    click_btn('trial_table_select');
     click_all_checkbox('trial_table_select');
 
 </script>

@@ -32,21 +32,4 @@
             $('#id_btn_create_type').attr('class', 'ui button positive right labeled icon create disabled disabled');
         }
     }
-
-    $('.ui.form')
-    .form({
-        on: 'blur',
-        inline: true,
-        fields: {
-            name: {
-                identifier: 'name',
-                rules: [
-                    {
-                        type: 'empty',
-                        prompt: 'Обязательное поле для заполнения!'
-                    },
-                ]
-            },
-        }
-    });
 </script>

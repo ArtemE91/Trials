@@ -41,22 +41,4 @@
             $('#id_btn_save_material').attr('class', 'ui positive right labeled icon button disabled');
         }
     }
-
-
-   $('.ui.form')
-    .form({
-        on: 'blur',
-        inline: true,
-        fields: {
-            name: {
-                identifier: 'name',
-                rules: [
-                    {
-                        type: 'empty',
-                        prompt: 'Обязательное поле для заполнения!'
-                    },
-                ]
-            },
-        }
-    });
 </script>
