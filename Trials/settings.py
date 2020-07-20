@@ -31,9 +31,9 @@ config = read_config()
 SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config['DEBUG']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -89,9 +89,11 @@ AUTH_USER_MODEL = "User.User"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'trialsdb',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': config['DATABASE']['name'],
+        'USER': config['DATABASE']['user'],
+        'PASSWORD': config['DATABASE']['password'],
+        'HOST': config['DATABASE']['host'],
+        'PORT': config['DATABASE']['port'],
     }
 }
 
