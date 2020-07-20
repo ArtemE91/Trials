@@ -115,42 +115,52 @@ received_values:
   5:
     change_weight: 14.16936
     time_trials: 60
+    image: 'exp_1_5.png'
     trials_id: 1
   6:
     change_weight: 14.16556
     time_trials: 70
+    image: 'exp_1_6.png'
     trials_id: 1
   7:
     change_weight: 14.16118
+    image: 'exp_1_7.png'
     time_trials: 80
     trials_id: 1
   8:
     change_weight: 14.15574
     time_trials: 90
+    image: 'exp_1_8.png'
     trials_id: 1
   9:
     change_weight: 14.1509
     time_trials: 100
+    image: 'exp_1_9.png'
     trials_id: 1
   10:
     change_weight: 14.14596
     time_trials: 110
+    image: 'exp_1_10.png'
     trials_id: 1
   11:
     change_weight: 14.14184
     time_trials: 120
+    image: 'exp_1_11.png'
     trials_id: 1
   12:
     change_weight: 14.13844
     time_trials: 130
+    image: 'exp_1_12.png'
     trials_id: 1
   13:
     change_weight: 14.13496
     time_trials: 140
+    image: 'exp_1_13.png'
     trials_id: 1
   14:
     change_weight: 14.1322
     time_trials: 150
+    image: 'exp_1_14.png'
     trials_id: 1
   15:
     change_weight: 14.4282

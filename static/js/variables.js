@@ -45,6 +45,8 @@ var main_field = {
         'checkbox': 'select_checkbox_',
         'btn_detail': 'id_btn_detail',
         'btn_graphs': 'id_btn_compare_graphs',
+        'btn_experiment': 'id_btn_experiment',
+        'id_btn_experiment': '/trial/',
         'id_btn_compare_graphs': '/trial/copmpare_graphs/?',
         'message': 'id_message_table_select',
         'url_detail': '/trial/detail/',

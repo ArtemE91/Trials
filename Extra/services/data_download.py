@@ -1,6 +1,8 @@
 import xlwt
 import datetime
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from User.models import User
 from Sample.models import Sample
 from Trial.models import ReceivedValues
@@ -72,45 +74,58 @@ def excel(ids):
 
         col_num = 0  # возращаем столбец на нулевое значение
 
-        if sample.sample_material:
-            for field in fields['material']:
-                attr = get_str_attribute(sample.sample_material, field)
-                if attr:
-                    row_num = 3  # 3 строка в документе
-                    verbose = get_verbose_name(sample.sample_material, field)
-                    ws.write(row_num, col_num, verbose, font_style)
-                    row_num += 1
-                    ws.write(row_num, col_num, attr, font_style)
-                    col_num += 1
+        try:
+            if sample.sample_material:
+                for field in fields['material']:
+                    attr = get_str_attribute(sample.sample_material, field)
+                    if attr:
+                        row_num = 3  # 3 строка в документе
+                        verbose = get_verbose_name(sample.sample_material, field)
+                        ws.write(row_num, col_num, verbose, font_style)
+                        row_num += 1
+                        ws.write(row_num, col_num, attr, font_style)
+                        col_num += 1
+        except ObjectDoesNotExist as e:
+            pass
 
         col_num += 1  # Увеличиваем столбец на один, тип пишем в теже строки что и материал
 
-        if sample.sample_type:
-            for field in fields['type']:
-                attr = get_str_attribute(sample.sample_type, field)
-                if attr:
-                    row_num = 3  # 3 строка в документе
-                    verbose = get_verbose_name(sample.sample_type, field)
-                    ws.write(row_num, col_num, verbose, font_style)
-                    row_num += 1
-                    ws.write(row_num, col_num, attr, font_style)
-                    col_num += 1
+        try:
+            if sample.sample_type:
+                for field in fields['type']:
+                    attr = get_str_attribute(sample.sample_type, field)
+                    if attr:
+                        row_num = 3  # 3 строка в документе
+                        verbose = get_verbose_name(sample.sample_type, field)
+                        ws.write(row_num, col_num, verbose, font_style)
+                        row_num += 1
+                        ws.write(row_num, col_num, attr, font_style)
+                        col_num += 1
+        except ObjectDoesNotExist as e:
+            pass
 
         col_num = 0
 
-        if sample.sample:
-            for field in fields['trial']:
-                attr = get_str_attribute(sample.sample, field)
-                if attr:
-                    row_num = 6  # 6 строка в документе
-                    verbose = get_verbose_name(sample.sample, field)
-                    ws.write(row_num, col_num, verbose, font_style)
-                    row_num += 1
-                    ws.write(row_num, col_num, attr, font_style)
-                    col_num += 1
+        try:
+            if sample.sample:
+                for field in fields['trial']:
+                    attr = get_str_attribute(sample.sample, field)
+                    if attr:
+                        row_num = 6  # 6 строка в документе
+                        verbose = get_verbose_name(sample.sample, field)
+                        ws.write(row_num, col_num, verbose, font_style)
+                        row_num += 1
+                        ws.write(row_num, col_num, attr, font_style)
+                        col_num += 1
+        except ObjectDoesNotExist as e:
+            pass
 
         col_num = 0
-        related_experiments = sample.sample.trials_values.all().order_by('time_trials')
+
+        try:
+            related_experiments = sample.sample.trials_values.all().order_by('time_trials')
+        except ObjectDoesNotExist as e:
+            related_experiments = None
 
         if related_experiments:
             for field in fields['experiment']:  # Заполняем название столбцов

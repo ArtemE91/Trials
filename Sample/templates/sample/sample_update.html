@@ -149,8 +149,12 @@
             {% include 'sample/type/type_dropdown.html'  with type=form.sample_type sample=sample %}
         </div>
 
-        <button type="submit" class="ui button orange">Сохранить</button>
-        <button class='ui red button' formaction="{% url 'sample:delete' sample.pk %}" type="submit" value="DELETE">Удалить</button>
+        <div class="ui aligned grid">
+            <div class="right aligned sixteen wide column">
+                <button type="submit" class="ui button orange">Сохранить</button>
+                <button class='ui red button' formaction="{% url 'sample:delete' sample.pk %}" type="submit" value="DELETE">Удалить</button>
+            </div>
+        </div>
 
 </div>
 </form>

@@ -2,6 +2,7 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from django.db.models import F, Q
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .experiment_graph import figure, multigraf
 from .models import Trials, ReceivedValues, Sample
@@ -11,13 +12,13 @@ from services.list_coordinate import get_list_coordinate
 from services.filter_queryset import FilterQueryset
 
 
-class TrialCreate(AjaxableResponseMixin, CreateView):
+class TrialCreate(LoginRequiredMixin, AjaxableResponseMixin, CreateView):
     form_class = TrialForm
     template_name = 'Trial/trials_form.html'
     success_url = '/trial/create/'
 
 
-class TrialList(ListView):
+class TrialList(LoginRequiredMixin, ListView):
     model = Trials
     template_name = 'Trial/trials_list.html'
     search_filter = {'date_trials': 'date_trials', 'organization': 'sample__organization',
@@ -37,7 +38,7 @@ class TrialList(ListView):
         return context
 
 
-class TrialTableListView(ListView):
+class TrialTableListView(LoginRequiredMixin, ListView):
     model = Trials
     template_name = 'trial/trial_table.html'
     http_method_names = ['get', 'post']
@@ -48,7 +49,7 @@ class TrialTableListView(ListView):
         return queryset
 
 
-class TrialDetail(DetailView):
+class TrialDetail(LoginRequiredMixin, DetailView):
     model = Trials
     template_name = 'Trial/trial_detail.html'
 
@@ -69,17 +70,17 @@ class TrialDetail(DetailView):
         return trial
 
 
-class TrialModalDetail(DetailView):
+class TrialModalDetail(LoginRequiredMixin, DetailView):
     model = Trials
     template_name = 'Trial/trial_modal_detail.html'
 
 
-class TrialDetailTr(AjaxableResponseMixin, DetailView):
+class TrialDetailTr(LoginRequiredMixin, AjaxableResponseMixin, DetailView):
     model = Trials
     template_name = 'Trial/trial_detail_tr.html'
 
 
-class TrialUpdate(AjaxableResponseMixin, UpdateView):
+class TrialUpdate(LoginRequiredMixin, AjaxableResponseMixin, UpdateView):
     model = Trials
     template_name = 'Trial/trial_update.html'
     fields = '__all__'
@@ -91,12 +92,12 @@ class TrialUpdate(AjaxableResponseMixin, UpdateView):
         return context
 
 
-class TrialDelete(DeleteView):
+class TrialDelete(LoginRequiredMixin, DeleteView):
     model = Trials
     success_url = '/trial/'
 
 
-class ExperimentCreate(AjaxableResponseMixin, CreateView):
+class ExperimentCreate(LoginRequiredMixin, AjaxableResponseMixin, CreateView):
     form_class = ExperimentCreateForm
     template_name = 'Experiment/Experiment.html'
 
@@ -112,12 +113,12 @@ class ExperimentCreate(AjaxableResponseMixin, CreateView):
         return form
 
 
-class ExperimentDelete(AjaxableResponseMixin, DeleteView):
+class ExperimentDelete(LoginRequiredMixin, AjaxableResponseMixin, DeleteView):
     model = ReceivedValues
     success_url = '/trial/'
 
 
-class ExperimentList(ListView):
+class ExperimentList(LoginRequiredMixin, ListView):
     model = ReceivedValues
     template_name = 'Experiment/ExperimentTable.html'
 
@@ -128,7 +129,7 @@ class ExperimentList(ListView):
         return qset.annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
 
 
-class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
+class ExperimentUpdate(LoginRequiredMixin, AjaxableResponseMixin, UpdateView):
     form_class = ExperementUpdateForm
     template_name = 'Experiment/ExperimentUpdate.html'
 
@@ -136,7 +137,7 @@ class ExperimentUpdate(AjaxableResponseMixin, UpdateView):
         return ReceivedValues.objects.get(id=self.kwargs['pk'])
 
 
-class TrialGraph(DetailView):
+class TrialGraph(LoginRequiredMixin, DetailView):
     model = Trials
     template_name = 'Trial/trial_graph.html'
 
@@ -150,7 +151,7 @@ class TrialGraph(DetailView):
         return context
 
 
-class CompareGraphsTemplate(TemplateView):
+class CompareGraphsTemplate(LoginRequiredMixin, TemplateView):
     template_name = 'Experiment/CompareGraphs.html'
 
     def get(self, request, *args, **kwargs):
@@ -158,7 +159,7 @@ class CompareGraphsTemplate(TemplateView):
         return render(request, 'Experiment/CompareGraphs.html', {'sample_ids': sample_ids})
 
 
-class AjaxCompareGraphs(TemplateView):
+class AjaxCompareGraphs(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         sample_ids = request.GET.getlist('samples[]')
         coordinates = get_list_coordinate(sample_ids)
