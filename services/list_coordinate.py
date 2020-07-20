@@ -23,7 +23,9 @@ def get_list_coordinate(sample_ids: list) -> dict:
         for trial in trial_group:
             related_experiments = trial.trials_values.all().order_by('time_trials')
             weight_loss = [round(trial.sample.weight - experiment.change_weight, 5) for experiment in related_experiments]
+            weight_loss.insert(0, 0)
             times = [experiment.time_trials for experiment in related_experiments]
+            times.insert(0, 0)
             trial_group_info['coordinates'].append((times, weight_loss, str(trial.sample)))
         trials_info.append(trial_group_info)
         if len(trial_group) > 1:
