@@ -50,8 +50,6 @@ def add_trend_line_info(trials_info):
             poly_trend, function = calculate_poly_trend(union_times, union_weights, 3)
             times = list(dict.fromkeys(union_times))
             trial_group['poly_trend'] = [times, poly_trend, function]
-            linear_approximation = calculate_linear_approximation(times, poly_trend)
-            trial_group['linear_approximation'] = [linear_approximation[0], linear_approximation[1], 'approximation']
     return trials_info
 
 

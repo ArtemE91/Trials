@@ -9,8 +9,15 @@
             <option value="">Действие по клику</option>
             <option value="point_comparison">Сравнение</option>
             <option value="make_tangent">Касательные</option>
-          </select>
-          
+        </select>
+
+        <div class='ui segment'>
+            <button class="ui labeled icon button" onclick="deleteTrace()">
+                <i class="eraser icon"></i>
+                Удалить
+            </button>
+        </div>
+
         <div class="ui message answer" style="display: none;">
             <div class="header" id="header_answer">
             </div>
@@ -34,6 +41,14 @@ $('#action_type')
     }
   })
 ;
+
+function deleteTrace(){
+    if (tangentCount>0) {
+        Plotly.deleteTraces('myPlot', -1);
+        tangentCount -= 1;
+    }
+};
+
 
     var myPlot = document.getElementById("myPlot")
     var layout = { hovermode:'closest', title:'Выбранные эксперименты'};
@@ -69,18 +84,6 @@ $('#action_type')
                 };
                 list_trace.push(trend_trace);
             }
-
-            let linear_approximation = 'linear_approximation'
-            if (linear_approximation in plot){
-                line_info = plot[linear_approximation];
-                linear_trace = {
-                    'x': line_info[0],
-                    'y': line_info[1],
-                    'name': line_info[2],
-                    'mode': 'lines'
-                };
-                list_trace.push(linear_trace);
-            }
         }
     }
 
@@ -113,8 +116,9 @@ $('#action_type')
         show_message(answer);;
     }
 
+    var tangentCount = 0
     var tangent_trace = {x: [], y :[], type: 'scatter', mode: 'lines', showlegend: false,
-                          line: {color: 'rgb(0, 0, 0)', width: 1}};
+                          line: {width: 4}};
     function make_tangent(point){
         tangent_trace['x'].push(point['x']);
         tangent_trace['y'].push(point['y']);
@@ -127,6 +131,7 @@ $('#action_type')
             tangent_trace['x'].push(calc_x0(tangent_trace));
             tangent_trace['y'].push(0);
             Plotly.addTraces(myPlot, tangent_trace);
+            tangentCount += 1;
             tangent_trace['x']=[];
             tangent_trace['y']=[];
         }
