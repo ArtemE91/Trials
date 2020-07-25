@@ -12,7 +12,15 @@ class Trials(AbstractModel):
     date_trials = models.DateField(blank=True, null=True, verbose_name='Дата проведения испытания')
     date_end_trials = models.DateField(blank=True, null=True, verbose_name='Время окончания испытания')
     type_particle = models.CharField(max_length=255, blank=True, null=True, verbose_name='Тип частицы')
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')
+    flow_type = models.CharField(max_length=255, blank=True, null=True, verbose_name='Тип потока')
+    chamber_pressure = models.CharField(max_length=255, blank=True, null=True, verbose_name='Давление в камере')
+    sample_temp = models.CharField(max_length=255, blank=True, null=True, verbose_name='Температура образца')
+    abrasive_type = models.CharField(max_length=255, blank=True, null=True, verbose_name='Тип абразива')
+    air_consumption = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расход воздуха')
+    abrasive_consumption = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расход абразива')
+    nozzle_diam = models.CharField(max_length=255, blank=True, null=True, verbose_name='Диаметр сопла')
+    distance_sub = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расстояние от сопла до образца')
 
     sample = models.OneToOneField(Sample, blank=True, null=True, on_delete=models.CASCADE, related_name='sample')
 
