@@ -27,7 +27,11 @@ class TrialList(LoginRequiredMixin, ListView):
                      'speed_collision': 'speed_collision',
                      'material_name': 'sample__sample_material__name',
                      'material_type': 'sample__sample_material__type',
-                     'type': 'sample__sample_type__name'}
+                     'type': 'sample__sample_type__name', 'flow_type': 'flow_type',
+                     'chamber_pressure': 'chamber_pressure', 'sample_temp': 'sample_temp',
+                     'abrasive_type': 'abrasive_type', 'air_consumption': 'air_consumption',
+                     'abrasive_consumption': 'abrasive_consumption', 'nozzle_diam': 'nozzle_diam',
+                     'distance_sub': 'distance_sub'}
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,7 +44,7 @@ class TrialList(LoginRequiredMixin, ListView):
 
 class TrialTableListView(LoginRequiredMixin, ListView):
     model = Trials
-    template_name = 'trial/trial_table.html'
+    template_name = 'Trial/trial_table.html'
     http_method_names = ['get', 'post']
 
     def get_queryset(self):

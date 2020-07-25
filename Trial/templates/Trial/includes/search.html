@@ -193,7 +193,162 @@
         </div>
 
 
+    <div id="add_filter_fungus" style="display: none;">
+        <h4 class="ui dividing header" style="margin-top: 25px;">Дополнительные фильтры для образца типа "Грибок"</h4>
+        <div class="fields three">
+            <div class="field">
+                <label>Тип потока</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="flow_type">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in flow_type %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
 
+            <div class="field">
+                <label>Давление в камере</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="chamber_pressure">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in chamber_pressure %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add_filter_disk" style="display: none;">
+        <h4 class="ui dividing header" style="margin-top: 25px;">Дополнительные фильтры для образца типа "Диск" или "Пластина"</h4>
+        <div class="fields three">
+            <div class="field">
+                <label>Температура образца</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="sample_temp">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in sample_temp %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Тип абразива</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="abrasive_type">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in abrasive_type %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Расход воздуха</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="air_consumption">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in air_consumption %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fields three">
+            <div class="field">
+                <label>Расход абразива</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="abrasive_consumption">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in abrasive_consumption %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Диаметр сопла</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="nozzle_diam">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in nozzle_diam %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Расстояние от сопла до образца</label>
+                <div class="ui fluid multiple search normal selection dropdown" name="distance_sub">
+                    <input type="hidden">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Выберите значение</div>
+                    <div class="menu">
+                        {% for name in distance_sub %}
+                            {% if name %}
+                                <div class="item" data-value="{{ name }}" data-text="{{ name }}">
+                                    {{ name }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <h4 class="ui dividing header">Дополнительные фильтры</h4>
             <div class="field">

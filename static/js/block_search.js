@@ -1,5 +1,6 @@
 
 var search_list = {};
+var name_type_dropdown = 'sample__sample_type__name'
 
 var table_value = {
     'sample': {
@@ -31,14 +32,33 @@ function change_dropdown(table) {
         .dropdown({
             onChange: function (value, text, $selectedItem) {
                 $('#' + table_value[table]['change_segment']).append(dimmer);
-                const name_dropdown = $(this).closest('.ui.normal.dropdown').attr('name');
-                search_list[name_dropdown + '__in'] = value.split(',');
+                var name_dropdown = $(this).closest('.ui.normal.dropdown').attr('name');
+                var list_name_value = value.split(',')
+                if (name_dropdown === name_type_dropdown) {
+                    hide_or_show_add_dropdown(list_name_value)
+                }
+                search_list[name_dropdown + '__in'] = list_name_value;
                 if (value === '') {
                     delete search_list[name_dropdown + '__in'];
                 }
                 ajax_get_table(table);
             },
         });
+}
+
+// Показывает либо скрывает дополнительные блоки дропдаунов для типа образца
+function hide_or_show_add_dropdown(list_name_type){
+    console.log(list_name_type);
+    if(list_name_type.indexOf('грибок') !== -1 ){
+        $('#' + 'add_filter_fungus').attr('style', '');
+    } else {
+        $('#' + 'add_filter_fungus').attr('style', 'display: none');
+    }
+    if(list_name_type.indexOf('диск') !== -1 || list_name_type.indexOf('пластина') !== -1){
+        $('#' + 'add_filter_disk').attr('style', '');
+    } else {
+        $('#' + 'add_filter_disk').attr('style', 'display: none');
+    }
 }
 
 function ajax_get_table(table){
