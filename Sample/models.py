@@ -2,6 +2,8 @@ from django.db import models
 from django.shortcuts import reverse
 from django.conf import settings
 
+from Modification.models import Modification
+
 
 class AbstractModel(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
@@ -76,6 +78,7 @@ class Sample(AbstractModel):
                                         on_delete=models.CASCADE, related_name='material')
     sample_type = models.ForeignKey(SampleType, blank=True, null=True,
                                     on_delete=models.CASCADE, related_name='type')
+    modification = models.ForeignKey(Modification, blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'sample'

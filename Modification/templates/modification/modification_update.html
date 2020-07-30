@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<form method="post" class="ui form" style="margin-top: 55px;">
+{% csrf_token %}
+    <div class="ui orange segment" id="segment_create_modification">
+        <h3 class="ui dividing header">Информация по Упрочнению № {{ object.pk }}</h3>
+        <div class="field">
+            <div class="two fields">
+                <div class="field">
+                    {{ form.method.label_tag }}
+                    {{ form.method }}
+                </div>
+
+                <div class="field">
+                    {{ form.exp_param.label_tag }}
+                    {{ form.exp_param }}
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    {{ form.depth_coating.label_tag }}
+                    {{ form.depth_coating }}
+                </div>
+                <div class="field">
+                    {{ form.hardness_coating.label_tag }}
+                    {{ form.hardness_coating }}
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    {{ form.struct_coating.label_tag }}
+                    {{ form.struct_coating }}
+                </div>
+                <div class="field">
+                    {{ form.organization.label_tag }}
+                    {{ form.organization }}
+                </div>
+            </div>
+        </div>
+
+        <div class="ui aligned grid">
+            <div class="right aligned sixteen wide column">
+                <button type="submit" class="ui button orange">Сохранить</button>
+                <button class='ui red button' formaction="{% url 'modification:delete' object.pk %}" type="submit" value="DELETE">Удалить</button>
+            </div>
+        </div>
+
+</div>
+</form>
+{% endblock %}

@@ -1,0 +1,65 @@
+<div class="ui modal modification">
+    <i class="close icon"></i>
+    <div class="header">
+        Упрочнение № {{ object.pk }}
+    </div>
+    <div class="content">
+        <div class="ui list">
+            <div class="item">
+                <div class="ui grid">
+                    <div class="five wide column">Способ упрочнения:</div>
+                    <div class="eleven wide column">{{ object.method }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Параметры упрочнения:</div>
+                    <div class="eleven wide column">{{ object.exp_param }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Толщина упрочнения:</div>
+                    <div class="eleven wide column">{{ object.depth_coating }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Твердость упрочнения:</div>
+                    <div class="eleven wide column">{{ object.hardness_coating }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Состав покрытия:</div>
+                    <div class="eleven wide column">{{ object.struct_coating }}</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="ui grid column">
+                    <div class="five wide column">Организация, которая провела упрочнение:</div>
+                    <div class="eleven wide column">{{ object.organization }}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="actions">
+        <div class="ui grid column">
+            <div class="column row">
+                <div class="right floated column">
+                    <form action="{% url 'modification:update' object.pk %}">
+                        <button type="submit" class="ui right floated positive button">Редактировать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
