@@ -58,16 +58,9 @@ class Sample(AbstractModel):
     def sample_image_path(self, filename):
         return f"sample/{self.id}/{filename}"
 
-    method = models.CharField(max_length=255, blank=True, null=True, verbose_name='Способ упрочнения')
-    exp_param = models.CharField(max_length=255, blank=True, null=True, verbose_name='Параметры упрочнения')
     date_proc_streng = models.DateField(blank=True, null=True, verbose_name='Дата процесса упрочнения')
-    depth_coating = models.FloatField(blank=True, null=True, verbose_name='Толщина упрочнения')
     roughness = models.FloatField(blank=True, null=True, verbose_name='Шероховатость поверхности')
-    hardness_coating = models.FloatField(blank=True, null=True, verbose_name='Твердость упрочнения')
-    struct_coating = models.CharField(max_length=255, blank=True, null=True, verbose_name='Состав покрытия')
     sub_hardness = models.FloatField(blank=True, null=True, verbose_name='Твердость подложки')
-    organization = models.CharField(max_length=255, blank=True, null=True,
-                                    verbose_name='Организация, которая провела упрочнение')
     weight = models.FloatField(verbose_name='Первоначальная масса образца', default=0)
     marking = models.CharField(max_length=255, blank=True, null=True, verbose_name='Маркировка образца')
     image = models.FileField(upload_to=sample_image_path, null=True, blank=True,
@@ -95,8 +88,11 @@ class Sample(AbstractModel):
         label = f'{self.sample_material.name}'
         if self.sample_material.type:
             label += f'_{self.sample_material.type}'
-        if self.method:
-            label += f'_{self.method}'
+        try:
+            if self.modification.method:
+                label += f'_{self.modification.method}'
+        except AttributeError:
+            pass
         if self.marking:
             label += f'_{self.marking}'
         return label

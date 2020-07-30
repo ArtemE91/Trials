@@ -6,38 +6,9 @@
     <div class="ui orange segment" id="segment_create_sample">
         <h3 class="ui dividing header">Информация по упрочнению</h3>
         <div class="field">
-            <div class="two fields">
-                <div class="field">
-                    <label for="id_method">{{ form.method.label_tag }}</label>
-                    <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method"
-                    value="{% if form.method.value %}{{ form.method.value }}{% endif %}">
-                </div>
 
-                <div class="field">
-                    <label for="id_exp_param">{{ form.exp_param.label_tag }}</label>
-                    <div class="ui input">
-                      <input type="text" placeholder="Параметры упрочнения" name="exp_param" id="id_exp_param"
-                      value="{% if form.exp_param.value %}{{ form.exp_param.value }}{% endif %}">
-                    </div>
-                </div>
-            </div>
-
-            <div class="two fields">
-                <div class="field">
-                    <label for="id_depth_coating">{{ form.depth_coating.label_tag }}</label>
-                    <div class="ui input">
-                      <input placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
-                      value="{% if form.depth_coating.value %}{{ form.depth_coating.value }}{% endif %}">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label for="id_hardness_coating">{{ form.hardness_coating.label_tag }}</label>
-                    <div class="ui input">
-                      <input placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
-                        value="{% if form.hardness_coating.value %}{{ form.hardness_coating.value }}{% endif %}">
-                    </div>
-                </div>
+            <div class="field" id="id_block_modification">
+                {% include 'modification/includes/modification_dropdown.html' with modification=form.modification sample=sample %}
             </div>
 
             <div class="two fields">
@@ -88,13 +59,6 @@
                 </div>
             </div>
 
-            <div class="field">
-                <label for="id_organization">{{ form.organization.label_tag }}</label>
-                <div class="ui input">
-                    <input type="text" placeholder="Организация" name="organization" id="id_organization"
-                    value="{% if form.organization.value %}{{ form.organization.value }}{% endif %}">
-                </div>
-            </div>
 
             <div class="field">
                 <label for="id_description">{{ form.description.label_tag }}</label>

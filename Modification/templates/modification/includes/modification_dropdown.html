@@ -1,0 +1,29 @@
+<div class="field" id="id_modification_field">
+    <label>Упрочнение</label>
+    <div class="two fields">
+        <div class="field">
+            <select name="modification" class="ui fluid search dropdown" id="id_modification">
+                {% for value in modification %}
+                    <option {% if value.id == sample.modification.id %}selected{% endif %} value="{{ value.id }}" id="id_item_modification{{ value.id }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="field">
+            <div class="ui button material" id="id_btn_create_modification">Создать</div>
+        </div>
+    </div>
+</div>
+
+<script>
+  $(' .ui.dropdown')
+  .dropdown({
+        allowAdditions: true,
+        monthsShort: true
+  });
+
+     $('#id_btn_create_modification')
+        .click(function () {
+            ajax_get_modal('{% url 'modification:create_modal' %}',
+            '{% url 'modification:dropdown_list' %}', 'modification');
+        });
+</script>

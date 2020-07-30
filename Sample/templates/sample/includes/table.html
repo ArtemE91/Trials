@@ -17,10 +17,10 @@
             {% for sample in object_list %}
                 <tr id="tr_{{ sample.id }}">
                     <td>{{ sample.sample_material}}</td>
-                    <td>{{ sample.method }}</td>
-                    <td>{{ sample.organization }}</td>
+                    <td>{{ sample.modification.method }}</td>
+                    <td>{{ sample.modification.organization }}</td>
                     <td>{{ sample.date_proc_streng }}</td>
-                    <td>{{ sample.struct_coating }}</td>
+                    <td>{{ sample.modification.struct_coating }}</td>
                 </tr>
             {% endfor %}
             </tbody>

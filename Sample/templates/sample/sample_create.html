@@ -7,37 +7,9 @@
     <div class="ui orange segment" id="segment_create_sample">
         <h3 class="ui dividing header">Создание образца</h3>
         <div class="field">
-            <div class="two fields">
-                <div class="field">
-                    <label for="id_method">Cпособ упрочнения / нанесения покрытия</label>
-                      <input type="text" placeholder="Cпособ упрочнения" name="method" id="id_method">
-                </div>
 
-                <div class="field">
-                    <label for="id_exp_param">Параметры упрочнения / нанесения покрытия</label>
-                    <div class="ui input">
-                      <input type="text" placeholder="Параметры упрочнения" name="exp_param" id="id_exp_param"
-                      >
-                    </div>
-                </div>
-            </div>
-
-            <div class="two fields">
-                <div class="field">
-                    <label for="id_depth_coating">Толщина покрытия / глубина упрочнения, [мкм]</label>
-                    <div class="ui input">
-                      <input type="text" placeholder="Толщина упрочнения" name="depth_coating" id="id_depth_coating"
-                      >
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label for="id_hardness_coating">Твердость подложки, [HB]</label>
-                    <div class="ui input">
-                      <input placeholder="Твердость упрочнения" name="hardness_coating" id="id_hardness_coating"
-                      >
-                    </div>
-                </div>
+            <div class="field" id="id_block_modification">
+                {% include 'modification/includes/modification_dropdown.html' with modification=form.modification only %}
             </div>
 
             <div class="two fields">
@@ -103,14 +75,6 @@
                       <input placeholder="Твердость подложки" name="sub_hardness" id="id_sub_hardness"
                       >
                     </div>
-                </div>
-            </div>
-
-            <div class="field">
-                <label for="id_organization">Организация которая провела упрочнение</label>
-                <div class="ui input">
-                    <input type="text" placeholder="Организация" name="organization" id="id_organization"
-                    >
                 </div>
             </div>
 
@@ -243,6 +207,15 @@ $('.ui.form')
             },
             sample_type: {
                 identifier: 'sample_type',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Обязательное поле! Выберите необходимый тип'
+                    },
+                ]
+            },
+            modification: {
+                identifier: 'modification',
                 rules: [
                     {
                         type: 'empty',

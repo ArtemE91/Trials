@@ -3,14 +3,14 @@ from django import forms
 import datetime
 
 from .models import Sample, SampleMaterial, SampleType
+from Modification.models import Modification
 
 
 class SampleForm(forms.ModelForm):
     class Meta:
         model = Sample
-        fields = ['method', 'exp_param', 'date_proc_streng', 'depth_coating', 'roughness',
-                  'hardness_coating', 'struct_coating', 'sub_hardness', 'organization',
-                  'weight', 'marking', 'sample_material', 'sample_type', 'description', 'image']
+        fields = ['date_proc_streng', 'roughness', 'sub_hardness', 'weight', 'marking',
+                  'sample_material', 'sample_type', 'description', 'image', 'modification', ]
         labels = {
             'method': 'Cпособ упрочнения / нанесения покрытия',
             'exp_param': 'Параметры упрочнения / нанесения покрытия',
@@ -25,13 +25,15 @@ class SampleForm(forms.ModelForm):
             'marking': 'Маркировка',
             'sample_material': 'Материал',
             'sample_type': 'Тип',
-            'description': 'Дополнительное описание'
+            'description': 'Дополнительное описание',
+            'modification': 'Упрочнение',
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['sample_material'].quereset = SampleMaterial.objects.all()
         self.fields['sample_type'].queryset = SampleType.objects.all()
+        self.fields['modification'].queryset = Modification.objects.all()
 
 
 class MaterialForm(forms.ModelForm):

@@ -13,10 +13,11 @@ from services.filter_queryset import FilterQueryset
 class SampleList(LoginRequiredMixin, ListView):
     model = Sample
     template_name = 'sample/sample.html'
-    search_filter = {'method': 'method', 'date_proc_streng': 'date_proc_streng',
-                     'struct_coating': 'struct_coating', 'organization': 'organization',
+    search_filter = {'method': 'modification__method', 'date_proc_streng': 'date_proc_streng',
+                     'struct_coating': 'modification__struct_coating',
+                     'organization': 'modification__organization',
                      'marking': 'marking', 'material_name': 'sample_material__name',
-                     'material_type': 'sample_material__type', 'type': 'sample_type__name'}
+                     'material_type': 'sample_material__type', 'type': 'sample_type__name',}
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
