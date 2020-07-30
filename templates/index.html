@@ -37,6 +37,14 @@
                 <div class="divider"></div>
                 <div class="item">
                   <i class="dropdown icon"></i>
+                  <span class="text">Упрочнение</span>
+                  <div class="menu">
+                      <a class="item" href="{% url 'modification:list' %}">Информация</a>
+                      <a class="item" href="{% url 'modification:create' %}">Создать</a>
+                  </div>
+                </div>
+                <div class="item">
+                  <i class="dropdown icon"></i>
                   <span class="text">Материал</span>
                   <div class="menu">
                       <a class="item" href="{% url 'sample:material_table' %}">Информация</a>

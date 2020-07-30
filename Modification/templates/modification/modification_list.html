@@ -1,0 +1,61 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Modification
+{% endblock %}
+
+{% block content %}
+    <div class="ui orange segment" style="margin-top: 55px;">
+
+    <h3 class="ui header">Таблица упрочнений</h3>
+    <table class="ui celled striped table green compact selectable" style="width:100%" id="id_modification_table">
+        <thead>
+        <tr>
+            <th>Способ</th>
+            <th>Параметры</th>
+            <th>Толщина</th>
+            <th>Твердость</th>
+            <th>Состав покрытия</th>
+            <th>Организация</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for value in modification %}
+            <tr id="{{ value.id }}">
+                <td>{{ value.method}}</td>
+                <td>{{ value.exp_param }}</td>
+                <td>{{ value.depth_coating }}</td>
+                <td>{{ value.hardness_coating }}</td>
+                <td>{{ value.struct_coating }}</td>
+                <td>{{ value.organization }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('#id_modification_table').DataTable({
+        });
+    });
+
+    function ajax_get_detail_material(id_material){
+        $.ajax({
+            type: 'GET',
+            url: '/modification/' + id_material,
+            success: function (response) {
+                $(response)
+                .modal('show');
+            }
+        });
+    }
+
+    $( "#id_modification_table tbody tr" ).on( "click", function() {
+        ajax_get_detail_material($( this ).attr('id'));
+});
+
+</script>
+{% endblock %}

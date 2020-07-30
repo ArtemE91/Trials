@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="ui orange segment" id="segment_create_modification_form" style="margin-top: 55px;">
+        <h3 class="ui dividing header">Создание упрочнения</h3>
+        <form method="post" class="ui form" id="id_modification_form">
+            {% csrf_token %}
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_method">Способ упрочнения</label>
+                    <input type="text" name="method" id="id_method" placeholder="Введите значение">
+                </div>
+                <div class="field">
+                    <label for="id_exp_param">Параметры упрочнения</label>
+                    <input type="text" name="exp_param" id="id_exp_param" placeholder="Введите значение">
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_depth_coating">Толщина упрочнения</label>
+                    <input type="text" name="depth_coating" id="id_depth_coating" placeholder="Введите значение">
+                </div>
+                <div class="field">
+                    <label for="id_hardness_coating">Твердость упрочнения</label>
+                    <input type="text" name="hardness_coating" id="id_hardness_coating" placeholder="Введите значение">
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_struct_coating">Состав покрытия</label>
+                    <input type="text" name="struct_coating" id="id_struct_coating" placeholder="Введите значение">
+                </div>
+                <div class="field">
+                    <label for="id_organization">Организация, которая провела упрочнение</label>
+                    <input type="text" name="organization" id="id_organization" placeholder="Введите значение">
+                </div>
+            </div>
+            <div class="ui aligned grid">
+                <div class="right aligned sixteen wide column">
+                    <button class='ui orange button' type="submit" value="Save">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
