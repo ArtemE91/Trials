@@ -1,11 +1,11 @@
 <tr id="tr_select_{{ sample.id }}" name="id_trials_{{ sample.sample.id }}">
     <td>{{ sample.sample_material}}</td>
     <td>{{ sample.marking }}</td>
-    <td>{{ sample.method }}</td>
-    <td>{{ sample.depth_coating }}</td>
+    <td>{{ sample.modification.method }}</td>
+    <td>{{ sample.modification.depth_coating }}</td>
     <td>{{ sample.roughness }}</td>
-    <td>{{ sample.hardness_coating }}</td>
-    <td>{{ sample.struct_coating }}</td>
+    <td>{{ sample.modification.hardness_coating }}</td>
+    <td>{{ sample.modification.struct_coating }}</td>
     <td class="collapsing">
         <div class="ui checkbox" id="select_checkbox_{{ sample.id }}">
             <input type="checkbox">

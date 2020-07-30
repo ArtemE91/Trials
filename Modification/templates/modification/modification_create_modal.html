@@ -1,0 +1,61 @@
+<div class="ui modal material" id="id_modification_modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Добавить новое упрочнение для образца
+    </div>
+    <div class="content">
+        <form class="ui form" id="id_modification_form">
+            {% csrf_token %}
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_method">Cпособ упрочнения / нанесения покрытия</label>
+                    <input onkeyup="checkParams()"  type="text" name="method" id="id_method" placeholder="Введите значение">
+                </div>
+                <div class="field">
+                    <label for="id_exp_param">Параметры упрочнения / нанесения покрытия</label>
+                    <input type="text" name="exp_param" id="id_exp_param" placeholder="Введите значение">
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_depth_coating">Толщина покрытия / глубина упрочнения, [мкм]</label>
+                    <input type="text" name="depth_coating" id="id_depth_coating" placeholder="Введите значение">
+                </div>
+                <div class="field">
+                    <label for="id_hardness_coating">Твердость упрочнения</label>
+                    <input type="text" name="hardness_coating" id="id_hardness_coating" placeholder="Введите значение">
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label for="id_struct_coating">Состав покрытия</label>
+                    <input type="text" name="struct_coating" id="id_struct_coating" placeholder="Введите значение">
+                </div>
+                <div class="field">
+                    <label for="id_organization">Организация, которая провела упрочнение</label>
+                    <input type="text" name="organization" id="id_organization" placeholder="Введите значение">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Отмена
+        </div>
+        <div class="ui positive right labeled icon button disabled" id="id_btn_save_modification">
+            Добавить
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkParams(){
+        let method = $('#id_method').val();
+        if(method.length !== 0){
+            $('#id_btn_save_modification').attr('class', 'ui positive right labeled icon button');
+        } else {
+            $('#id_btn_save_modification').attr('class', 'ui positive right labeled icon button disabled');
+        }
+    }
+</script>

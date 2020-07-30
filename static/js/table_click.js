@@ -145,7 +145,7 @@ function btn_detail(table) {
             let message = $('<div class="ui message info visible">\n' +
                 '        <div class="ui text">У данного образца нет испытаний!</div>\n' +
                 '    </div>')
-            ajax_get_detail(check_tr[0], message);
+            ajax_get_detail(check_tr[0], message, table);
         }
 }
 

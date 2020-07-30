@@ -21,9 +21,9 @@ class TrialCreate(LoginRequiredMixin, AjaxableResponseMixin, CreateView):
 class TrialList(LoginRequiredMixin, ListView):
     model = Trials
     template_name = 'Trial/trials_list.html'
-    search_filter = {'date_trials': 'date_trials', 'organization': 'sample__organization',
+    search_filter = {'date_trials': 'date_trials', 'organization': 'sample__modification__organization',
                      'marking': 'sample__marking', 'corner_collision': 'corner_collision',
-                     'method': 'sample__method', 'size_particle': 'size_particle',
+                     'method': 'sample__modification__method', 'size_particle': 'size_particle',
                      'speed_collision': 'speed_collision',
                      'material_name': 'sample__sample_material__name',
                      'material_type': 'sample__sample_material__type',
