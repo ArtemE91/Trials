@@ -6,54 +6,134 @@
 <div class="ui orange clearing segment" style="margin-top: 55px;">
     <h3 class="ui dividing header">Испытание образца {{ trials.sample }}</h3>
     <div class="ui list">
+    {% if  trials.size_particle %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Размер частиц:</div>
                 <div class="thirteen wide column">{{ trials.size_particle }}</div>
             </div>
         </div>
+    {% endif %}
+    {% if  trials.speed_collision %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Скорость соударения:</div>
                 <div class="thirteen wide column">{{ trials.speed_collision }}</div>
             </div>
         </div>
+    {% endif %}
+    {% if  trials.add_param %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Дополнительные параметры:</div>
                 <div class="thirteen wide column">{{ trials.add_param }}</div>
             </div>
         </div>
+    {% endif %}
+    {% if  trials.corner_collision %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Угол соударения:</div>
                 <div class="thirteen wide column">{{ trials.corner_collision }}</div>
             </div>
         </div>
+    {% endif %}
+        {% if trials.flow_type %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Тип потока:</div>
+                                <div class="thirteen wide column">{{ trials.flow_type }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if trials.chamber_pressure %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Давление в камере:</div>
+                                <div class="thirteen wide column">{{ trials.chamber_pressure }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if trials.sample_temp %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Температура образца:</div>
+                                <div class="thirteen wide column">{{ trials.sample_temp }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if trials.abrasive_type %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Тип абразива:</div>
+                                <div class="thirteen wide column">{{ trials.abrasive_type }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if trials.air_consumption %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Расход воздуха:</div>
+                                <div class="thirteen wide column">{{ trials.air_consumption }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if trials.abrasive_consumption %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Расход абразива:</div>
+                                <div class="thirteen wide column">{{ trials.abrasive_consumption }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if trials.nozzle_diam %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Диаметр сопла:</div>
+                                <div class="thirteen wide column">{{ trials.nozzle_diam }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if trials.distance_sub %}
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="three wide column">Расстояние от сопла до образца:</div>
+                                <div class="thirteen wide column">{{ trials.distance_sub }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+        {% if trials.date_trials %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Дата начала испытаний:</div>
                 <div class="thirteen wide column">{{ trials.date_trials }}</div>
             </div>
         </div>
+        {% endif %}
+        {% if trials.date_end_trials %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Дата окончания испытаний:</div>
                 <div class="thirteen wide column">{{ trials.date_end_trials }}</div>
             </div>
         </div>
+        {% endif %}
+        {% if trials.type_particle %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Тип частиц:</div>
                 <div class="thirteen wide column">{{ trials.type_particle }}</div>
             </div>
         </div>
+        {% endif  %}
+        {% if trials.description %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Описание:</div>
                 <div class="thirteen wide column">{{ trials.description }}</div>
             </div>
         </div>
+        {% endif %}
         <div class="item">
             <div class="ui grid">
                 <div class="three wide column">Образец:</div>

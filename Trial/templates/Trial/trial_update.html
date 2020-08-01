@@ -24,6 +24,55 @@
             </div>
         </div>
 
+        <div class="three fields">
+            <div class="field">
+                <label for="id_flow_type">Тип потока</label>
+                <input type="text" placeholder="Введите данные" name="flow_type" id="id_flow_type"
+                value="{% if trials.flow_type.value %}{{ trials.flow_type.value }}{% endif %}">
+            </div>
+            <div class="field">
+                <label for="id_chamber_pressure">Давление в камере</label>
+                <input type="text" placeholder="Введите данные" name="chamber_pressure" id="id_chamber_pressure"
+                value="{% if trials.chamber_pressure.value %}{{ trials.chamber_pressure.value }}{% endif %}">
+            </div>
+            <div class="field">
+                <label for="id_sample_temp">Температура образца</label>
+                <input type="text" placeholder="Введите данные" name="sample_temp" id="id_sample_temp"
+                value="{% if trials.sample_temp.value %}{{ trials.sample_temp.value }}{% endif %}">
+            </div>
+        </div>
+
+        <div class="three fields">
+            <div class="field">
+                <label for="id_abrasive_type">Тип абразива</label>
+                <input type="text" placeholder="Введите данные" name="abrasive_type" id="id_abrasive_type"
+                value="{% if trials.abrasive_type.value %}{{ trials.abrasive_type.value }}{% endif %}">
+            </div>
+            <div class="field">
+                <label for="id_air_consumption">Расход воздуха</label>
+                <input type="text" placeholder="Введите данные" name="air_consumption" id="id_air_consumption"
+                value="{% if trials.air_consumption.value %}{{ trials.air_consumption.value }}{% endif %}">
+            </div>
+            <div class="field">
+                <label for="id_abrasive_consumption">Расход абразива</label>
+                <input type="text" placeholder="Введите данные" name="sample_temp" id="id_abrasive_consumption"
+                value="{% if trials.abrasive_consumption.value %}{{ trials.abrasive_consumption.value }}{% endif %}">
+            </div>
+        </div>
+
+        <div class="two fields">
+            <div class="field">
+                <label for="id_nozzle_diam">Диаметр сопла</label>
+                <input type="text" placeholder="Введите данные" name="nozzle_diam" id="id_nozzle_diam"
+                value="{% if trials.nozzle_diam.value %}{{ trials.nozzle_diam.value }}{% endif %}">
+            </div>
+            <div class="field">
+                <label for="id_distance_sub">Расстояние от сопла до образца</label>
+                <input type="text" placeholder="Введите данные" name="distance_sub" id="id_distance_sub"
+                value="{% if trials.distance_sub.value %}{{ trials.distance_sub.value }}{% endif %}">
+            </div>
+        </div>
+
         <div class="two fields">
             <div class="field">
                 <label for="id_type_particle">Тип частиц</label>
