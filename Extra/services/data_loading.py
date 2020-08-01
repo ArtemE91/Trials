@@ -24,7 +24,10 @@ class DataLoading:
             self.author_id = author_id
             self.sample_type = config['sample_type']
             self.sample_material = config['sample_material']
-            self.modification = config['modification']
+            if 'modification' in config:
+                self.modification = config['modification']
+            else:
+                self.modification = None
             self.sample = config['sample']
             self.trial = config['trials']
             self.experiment = config['received_values']
@@ -75,15 +78,16 @@ class DataLoading:
 
     def save_modification(self):
         try:
-            for modification_id in self.modification:
-                self.error_message['block'] = json.dumps(self.modification[modification_id])
-                self.modification[modification_id][self.author] = self.author_id
-                try:
-                    self.data_write['modification'][modification_id] = Modification.objects.get(
-                        **self.modification[modification_id])
-                except ObjectDoesNotExist:
-                    self.data_write['modification'][modification_id] = Modification.objects.create(
-                        **self.modification[modification_id])
+            if self.modification:
+                for modification_id in self.modification:
+                    self.error_message['block'] = json.dumps(self.modification[modification_id])
+                    self.modification[modification_id][self.author] = self.author_id
+                    try:
+                        self.data_write['modification'][modification_id] = Modification.objects.get(
+                            **self.modification[modification_id])
+                    except ObjectDoesNotExist:
+                        self.data_write['modification'][modification_id] = Modification.objects.create(
+                            **self.modification[modification_id])
         except Exception as e:
             raise ValueError(e)
 
