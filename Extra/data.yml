@@ -10,16 +10,18 @@
 #  type:
 #  description:
 #-----------------------------------
+#modification:
+#  method:
+#  exp_param:
+#  depth_coating:
+#  hardness_coating:
+#  organization:
+#  struct_coating:
+#-----------------------------------
 #sample:
-#    method:
-#    exp_param:
 #    date_proc_streng: YYYY-mm-dd
-#    depth_coating:
 #    roughness:
-#    hardness_coating:
-#    struct_coating:
 #    sub_hardness:
-#    organization:
 #    weight:
 #    marking:
 #    description:
@@ -36,6 +38,14 @@
 #  date_end_trials: YYYY-mm-dd
 #  type_particle:
 #  description:
+#  flow_type:
+#  chamber_pressure:
+#  sample_temp:
+#  abrasive_type:
+#  air_consumption:
+#  abrasive_consumption:
+#  nozzle_diam:
+#  distance_sub
 #  sample_id:
 #-----------------------------------
 #received_values:

@@ -6,12 +6,14 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from Sample.models import Sample, SampleMaterial, SampleType
 from Trial.models import Trials, ReceivedValues
+from Modification.models import Modification
 
 
 class DataLoading:
     author = 'author_id'
     data_write = {'sample_type': {},
                   'sample_material': {},
+                  'modification': {},
                   'sample': {},
                   'trials': {},
                   'experiment': {}}
@@ -22,6 +24,7 @@ class DataLoading:
             self.author_id = author_id
             self.sample_type = config['sample_type']
             self.sample_material = config['sample_material']
+            self.modification = config['modification']
             self.sample = config['sample']
             self.trial = config['trials']
             self.experiment = config['received_values']
@@ -35,6 +38,7 @@ class DataLoading:
         try:
             self.save_type()
             self.save_material()
+            self.save_modification()
             self.save_sample()
             self.save_trial()
             self.save_experiment()
@@ -69,6 +73,20 @@ class DataLoading:
         except Exception as e:
             raise ValueError(e)
 
+    def save_modification(self):
+        try:
+            for modification_id in self.modification:
+                self.error_message['block'] = json.dumps(self.modification[modification_id])
+                self.modification[modification_id][self.author] = self.author_id
+                try:
+                    self.data_write['modification'][modification_id] = Modification.objects.get(
+                        **self.modification[modification_id])
+                except ObjectDoesNotExist:
+                    self.data_write['modification'][modification_id] = Modification.objects.create(
+                        **self.modification[modification_id])
+        except Exception as e:
+            raise ValueError(e)
+
     def save_sample(self):
         try:
             for sample_id in self.sample:
@@ -80,6 +98,10 @@ class DataLoading:
 
                 id_type = self.data_write['sample_type'][self.sample[sample_id]['sample_type_id']].id
                 self.sample[sample_id]['sample_type_id'] = id_type
+
+                if 'modification_id' in self.sample[sample_id]:
+                    id_modification = self.data_write['modification'][self.sample[sample_id]['modification_id']].id
+                    self.sample[sample_id]['modification_id'] = id_modification
 
                 if 'image' in self.sample[sample_id]:
                     self.sample[sample_id]['image'] = self.search_image(self.sample[sample_id]['image'])
