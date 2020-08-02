@@ -72,15 +72,89 @@ def calculate_linear_approximation(x, y):
     y_list = [0, p[0]*x[-1]+p[1]]
     return x_list, y_list
 
+
 def group_by_material(trials):
-    ''' Разбиваю QuerySet на список QuerySet-ов с выбранными одинаковыми полями '''
     grouped_trials = []
-    for q in trials:
+    '''Для образцов типа «грибок», у которых не указан способ упрочнения'''
+    gribok_unmodified_trials = trials.filter(sample__sample_type__name='грибок', 
+                                             sample__modification__isnull=True)
+    for q in gribok_unmodified_trials:
         if any([q in sub_qs for sub_qs in grouped_trials]):
             continue
-        filtered_trials = trials.filter(sample__sample_material=q.sample.sample_material, 
-                                        size_particle=q.size_particle, 
-                                        speed_collision=q.speed_collision,
-                                        corner_collision=q.corner_collision)
-        grouped_trials.append(filtered_trials)
+        filtered = gribok_unmodified_trials.filter(sample__sample_type=q.sample.sample_type,
+                                                   sample__sample_material__name=q.sample.sample_material.name,
+                                                   sample__sample_material__type=q.sample.sample_material.type,
+                                                   sample__sub_hardness=q.sample.sub_hardness,
+                                                   size_particle=q.size_particle, 
+                                                   speed_collision=q.speed_collision,
+                                                   corner_collision=q.corner_collision,
+                                                   type_particle=q.type_particle,
+                                                   flow_type=q.flow_type,
+                                                   chamber_pressure=q.chamber_pressure)
+        grouped_trials.append(filtered)
+    trials = trials.exclude(id__in=gribok_unmodified_trials)
+    '''Для образцов типа «грибок», у которых указан способ упрочнения'''
+    gribok_modified_trials = trials.filter(sample__sample_type__name='грибок', 
+                                             sample__modification__isnull=False)
+    for q in gribok_modified_trials:
+        if any([q in sub_qs for sub_qs in grouped_trials]):
+            continue
+        filtered = gribok_modified_trials.filter(sample__sample_type=q.sample.sample_type,
+                                                 sample__sample_material__name=q.sample.sample_material.name,
+                                                 sample__sample_material__type=q.sample.sample_material.type,
+                                                 sample__sub_hardness=q.sample.sub_hardness,
+                                                 sample__modification=q.sample.modification,
+                                                 size_particle=q.size_particle, 
+                                                 speed_collision=q.speed_collision,
+                                                 corner_collision=q.corner_collision,
+                                                 type_particle=q.type_particle,
+                                                 flow_type=q.flow_type,
+                                                 chamber_pressure=q.chamber_pressure)
+        grouped_trials.append(filtered)
+    trials = trials.exclude(id__in=gribok_modified_trials)
+    '''Для образцов типа «диск» или «пластина», у которых не указан способ упрочнения'''
+    disk_plast_unmod_trials = trials.filter(sample__sample_type__name__in=['диск', 'пластина'],
+                                            sample__modification__isnull=True)
+    for q in disk_plast_unmod_trials:
+        if any([q in sub_qs for sub_qs in grouped_trials]):
+            continue
+        filtered = disk_plast_unmod_trials.filter(sample__sample_type=q.sample.sample_type,
+                                 sample__sample_material__name=q.sample.sample_material.name,
+                                 sample__sample_material__type=q.sample.sample_material.type,
+                                 sample__sub_hardness=q.sample.sub_hardness,
+                                 size_particle=q.size_particle,
+                                 speed_collision=q.speed_collision,
+                                 corner_collision=q.corner_collision,
+                                 type_particle=q.type_particle,
+                                 abrasive_type=q.abrasive_type,
+                                 sample_temp=q.sample_temp,
+                                 air_consumption=q.air_consumption,
+                                 abrasive_consumption=q.air_consumption,
+                                 nozzle_diam=q.nozzle_diam,
+                                 distance_sub=q.distance_sub)
+        grouped_trials.append(filtered)
+    trials = trials.exclude(id__in=disk_plast_unmod_trials)
+    '''Для образцов типа «диск» или «пластина», у которых указан способ упрочнения'''
+    disk_plast_modif_trials = trials.filter(sample__sample_type__name__in=['диск', 'пластина'],
+                                            sample__modification__isnull=False)
+    for q in disk_plast_modif_trials:
+        if any([q in sub_qs for sub_qs in grouped_trials]):
+            continue
+        filtered = disk_plast_modif_trials.filter(sample__sample_type=q.sample.sample_type,
+                                                sample__sample_material__name=q.sample.sample_material.name,
+                                                sample__sample_material__type=q.sample.sample_material.type,
+                                                sample__sub_hardness=q.sample.sub_hardness,
+                                                sample__modification=q.sample.modification,
+                                                size_particle=q.size_particle, 
+                                                speed_collision=q.speed_collision,
+                                                corner_collision=q.corner_collision,
+                                                type_particle=q.type_particle,
+                                                sample_temp=q.sample_temp,
+                                                air_consumption=q.air_consumption,
+                                                abrasive_consumption=q.air_consumption,
+                                                abrasive_type=q.abrasive_type,
+                                                nozzle_diam=q.nozzle_diam,
+                                                distance_sub=q.distance_sub)
+        grouped_trials.append(filtered)
+    trials = trials.exclude(id__in=disk_plast_modif_trials)
     return grouped_trials
