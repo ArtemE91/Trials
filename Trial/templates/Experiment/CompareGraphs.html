@@ -59,9 +59,7 @@ function deleteTrace(){
         for (var i = 0; i < plots_info.length; i++){
             let plot = plots_info[i]
             let coordinates = plot['coordinates']
-            let mode = 'lines+markers';
-            if (coordinates.length > 1){ 
-                mode = 'markers'}
+            let mode = 'markers';
             for (var c = 0; c < coordinates.length; c++){
                 let coordinate = coordinates[c];
                 trace = {
@@ -176,23 +174,5 @@ function deleteTrace(){
         })
     }
     ajax_get_list_graph();
-
-
-    // Для изменения цвета необходимо устанавливать аттрибут markers
-        {# let pn = standard_point.pointNumber;#}
-        {#let tn = standard_point.curveNumber;#}
-        {#let colors=[];#}
-        {#let size=[];#}
-        {#console.log(standard_point);#}
-        {#colors = standard_point.fullData.marker.color;#}
-        {#console.log(colors)#}
-        {#size = standard_point.fullData.marker.size;#}
-        {#colors[pn] = '#c54c82';#}
-        {#size[pn] = 10;#}
-        {##}
-        {#var update = {'marker':{color: colors, size: size}};#}
-        {#Plotly.restyle(myPlot, update, [tn]);#}
-
-
     </script>
 {% endblock %}

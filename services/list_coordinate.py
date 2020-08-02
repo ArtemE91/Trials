@@ -7,7 +7,7 @@ import numpy as np
 list = {'data':
     {
      'coordinates': [ (times, weights, name), (times1, weights1, name) ],
-     'poly_trend1': [times, weights, function_str]
+     'poly_trend': [times, weights, function_str]
     },
     {
      'coordinates': [(times, weight, name)]
@@ -28,28 +28,26 @@ def get_list_coordinate(sample_ids: list) -> dict:
             times.insert(0, 0)
             trial_group_info['coordinates'].append((times, weight_loss, str(trial.sample)))
         trials_info.append(trial_group_info)
-        if len(trial_group) > 1:
-            trials_info = add_trend_line_info(trials_info)
+        trials_info = add_trend_line_info(trials_info)
     return {'data': trials_info}
 
 
 def add_trend_line_info(trials_info):
     for trial_group in trials_info:
         coordinates = trial_group['coordinates']
-        if len(coordinates) > 1:
-            union_times = list(sum([c[0] for c in coordinates], []))
-            union_times.sort()
-            union_weights = []
-            time_no_duplicates = sorted(list(set(union_times)))
-            for time in time_no_duplicates:
-                for c in coordinates:
-                    if time in c[0]:
-                        index = c[0].index(time)
-                        weight = c[1][index]
-                        union_weights.append(weight)
-            poly_trend, function = calculate_poly_trend(union_times, union_weights, 3)
-            times = list(dict.fromkeys(union_times))
-            trial_group['poly_trend'] = [times, poly_trend, function]
+        union_times = list(sum([c[0] for c in coordinates], []))
+        union_times.sort()
+        union_weights = []
+        time_no_duplicates = sorted(list(set(union_times)))
+        for time in time_no_duplicates:
+            for c in coordinates:
+                if time in c[0]:
+                    index = c[0].index(time)
+                    weight = c[1][index]
+                    union_weights.append(weight)
+        poly_trend, function = calculate_poly_trend(union_times, union_weights, 3)
+        times = list(dict.fromkeys(union_times))
+        trial_group['poly_trend'] = [times, poly_trend, function]
     return trials_info
 
 
