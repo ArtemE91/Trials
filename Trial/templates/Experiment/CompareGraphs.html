@@ -51,7 +51,15 @@ function deleteTrace(){
 
 
     var myPlot = document.getElementById("myPlot")
-    var layout = { hovermode:'closest', title:'Выбранные эксперименты'};
+    var layout = {hovermode:'closest', 
+                  title:'Выбранные эксперименты', 
+                  xaxis: {title: 
+                    {text: "Изменение времени, мин"}
+                  },
+                  yaxis: {title: 
+                    {text: "Изменение массы, г"}
+                  }
+                 };
 
     var list_trace = []
 
@@ -60,13 +68,15 @@ function deleteTrace(){
             let plot = plots_info[i]
             let coordinates = plot['coordinates']
             let mode = 'markers';
+            let legendgroup = 'группа '+i.toString()
             for (var c = 0; c < coordinates.length; c++){
                 let coordinate = coordinates[c];
                 trace = {
                     'x': coordinate[0],
                     'y': coordinate[1],
                     'name': coordinate[2],
-                    'mode': mode
+                    'mode': mode,
+                    'legendgroup': legendgroup
                 };
                 list_trace.push(trace);
             }
@@ -78,7 +88,8 @@ function deleteTrace(){
                     'x': trend_info[0],
                     'y': trend_info[1],
                     'name': trend_info[2],
-                    'mode': 'lines'
+                    'mode': 'lines',
+                    'legendgroup': legendgroup
                 };
                 list_trace.push(trend_trace);
             }

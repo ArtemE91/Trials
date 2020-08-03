@@ -1,9 +1,9 @@
 from django.urls import path
 from .views import (TrialCreate, TrialList, TrialDetail,
                     TrialUpdate, TrialDelete, ExperimentCreate,
-                    TrialDetailTr,TrialModalDetail, ExperimentList,
-                    ExperimentDelete, ExperimentUpdate, TrialGraph,
-                    TrialTableListView, CompareGraphsTemplate, AjaxCompareGraphs)
+                    TrialDetailTr, TrialModalDetail, ExperimentList,
+                    ExperimentDelete, ExperimentUpdate, TrialTableListView,
+                    CompareGraphsTemplate, AjaxCompareGraphs)
 
 app_name = 'trial'
 urlpatterns = [
@@ -13,8 +13,6 @@ urlpatterns = [
     path('<int:pk>/create_experiment/', ExperimentCreate.as_view(), name='create_experiment'),
     path('<int:pk>/experement_list/', ExperimentList.as_view(), name='list_experiment'),
     path('<int:pk>/delete/', TrialDelete.as_view(), name='delete'),
-    path('<int:pk>/get_graph/', TrialGraph.as_view(), name='get_graph'),
-    # path('copmpare_graphs/', compare_graphs, name='compare_graphs'),
     path('copmpare_graphs/', CompareGraphsTemplate.as_view(), name='compare_graphs'),
     path('copmpare_graphs/list/', AjaxCompareGraphs.as_view(), name='compare_graphs_list'),
     path('<int:pk>/update/', TrialUpdate.as_view(), name='update'),
