@@ -3,33 +3,59 @@ from Trial.models import Trials
 import numpy as np
 
 
-""" 
-list = {'data':
-    {
-     'coordinates': [ (times, weights, name), (times1, weights1, name) ],
-     'poly_trend': [times, weights, function_str]
-    },
-    {
-     'coordinates': [(times, weight, name)]
-    }
-}
-"""
 def get_list_coordinate(sample_ids: list) -> dict:
     related_trials = Trials.objects.filter(sample__pk__in=sample_ids)
     grouped_trials = group_by_material(related_trials)
     trials_info = []
     for trial_group in grouped_trials:
-        trial_group_info = {'coordinates': []}
+        trial_group_info = {'traces': [], 'trend_lines': []}
         for trial in trial_group:
-            related_experiments = trial.trials_values.all().order_by('time_trials')
-            weight_loss = [round(trial.sample.weight - experiment.change_weight, 5) for experiment in related_experiments]
-            weight_loss.insert(0, 0)
-            times = [experiment.time_trials for experiment in related_experiments]
-            times.insert(0, 0)
-            trial_group_info['coordinates'].append((times, weight_loss, str(trial.sample)))
+            trial_group_info['traces'].append(create_plot(trial))
+        trial_group_info['trend_lines'].append(get_trend_plots(trial_group_info['traces']))
         trials_info.append(trial_group_info)
-        trials_info = add_trend_line_info(trials_info)
-    return {'data': trials_info}
+    all_traces = []
+    for ti in trials_info:
+        all_traces += ti['traces']
+        all_traces += ti['trend_lines']
+    return {'traces': all_traces}
+
+
+def create_plot(trial):
+    related_experiments = trial.trials_values.all().order_by('time_trials')
+    weight_loss = [round(trial.sample.weight - experiment.change_weight, 5)
+                   for experiment in related_experiments]
+    weight_loss.insert(0, 0)
+    times = [experiment.time_trials for experiment in related_experiments]
+    times.insert(0, 0)
+    trace = {
+        'x': times,
+        'y': weight_loss,
+        'name': str(trial.sample),
+        'mode': 'markers',
+    }
+    return trace
+
+
+def get_trend_plots(traces):
+    union_times = list(sum([trace['x'] for trace in traces], []))
+    union_times.sort()
+    time_no_duplicates = sorted(list(set(union_times)))
+    union_weights = []
+    for time in time_no_duplicates:
+        for trace in traces:
+            if time in trace['x']:
+                index = trace['x'].index(time)
+                weight = trace['y'][index]
+                union_weights.append(weight)
+    poly_trend, function = calculate_poly_trend(union_times, union_weights, 3)
+    times = list(dict.fromkeys(union_times))
+    trend_trace = {
+        'x': times,
+        'y': poly_trend,
+        'mode': 'lines',
+        'name': function
+        }
+    return trend_trace
 
 
 def add_trend_line_info(trials_info):
@@ -73,6 +99,8 @@ def calculate_linear_approximation(x, y):
 
 def group_by_material(trials):
     grouped_trials = []
+    if len(trials) == 1:
+        return [trials]
     '''Для образцов типа «грибок», у которых не указан способ упрочнения'''
     gribok_unmodified_trials = trials.filter(sample__sample_type__name='грибок', 
                                              sample__modification__isnull=True)

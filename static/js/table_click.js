@@ -252,10 +252,9 @@ function ajax_get_detail_tr_all(id, table){
             success: function (response) {
                 $('#' + main_field[table]['modal_detail']).remove(); // Удаляем модальное окно из кеша
                 let modal = $(response);
-                if ('data' in graph[0]){ // Если есть график то добавляем его
-                    forming_data(graph[0]['data']);
+                if ('traces' in graph[0]){ // Если есть график то добавляем его
                     myPlot=modal.find('#id_graph')[0]
-                    Plotly.newPlot(myPlot, list_trace, layout)
+                    Plotly.newPlot(myPlot, graph[0]['traces'], layout)
                 } else { // Если нет то сообщение
                     modal.find('#id_graph').append(graph);
                 }
@@ -265,7 +264,6 @@ function ajax_get_detail_tr_all(id, table){
         });
     }
 
-    var list_trace=[]
     var layout = {hovermode:'closest', 
                 //   xaxis: {title: 
                 //     {text: "Изменение времени, мин"},
@@ -278,37 +276,6 @@ function ajax_get_detail_tr_all(id, table){
                             bordercolor: '#FFFFFF',
                             borderwidth: 2}
                  };
-    function forming_data(plots_info){
-        for (var i = 0; i < plots_info.length; i++){
-            let plot = plots_info[i]
-            let coordinates = plot['coordinates']
-            let mode = 'markers';
-            let legendgroup = 'группа '+i.toString()
-            for (var c = 0; c < coordinates.length; c++){
-                let coordinate = coordinates[c];
-                trace = {
-                    'x': coordinate[0],
-                    'y': coordinate[1],
-                    'name': coordinate[2],
-                    'mode': mode,
-                    'legendgroup': legendgroup
-                };
-                list_trace.push(trace);
-            }
-            
-            let trend_name = 'poly_trend';
-            if (trend_name in plot){
-                trend_info = plot[trend_name];
-                trend_trace = {
-                    'x': trend_info[0],
-                    'y': trend_info[1],
-                    'name': trend_info[2],
-                    'mode': 'lines',
-                    'legendgroup': legendgroup
-                };
-                list_trace.push(trend_trace);
-            }
-        }
-    }
+
 
 
