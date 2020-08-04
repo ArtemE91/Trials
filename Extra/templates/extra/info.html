@@ -55,32 +55,43 @@
         </div>
 
         <h3 class="ui dividing header">Блоки</h3>
-        <p>Файл конфигурации состоит из 5 блоков. Все блоки <b>обязательны</b> для заполнения.</p>
+        <p>Файл конфигурации состоит из 6 блоков.</p>
         <table class="ui celled table">
           <thead>
             <tr><th>Название блока</th>
             <th>Описание</th>
+            <th>Обязательный</th>
           </tr></thead>
           <tbody>
             <tr>
               <td>sample_type</td>
               <td>Тип образца</td>
+              <td class="green">Да</td>
             </tr>
             <tr>
               <td>sample_material</td>
               <td>Материал из которого изготовлен образец</td>
+              <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>modification</td>
+              <td>Информация по упрочнению</td>
+              <td class="red">Нет</td>
             </tr>
             <tr>
               <td>sample</td>
               <td>Информация по образцу</td>
+              <td class="green">Да</td>
             </tr>
             <tr>
               <td>trials</td>
               <td>Информация по испытанию</td>
+              <td class="green">Да</td>
             </tr>
             <tr>
               <td>received_values</td>
               <td>Информация по эксперементу</td>
+              <td class="green">Да</td>
             </tr>
           </tbody>
         </table>
@@ -198,7 +209,7 @@
           </tbody>
         </table>
 
-        <b><p>sample</p></b>
+        <b><p>modification</p></b>
         <table class="ui celled table">
           <thead>
             <tr><th>Название аттрибута</th>
@@ -220,21 +231,9 @@
               <td class="red">Нет</td>
             </tr>
             <tr>
-              <td>date_proc_streng</td>
-              <td>дата</td>
-              <td>Дата процесса упрочнения</td>
-              <td class="red">Нет</td>
-            </tr>
-            <tr>
               <td>depth_coating</td>
               <td>число с плавающей точкой</td>
               <td>Толщина упрочнения</td>
-              <td class="red">Нет</td>
-            </tr>
-            <tr>
-              <td>roughness</td>
-              <td>число с плавающей точкой</td>
-              <td>Шероховатость поверхности</td>
               <td class="red">Нет</td>
             </tr>
             <tr>
@@ -244,21 +243,45 @@
               <td class="red">Нет</td>
             </tr>
             <tr>
+              <td>organization</td>
+              <td>строка</td>
+              <td>Организация, которая провела упрочнение</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
               <td>struct_coating</td>
               <td>строка</td>
               <td>Состав покрытия</td>
+              <td class="red">Нет</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <b><p>sample</p></b>
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Название аттрибута</th>
+            <th>Тип</th>
+            <th>Описание</th>
+            <th>Обязательный</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>date_proc_streng</td>
+              <td>дата</td>
+              <td>Дата процесса упрочнения</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>roughness</td>
+              <td>число с плавающей точкой</td>
+              <td>Шероховатость поверхности</td>
               <td class="red">Нет</td>
             </tr>
             <tr>
               <td>sub_hardness</td>
               <td>число с плавающей точкой</td>
               <td>Твердость подложки</td>
-              <td class="red">Нет</td>
-            </tr>
-            <tr>
-              <td>organization</td>
-              <td>строка</td>
-              <td>Организация, которая провела упрочнение</td>
               <td class="red">Нет</td>
             </tr>
             <tr>
@@ -308,6 +331,12 @@
               <td>число</td>
               <td>id объекта из блока type_material</td>
               <td class="green">Да</td>
+            </tr>
+            <tr>
+              <td>modification_id</td>
+              <td>число</td>
+              <td>id объекта из блока modification</td>
+              <td class="red">Нет</td>
             </tr>
           </tbody>
         </table>
@@ -370,6 +399,54 @@
               <td class="red">Нет</td>
             </tr>
             <tr>
+              <td>flow_type</td>
+              <td>строка</td>
+              <td>Тип потока</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>chamber_pressure</td>
+              <td>строка</td>
+              <td>Давление в камере</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>sample_temp</td>
+              <td>строка</td>
+              <td>Температура образца</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>abrasive_type</td>
+              <td>строка</td>
+              <td>Тип абразива</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>air_consumption</td>
+              <td>строка</td>
+              <td>Расход воздуха</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>abrasive_consumption</td>
+              <td>строка</td>
+              <td>Расход абразива</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>nozzle_diam</td>
+              <td>строка</td>
+              <td>Диаметр сопла</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
+              <td>distance_sub</td>
+              <td>строка</td>
+              <td>Расстояние от сопла до образца</td>
+              <td class="red">Нет</td>
+            </tr>
+            <tr>
               <td>sample_id</td>
               <td>число</td>
               <td>id объекта из блока sample</td>
@@ -419,7 +496,7 @@
 
         <div class="ui message">
 
-            <span class="ui green text">sample_type:</span>
+            <b><span class="ui green text">sample_type:</span></b>
             <br>
             <span class="ui green text" style="margin-left: 15px;">1:</span>
             <br>
@@ -429,7 +506,7 @@
             <br>
 
 
-            <span class="ui green text">sample_material:</span>
+            <b><span class="ui green text">sample_material:</span></b>
             <br>
             <span class="ui green text" style="margin-left: 15px;">1:</span>
             <br>
@@ -441,6 +518,15 @@
             <br>
             <span class="ui green text" style="margin-left: 30px;">description:</span>
             <span class="ui teal text" style="margin-left: 5px;">'Горячекатаный пруток, изготовление токарное, сталь по ГОСТ'</span>
+            <br>
+            <br>
+
+            <b><span class="ui green text">modification:</span></b>
+            <br>
+            <span class="ui green text" style="margin-left: 15px;">1:</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">method:</span>
+            <span class="ui teal text" style="margin-left: 5px;">'азотирование'</span>
             <br>
             <br>
 
@@ -468,6 +554,9 @@
             <span class="ui blue text" style="margin-left: 5px;">1</span>
             <br>
             <span class="ui green text" style="margin-left: 30px;">sample_type_id:</span>
+            <span class="ui blue text" style="margin-left: 5px;">1</span>
+            <br>
+            <span class="ui green text" style="margin-left: 30px;">modification_id:</span>
             <span class="ui blue text" style="margin-left: 5px;">1</span>
             <br>
 
@@ -500,7 +589,7 @@
             <br>
 
 
-            <span class="ui green text">trials:</span>
+            <b><span class="ui green text">trials:</span></b>
             <br>
             <span class="ui green text" style="margin-left: 15px;">1:</span>
             <br>
@@ -552,7 +641,7 @@
             <br>
 
 
-            <span class="ui green text">received_values:</span>
+            <b><span class="ui green text">received_values:</span></b>
             <br>
             <span class="ui green text" style="margin-left: 15px;">1:</span>
             <br>
