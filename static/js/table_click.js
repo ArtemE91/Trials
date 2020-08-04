@@ -134,13 +134,17 @@ function btn_detail(table) {
     $('#id_segment_select_table').append(dimmer);
         let id_tr = main_field[table]['tr'] + check_tr[0];
         let trial_id = ''
+        let sample_id = ''
         if (table === 'sample_table_select') {
             trial_id = $('#' + id_tr).attr('name').slice('id_trials_'.length);
+            sample_id = check_tr[0]
         } else {
+
+            sample_id = $('#' + id_tr).attr('name').slice('id_sample_'.length);
             trial_id = check_tr[0]
         }
         if (trial_id){
-            ajax_get_graph(trial_id, check_tr[0], table);
+            ajax_get_graph(trial_id, sample_id, table);
         }else {
             let message = $('<div class="ui message info visible">\n' +
                 '        <div class="ui text">У данного образца нет испытаний!</div>\n' +
@@ -248,9 +252,13 @@ function ajax_get_detail_tr_all(id, table){
             success: function (response) {
                 $('#' + main_field[table]['modal_detail']).remove(); // Удаляем модальное окно из кеша
                 let modal = $(response);
-                forming_data(graph[0]['data']);
-                myPlot=modal.find('#id_graph')[0]
-                Plotly.newPlot(myPlot, list_trace, layout)
+                if ('data' in graph[0]){ // Если есть график то добавляем его
+                    forming_data(graph[0]['data']);
+                    myPlot=modal.find('#id_graph')[0]
+                    Plotly.newPlot(myPlot, list_trace, layout)
+                } else { // Если нет то сообщение
+                    modal.find('#id_graph').append(graph);
+                }
                 modal.modal('show');
                 $('#id_dimmer').remove()
             }

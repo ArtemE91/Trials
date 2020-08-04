@@ -10,17 +10,17 @@
             <div class="field">
                 <label for="id_size_particle">Размер частицы</label>
                 <input type="text" placeholder="Введите данные" name="size_particle" id="id_size_particle"
-                value="{% if trials.size_particle.value %}{{ trials.size_particle.value }}{% endif %}">
+                value="{% if trials.size_particle %}{{ trials.size_particle }}{% endif %}">
             </div>
             <div class="field">
                 <label for="id_speed_collision">Cкорость соударения</label>
                 <input type="text" placeholder="Введите данные" name="speed_collision" id="id_speed_collision"
-                value="{% if trials.speed_collision.value %}{{ trials.speed_collision.value }}{% endif %}">
+                value="{% if trials.speed_collision %}{{ trials.speed_collision }}{% endif %}">
             </div>
             <div class="field">
                 <label for="id_corner_collision">Угол соударения</label>
                 <input type="text" placeholder="Введите данные" name="corner_collision" id="id_corner_collision"
-                value="{% if trials.corner_collision.value %}{{ trials.corner_collision.value }}{% endif %}">
+                value="{% if trials.corner_collision %}{{ trials.corner_collision }}{% endif %}">
             </div>
         </div>
 
@@ -28,7 +28,7 @@
             <div class="field">
                 <label for="id_flow_type">Тип потока</label>
                 <input type="text" placeholder="Введите данные" name="flow_type" id="id_flow_type"
-                value="{% if trials.flow_type.value %}{{ trials.flow_type.value }}{% endif %}">
+                value="{% if trials.flow_type %}{{ trials.flow_type }}{% endif %}">
             </div>
             <div class="field">
                 <label for="id_chamber_pressure">Давление в камере</label>
@@ -38,7 +38,7 @@
             <div class="field">
                 <label for="id_sample_temp">Температура образца</label>
                 <input type="text" placeholder="Введите данные" name="sample_temp" id="id_sample_temp"
-                value="{% if trials.sample_temp.value %}{{ trials.sample_temp.value }}{% endif %}">
+                value="{% if trials.sample_temp %}{{ trials.sample_temp }}{% endif %}">
             </div>
         </div>
 
@@ -46,17 +46,17 @@
             <div class="field">
                 <label for="id_abrasive_type">Тип абразива</label>
                 <input type="text" placeholder="Введите данные" name="abrasive_type" id="id_abrasive_type"
-                value="{% if trials.abrasive_type.value %}{{ trials.abrasive_type.value }}{% endif %}">
+                value="{% if trials.abrasive_type %}{{ trials.abrasive_type }}{% endif %}">
             </div>
             <div class="field">
                 <label for="id_air_consumption">Расход воздуха</label>
                 <input type="text" placeholder="Введите данные" name="air_consumption" id="id_air_consumption"
-                value="{% if trials.air_consumption.value %}{{ trials.air_consumption.value }}{% endif %}">
+                value="{% if trials.air_consumption %}{{ trials.air_consumption }}{% endif %}">
             </div>
             <div class="field">
                 <label for="id_abrasive_consumption">Расход абразива</label>
-                <input type="text" placeholder="Введите данные" name="sample_temp" id="id_abrasive_consumption"
-                value="{% if trials.abrasive_consumption.value %}{{ trials.abrasive_consumption.value }}{% endif %}">
+                <input type="text" placeholder="Введите данные" name="abrasive_consumption" id="id_abrasive_consumption"
+                value="{% if trials.abrasive_consumption %}{{ trials.abrasive_consumption }}{% endif %}">
             </div>
         </div>
 
@@ -64,12 +64,12 @@
             <div class="field">
                 <label for="id_nozzle_diam">Диаметр сопла</label>
                 <input type="text" placeholder="Введите данные" name="nozzle_diam" id="id_nozzle_diam"
-                value="{% if trials.nozzle_diam.value %}{{ trials.nozzle_diam.value }}{% endif %}">
+                value="{% if trials.nozzle_diam %}{{ trials.nozzle_diam }}{% endif %}">
             </div>
             <div class="field">
                 <label for="id_distance_sub">Расстояние от сопла до образца</label>
                 <input type="text" placeholder="Введите данные" name="distance_sub" id="id_distance_sub"
-                value="{% if trials.distance_sub.value %}{{ trials.distance_sub.value }}{% endif %}">
+                value="{% if trials.distance_sub %}{{ trials.distance_sub }}{% endif %}">
             </div>
         </div>
 
@@ -77,12 +77,12 @@
             <div class="field">
                 <label for="id_type_particle">Тип частиц</label>
                 <input type="text" placeholder="Введите данные" name="type_particle" id="id_type_particle"
-                value="{% if trials.type_particle.value %}{{ trials.type_particle.value }}{% endif %}">
+                value="{% if trials.type_particle %}{{ trials.type_particle }}{% endif %}">
             </div>
             <div class="field">
                 <label for="id_add_param">Параметры</label>
                 <input type="text" placeholder="Введите данные" name="add_param" id="id_add_param"
-                value="{% if trials.add_param.value %}{{ trials.add_param.value }}{% endif %}">
+                value="{% if trials.add_param %}{{ trials.add_param }}{% endif %}">
             </div>
         </div>
 
@@ -93,7 +93,7 @@
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
                         <input type="text" placeholder="Выберите дату" name="date_trials" id="id_date_trials"
-                        value="{% if trials.date_trials.value %}{{ trials.date_trials.value }}{% endif %}">
+                        value="{% if trials.date_trials %}{{ trials.date_trials }}{% endif %}">
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
                         <input type="text" placeholder="Выберите дату" name="date_end_trials" id="id_date_end_trials"
-                        value="{% if trials.date_end_trials.value %}{{ trials.date_end_trials.value }}{% endif %}">
+                        value="{% if trials.date_end_trials %}{{ trials.date_end_trials }}{% endif %}">
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
 
         <div class="field">
             <label for="id_description">Описание параметров работы стенда</label>
-            <textarea type="text" placeholder="" name="description" id="id_description">{% if trials.description.value %}{{ trials.description.value }}{% endif %}
+            <textarea type="text" placeholder="" name="description" id="id_description">{% if trials.description %}{{ trials.description }}{% endif %}
             </textarea>
         </div>
 
