@@ -127,7 +127,7 @@ def group_by_material(trials):
                                  abrasive_type=q.abrasive_type,
                                  sample_temp=q.sample_temp,
                                  air_consumption=q.air_consumption,
-                                 abrasive_consumption=q.air_consumption,
+                                 abrasive_consumption=q.abrasive_consumption,
                                  nozzle_diam=q.nozzle_diam,
                                  distance_sub=q.distance_sub)
         grouped_trials.append(filtered)
@@ -149,7 +149,7 @@ def group_by_material(trials):
                                                 type_particle=q.type_particle,
                                                 sample_temp=q.sample_temp,
                                                 air_consumption=q.air_consumption,
-                                                abrasive_consumption=q.air_consumption,
+                                                abrasive_consumption=q.abrasive_consumption,
                                                 abrasive_type=q.abrasive_type,
                                                 nozzle_diam=q.nozzle_diam,
                                                 distance_sub=q.distance_sub)
