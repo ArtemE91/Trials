@@ -10,9 +10,12 @@ def get_list_coordinate(sample_ids: list) -> dict:
     for trial_group in grouped_trials:
         trial_group_info = {'traces': [], 'trend_lines': []}
         for trial in trial_group:
-            trial_group_info['traces'].append(create_plot(trial))
-        trial_group_info['trend_lines'].append(get_trend_plots(trial_group_info['traces']))
-        trials_info.append(trial_group_info)
+            trace = create_trace(trial)
+            if trace:
+                trial_group_info['traces'].append(trace)
+        if trial_group_info['traces']:
+            trial_group_info['trend_lines'].append(get_trend_traces(trial_group_info['traces']))
+            trials_info.append(trial_group_info)
     all_traces = []
     for ti in trials_info:
         all_traces += ti['traces']
@@ -20,8 +23,10 @@ def get_list_coordinate(sample_ids: list) -> dict:
     return {'traces': all_traces}
 
 
-def create_plot(trial):
+def create_trace(trial):
     related_experiments = trial.trials_values.all().order_by('time_trials')
+    if not related_experiments:
+        return {}
     weight_loss = [round(trial.sample.weight - experiment.change_weight, 5)
                    for experiment in related_experiments]
     weight_loss.insert(0, 0)
@@ -36,7 +41,7 @@ def create_plot(trial):
     return trace
 
 
-def get_trend_plots(traces):
+def get_trend_traces(traces):
     union_times = list(sum([trace['x'] for trace in traces], []))
     union_times.sort()
     time_no_duplicates = sorted(list(set(union_times)))

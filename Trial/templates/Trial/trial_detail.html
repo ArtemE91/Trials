@@ -140,14 +140,7 @@
                 <div class="thirteen wide column">{{ trials.sample }}</div>
             </div>
         </div>
-        <div class="content">
-            <div style="width:600px;height:500px">
-                {% if plot_div %}
-                    {{ plot_div|safe }}
-                {% endif %}
-            </div>
-        </div>
-
+        <div id="myPlot" style="width: 100%; height: 100%;"></div>
         <div class="ui aligned grid">
             <div class="right aligned sixteen wide column">
                 <form action="{% url 'trial:update' trials.pk %}">
@@ -236,6 +229,7 @@ $(document).ready(function() {
         $('#experiments_table').DataTable({
             order: [[ 1, "asc" ]]
         });
+        draw_graph();
     });
 
 var token = '{{csrf_token}}';
@@ -254,6 +248,20 @@ function show_update_experiment_modal(checked_experement_pk){
             $(data).modal().modal('show');
         }
     })
+};
+
+function draw_graph(){
+    let layout = {hovermode:'closest', 
+                  xaxis: {title: 
+                    {text: "Изменение времени, мин"}
+                  },
+                  yaxis: {title: 
+                    {text: "Изменение массы, г"}
+                  }
+                 };
+    let myPlot = document.getElementById("myPlot");
+    let listTrace = {{ traces|safe }};
+    Plotly.newPlot(myPlot, listTrace, layout);
 };
 
 function show_save_experiment_modal(checked_experement_pk){

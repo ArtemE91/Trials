@@ -59,10 +59,8 @@ class TrialDetail(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        sample_weight = self.object.sample.weight
-        weight_loss = [sample_weight-experiment.change_weight for experiment in context['trials'].experiments]
-        times = [experiment.time_trials for experiment in context['trials'].experiments]
-        context['plot_div'] = figure(times, weight_loss)
+        sample_id = self.object.sample.id
+        context['traces'] = get_list_coordinate([sample_id])['traces']
         return context
 
     def get_object(self):
