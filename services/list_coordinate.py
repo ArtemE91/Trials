@@ -14,13 +14,15 @@ def get_list_coordinate(sample_ids: list) -> dict:
             if trace:
                 trial_group_info['traces'].append(trace)
         if trial_group_info['traces']:
-            trial_group_info['trend_lines'].append(get_trend_traces(trial_group_info['traces']))
+            trial_group_info['trend_lines'] = get_trend_traces(trial_group_info['traces'])
             trials_info.append(trial_group_info)
     all_traces = []
+    trend_ids = []
     for ti in trials_info:
         all_traces += ti['traces']
+        trend_ids.append(list(range(len(all_traces), len(all_traces)+len(ti['trend_lines']))))
         all_traces += ti['trend_lines']
-    return {'traces': all_traces}
+    return {'traces': all_traces, 'trend_ids': group_trend_ids(trend_ids)}
 
 
 def create_trace(trial):
@@ -52,47 +54,36 @@ def get_trend_traces(traces):
                 index = trace['x'].index(time)
                 weight = trace['y'][index]
                 union_weights.append(weight)
-    poly_trend, function = calculate_poly_trend(union_times, union_weights, 3)
-    times = list(dict.fromkeys(union_times))
-    trend_trace = {
-        'x': times,
-        'y': poly_trend,
-        'mode': 'lines',
-        'name': function
-        }
-    return trend_trace
-
-
-def add_trend_line_info(trials_info):
-    for trial_group in trials_info:
-        coordinates = trial_group['coordinates']
-        union_times = list(sum([c[0] for c in coordinates], []))
-        union_times.sort()
-        union_weights = []
-        time_no_duplicates = sorted(list(set(union_times)))
-        for time in time_no_duplicates:
-            for c in coordinates:
-                if time in c[0]:
-                    index = c[0].index(time)
-                    weight = c[1][index]
-                    union_weights.append(weight)
-        poly_trend, function = calculate_poly_trend(union_times, union_weights, 3)
+    trend_traces = []            
+    for deg in [3, 2, 1]:
+        poly_trend, function_name, function_equation = calculate_poly_trend(union_times, union_weights, deg)
         times = list(dict.fromkeys(union_times))
-        trial_group['poly_trend'] = [times, poly_trend, function]
-    return trials_info
+        trend_trace = {
+            'x': times,
+            'y': poly_trend,
+            'mode': 'lines',
+            'name': function_name,
+            'text': function_equation
+            }
+        trend_traces.append(trend_trace)
+    return trend_traces
 
 
 def calculate_poly_trend(x, y, deg=2):
     p = np.polyfit(x, y, deg)
     x = list(dict.fromkeys(x))
-    if deg == 1:
-        x = [0, x[-1]]
-        return [p[0]*x+p[1] for x in x], 'Полином 1 степени' #f'{p[0]}*x+{p[1]}'
-    if deg == 2:
-        return [p[0]*x**2+p[1]*x+p[2] for x in x], 'Полином 2 степени' #f'{p[0]}*x^2+{p[1]}*x+{p[2]}'
-    if deg == 3:
-        return [p[0]*x**3+p[1]*x**2+p[2]*x+p[3] for x in x], "Полином 3 степени" #f'{p[0]}*x^3+{p[1]}*x^2+{p[2]}*x+{p[3]}'
+    function_name = f'Полином {deg} степени'
+    trend_values = [np.polyval(p, i) for i in x]
+    return trend_values, function_name, str(np.poly1d(p))
 
+
+def group_trend_ids(trend_ids):
+    trends_count = len(trend_ids[0])
+    grouped = []
+    for i in range(trends_count):
+        group = [l[i] for l in trend_ids]
+        grouped.append(group)
+    return grouped
 
 def calculate_linear_approximation(x, y):
     p = np.polyfit(x, y, 1)

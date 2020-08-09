@@ -14,7 +14,11 @@
         <div class='ui segment'>
             <button class="ui labeled icon button" onclick="deleteTrace()">
                 <i class="eraser icon"></i>
-                Удалить
+                Удалить касательную
+            </button>
+            <button class="ui labeled icon button" onclick="changePolynome()">
+                <i class="shekel sign icon"></i>
+                Другой полином
             </button>
         </div>
 
@@ -62,10 +66,12 @@ function deleteTrace(){
                  };
 
     var list_trace = []
+    var trend_ids;
+    var showed_trend_group = 0;
 
     function point_comparison(standard_point){
         // Перебираем элементы и получаем y в точке x_standard_point только не эталоных элементов
-        // Затем производим расчеты по полученным y с y_standard_point
+        // Затем производ с y_standard_point
         let answer = {'header': '', 'body': ''}
         let y_other_point = {}
         for (let trace of list_trace){
@@ -141,8 +147,10 @@ function deleteTrace(){
                     $('.ui.negative.message').attr('style', '');
                 }
                 else {
-                    list_trace = response['traces']
-                    Plotly.newPlot(myPlot, list_trace, layout)
+                    list_trace = response['traces'];
+                    trend_ids = response['trend_ids']
+                    Plotly.newPlot(myPlot, list_trace, layout);
+                    showTrendGroup(showed_trend_group);
                     myPlot.on('plotly_click', function (data) {
                         clickHandler(data.points[0]);
                     });
@@ -151,5 +159,26 @@ function deleteTrace(){
         })
     }
     ajax_get_list_graph();
+
+    function showTrendGroup(group_id){        // group_id индекс группы которая будет отображаться
+        let update_unvisible = {'visible': false};
+        let update_visible = {'visible': true};
+        for (i=0; i<trend_ids.length; i++){
+            if (i==showed_trend_group){
+                Plotly.restyle(myPlot, update_visible, trend_ids[i]);
+                continue;
+            };
+            Plotly.restyle(myPlot, update_unvisible, trend_ids[i])
+        }
+    };
+
+    function changePolynome(){
+        showed_trend_group +=1;
+        if (showed_trend_group==trend_ids.length){
+            showed_trend_group=0;
+        };
+        showTrendGroup(showed_trend_group);
+    };
+
     </script>
 {% endblock %}
