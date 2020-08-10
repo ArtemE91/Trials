@@ -44,10 +44,48 @@
         <div class="ui aligned grid">
             <div class="right aligned sixteen wide column">
                 <button type="submit" class="ui button orange">Сохранить</button>
-                <button class='ui red button' formaction="{% url 'modification:delete' object.pk %}" type="submit" value="DELETE">Удалить</button>
+                <div id="id_delete_modification" class='ui red button'>Удалить</div>
             </div>
         </div>
 
 </div>
 </form>
+
+<div class="ui modal delete modification">
+  <i class="close icon"></i>
+  <div class="header">
+    Удалить упрочнение {{ object.method }}
+  </div>
+  <div class="content">
+    <div class="description">
+      <p>Вы уверены что хотите удалить это упрочнение?</p>
+    </div>
+  </div>
+  <div class="actions">
+      <form method="post" action="{% url 'modification:delete' object.pk %}">
+      {% csrf_token %}
+      <div class="ui aligned grid">
+            <div class="right aligned sixteen wide column">
+                <div class="ui negative button">
+                    Нет
+                </div>
+                <button type="submit" class="ui positive button right labeled icon">
+                    Да
+                <i class="checkmark icon"></i>
+                </button>
+            </div>
+        </div>
+      </form>
+  </div>
+</div>
 {% endblock %}
+
+{% block scripts %}
+<script>
+
+$('#id_delete_modification').on('click', function () {
+    $('.ui.modal.delete.modification').
+        modal('show');
+});
+</script>
+{% endblock scripts %}
