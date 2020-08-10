@@ -1,3 +1,5 @@
+{% load round %}
+
 {% for experiment in object_list %}
 <tr id='{{ experiment.pk }}'>
     <td>{{ experiment.change_weight }}</td>

@@ -4,7 +4,20 @@
 <form method="post" class="ui form" style="margin-top: 3%;" enctype="multipart/form-data">
 {% csrf_token %}
     <div class="ui orange segment" id="segment_create_sample">
-        <h3 class="ui dividing header">Информация по упрочнению</h3>
+        <h3 class="ui dividing header">Информация по упрочнению
+            {% if sample.sample_material.name %}
+            {{ sample.sample_material.name }}
+            {% endif %}
+            {% if sample.sample_material.type %}
+                {{ sample.sample_material.type }}
+            {% endif %}
+            {% if sample.modification.method %}
+                {{ sample.modification.method }}
+            {% endif %}
+            {% if sample.marking %}
+                {{ sample.marking }}
+            {% endif %}
+        </h3>
         <div class="field">
 
             <div class="field" id="id_block_modification">
@@ -116,16 +129,63 @@
         <div class="ui aligned grid">
             <div class="right aligned sixteen wide column">
                 <button type="submit" class="ui button orange">Сохранить</button>
-                <button class='ui red button' formaction="{% url 'sample:delete' sample.pk %}" type="submit" value="DELETE">Удалить</button>
+                <div id="id_delete_sample" class='ui red button'>Удалить</div>
             </div>
         </div>
 
 </div>
+
 </form>
+
+<div class="ui modal delete sample">
+  <i class="close icon"></i>
+  <div class="header">
+    Удалить образец
+      {% if sample.sample_material.name %}
+            {{ sample.sample_material.name }}
+            {% endif %}
+            {% if sample.sample_material.type %}
+                {{ sample.sample_material.type }}
+            {% endif %}
+            {% if sample.modification.method %}
+                {{ sample.modification.method }}
+            {% endif %}
+            {% if sample.marking %}
+                {{ sample.marking }}
+            {% endif %}
+  </div>
+  <div class="content">
+    <div class="description">
+      <p>Вы уверены что хотите удалить этот образец?</p>
+    </div>
+  </div>
+  <div class="actions">
+      <form method="post" action="{% url 'sample:delete' sample.pk %}">
+      {% csrf_token %}
+      <div class="ui aligned grid">
+            <div class="right aligned sixteen wide column">
+                <div class="ui negative button">
+                    Нет
+                </div>
+                <button type="submit" class="ui positive button right labeled icon">
+                    Да
+                <i class="checkmark icon"></i>
+                </button>
+            </div>
+        </div>
+      </form>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+
+$('#id_delete_sample').on('click', function () {
+    $('.ui.modal.delete.sample').
+        modal('show');
+});
+
 $('.ui.form')
     .form({
         on: 'blur',
