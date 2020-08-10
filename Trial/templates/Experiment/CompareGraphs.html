@@ -99,8 +99,19 @@ function deleteTrace(){
     }
 
     var tangentCount = 0
-    var tangent_trace = {x: [], y :[], type: 'scatter', mode: 'lines', showlegend: false,
-                          line: {width: 4}};
+    var tangent_trace = {x: [], 
+                         y :[], 
+                         type: 'scatter', 
+                         mode: 'lines+text', 
+                         text: [], 
+                         textfont: {
+                         family: 'sans serif',
+                         size: 20
+                        //  color: '#ff7f0e'
+                         },
+                         textposition: 'bottom', 
+                         showlegend: false,
+                         line: {width: 4}};
     function make_tangent(point){
         tangent_trace['x'].push(point['x']);
         tangent_trace['y'].push(point['y']);
@@ -110,7 +121,9 @@ function deleteTrace(){
             tangent_trace['y']=[];
         }
         if (tangent_trace['x'].length == 2){
-            tangent_trace['x'].push(calc_x0(tangent_trace));
+            let x0 = calc_x0(tangent_trace)
+            tangent_trace['x'].push(x0);
+            tangent_trace['text'] = [, ,'Pinc='+Number((x0).toFixed(5))];
             tangent_trace['y'].push(0);
             Plotly.addTraces(myPlot, tangent_trace);
             tangentCount += 1;
