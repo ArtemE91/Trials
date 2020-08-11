@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .experiment_graph import figure, multigraf
 from .models import Trials, ReceivedValues, Sample
-from .form import TrialForm, ExperementUpdateForm, ExperimentCreateForm
+from .form import TrialForm, ExperimentForm
 from services.mixin import AjaxableResponseMixin
 from services.list_coordinate import get_list_coordinate
 from services.filter_queryset import FilterQueryset
@@ -100,7 +100,7 @@ class TrialDelete(LoginRequiredMixin, DeleteView):
 
 
 class ExperimentCreate(LoginRequiredMixin, AjaxableResponseMixin, CreateView):
-    form_class = ExperimentCreateForm
+    form_class = ExperimentForm
     template_name = 'Experiment/Experiment.html'
 
     def get_context_data(self, **kwargs):
@@ -132,7 +132,7 @@ class ExperimentList(LoginRequiredMixin, ListView):
 
 
 class ExperimentUpdate(LoginRequiredMixin, AjaxableResponseMixin, UpdateView):
-    form_class = ExperementUpdateForm
+    form_class = ExperimentForm
     template_name = 'Experiment/ExperimentUpdate.html'
 
     def get_object(self, queryset=None):

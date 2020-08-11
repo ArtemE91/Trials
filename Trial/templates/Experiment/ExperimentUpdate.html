@@ -6,16 +6,54 @@
     <div class="content">
         <form  class='ui form' id="update_experiment" enctype='multipart/form-data'>
             {% csrf_token %}
+        <div class="two fields">
             <div class="field">
-                <label for="id_change_weight">Изменение массы</label>
+                <label for="id_change_weight">{{ form.change_weight.label }}</label>
                 <input onkeyup="checkParams('id_change_weight')" type="text" name="change_weight" id="id_change_weight" placeholder="Введите данные"
-                value="{{ receivedvalues.change_weight }}">
+                value="{{ form.change_weight.value }}">
             </div>
             <div class="field">
-                <label for="id_time_trials">Время эксперимента</label>
+                <label for="id_time_trials">{{ form.time_trials.label }}</label>
                 <input onkeyup="checkParams('id_time_trials')" type="text" name="time_trials" id="id_time_trials" placeholder="Введите данные"
-                value="{{ receivedvalues.time_trials }}">
+                value="{{ form.time_trials.value }}">
             </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label for="id_droplets_distance">{{ form.droplets_distance.label }}</label>
+                <input type="text" name="droplets_distance" id="id_droplets_distance" placeholder="Введите данные"
+                value="{{ form.droplets_distance.value }}">
+            </div>
+            <div class="field">
+                <label for="id_sample_density">{{ form.sample_density.label }}</label>
+                <input type="text" name="sample_density" id="id_sample_density" placeholder="Введите данные"
+                value="{{ form.sample_density.value }}">
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label for="id_water_density">{{ form.water_density.label }}</label>
+                <input type="text" name="water_density" id="id_water_density" placeholder="Введите данные"
+                value="{{ form.water_density.value }}">
+            </div>
+            <div class="field">
+                <label for="id_sample_erosion_height">{{ form.sample_erosion_height.label }}</label>
+                <input type="text" name="sample_erosion_height" id="id_sample_erosion_height" placeholder="Введите данные"
+                value="{{ form.sample_erosion_height.value }}">
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label for="id_number_of_droplet_flow">{{ form.number_of_droplet_flow.label }}</label>
+                <input type="text" name="number_of_droplet_flow" id="id_number_of_droplet_flow" placeholder="Введите данные"
+                value="{{ form.number_of_droplet_flow.value }}">
+            </div>
+            <div class="field">
+                <label for="id_samples_distance_diameter">{{ form.samples_distance_diameter.label }}</label>
+                <input type="text" name="samples_distance_diameter" id="id_samples_distance_diameter" placeholder="Введите данные"
+                value="{{ form.samples_distance_diameter.value }}">
+            </div>
+        </div>
             <div class="two fields">
                 {% if receivedvalues.image %}
                     <div class="field">
