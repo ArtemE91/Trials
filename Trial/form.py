@@ -41,20 +41,22 @@ class TrialUpdateForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ExperementUpdateForm(forms.ModelForm):
+class ExperimentForm(forms.ModelForm):
     class Meta:
         model = ReceivedValues
-        fields = ['change_weight', 'time_trials', 'image']
-
-
-class ExperimentCreateForm(forms.ModelForm):
-    class Meta:
-        model = ReceivedValues
-        fields = ['change_weight', 'time_trials', 'image']
+        fields = ['change_weight', 'time_trials', 'image',
+                  'droplets_distance', 'sample_density', 'water_density',
+                  'sample_erosion_height', 'number_of_droplet_flow',
+                  'samples_distance_diameter']
 
         labels = {
             'change_weight': 'Масса после испытания',
             'time_trials': 'Время испытания',
             'image': 'Изображение образца',
+            'droplets_distance': 'Расстояние между каплями',
+            'sample_density': 'Плотность материала образца',
+            'water_density': 'Плотность воды',
+            'sample_erosion_height': 'Средняя высота зоны эрозийного износа',
+            'number_of_droplet_flow': 'Число потоков капель',
+            'samples_distance_diameter': 'Диаметр крепления образцов на штанге',
         }
-

@@ -37,9 +37,18 @@ class ReceivedValues(AbstractModel):
         return f"experement/trial_{self.trials.id}/{filename}"
 
     change_weight = models.FloatField(verbose_name='Масса образца после эксперимента', default=0)
-    time_trials = models.IntegerField(verbose_name='Длительность эксперимента', default=0)
+    time_trials = models.FloatField(verbose_name='Длительность эксперимента', default=0)
     image = models.FileField(upload_to=experement_image_path, null=True, blank=True,
                              verbose_name='Изображение образца после эксперимента')
+    droplets_distance = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расстояние между каплями')
+    sample_density = models.CharField(max_length=255, blank=True, null=True, verbose_name='Плотность материала образца')
+    water_density = models.CharField(max_length=255, blank=True, null=True, verbose_name='Плотность воды')
+    sample_erosion_height = models.CharField(max_length=255, blank=True, null=True,
+                                             verbose_name='Средняя высота зоны эрозийного износа')
+    number_of_droplet_flow = models.CharField(max_length=255, blank=True, null=True,
+                                              verbose_name='Число потоков капель')
+    samples_distance_diameter = models.CharField(max_length=255, blank=True, null=True,
+                                                 verbose_name='Диаметр крепления образцов на штанге')
 
     trials = models.ForeignKey(Trials, on_delete=models.CASCADE,
                                blank=True, null=True, related_name="trials_values")
