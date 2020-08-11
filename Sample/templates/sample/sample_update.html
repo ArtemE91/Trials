@@ -35,6 +35,14 @@
                         </div>
                       </div>
                 </div>
+
+                <div class="field">
+                    <label for="id_marking">{{ form.marking.label_tag }}</label>
+                    <div class="ui input">
+                      <input placeholder="Введите значение" name="marking" id="id_marking"
+                      value="{% if form.marking.value %}{{ form.marking.value }}{% endif %}">
+                    </div>
+                </div>
             </div>
 
         </div>

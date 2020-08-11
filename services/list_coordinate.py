@@ -78,12 +78,15 @@ def calculate_poly_trend(x, y, deg=2):
 
 
 def group_trend_ids(trend_ids):
+    if not trend_ids:
+        return []
     trends_count = len(trend_ids[0])
     grouped = []
     for i in range(trends_count):
         group = [l[i] for l in trend_ids]
         grouped.append(group)
     return grouped
+
 
 def calculate_linear_approximation(x, y):
     p = np.polyfit(x, y, 1)

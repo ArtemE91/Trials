@@ -4,6 +4,14 @@
     <div class="ui orange clearing segment" id="segment_create_sample" style="margin-top: 3%;">
         <h3 class="ui dividing header">Образец {{ sample.pk }}</h3>
         <div class="ui list">
+
+            <div class="item">
+                <div class="ui grid">
+                    <div class="three wide column">Маркировка:</div>
+                    <div class="thirteen wide column">{{ sample.marking }}</div>
+                </div>
+            </div>
+
             <div class="item">
                 <div class="ui grid">
                     <div class="three wide column">Cпособ упрочнения:</div>

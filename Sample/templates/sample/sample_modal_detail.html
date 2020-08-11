@@ -26,6 +26,16 @@
             <div class="content">
                 <div class="description">
                     <div class="ui list">
+
+                {% if sample.marking %}
+                <div class="item">
+                    <div class="ui grid column">
+                        <div class="five wide column">Маркировка:</div>
+                        <div class="eleven wide column">{{ sample.marking }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
                 {% if sample.modification.method %}
                 <div class="item">
                     <div class="ui grid">
