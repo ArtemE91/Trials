@@ -33,6 +33,18 @@
            <div class="ui text">Для выбранных образцов нет экспериментов</div>
         </div>
     </div>
+    <div class="ui orange segment">
+        <table class="ui selectable celled table" id="dataTable">
+            <thead><tr>
+                <th>Num</th>
+                <th>Длительность инкубационного периода</th>
+                <th>Cкорость эрозии E [г/с]</th>
+            </tr></thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 
 {% block scripts %}
@@ -50,6 +62,7 @@ function deleteTrace(){
     if (tangentCount>0) {
         Plotly.deleteTraces('myPlot', -1);
         tangentCount -= 1;
+        $('#dataTable tr:last').remove();
     }
 };
 
@@ -123,14 +136,43 @@ function deleteTrace(){
         if (tangent_trace['x'].length == 2){
             let x0 = calc_x0(tangent_trace)
             tangent_trace['x'].push(x0);
-            tangent_trace['text'] = [, ,'Pinc='+Number((x0).toFixed(5))];
+            tangent_trace['text'] = [, ,tangentCount+1];
             tangent_trace['y'].push(0);
             Plotly.addTraces(myPlot, tangent_trace);
             tangentCount += 1;
+            addToDataTable(x0, tangent_trace);
             tangent_trace['x']=[];
             tangent_trace['y']=[];
         }
     }
+
+    function addToDataTable(Pinc, tangent_trace){
+        var tableRef = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+        var newRow = tableRef.insertRow();
+        // ячейка с номером касательной
+        var numberCell  = newRow.insertCell();
+        var numberText  = document.createTextNode(tangentCount);
+        numberCell.appendChild(numberText);
+        // ячейка с Pinc
+        var Pinc=Number((Pinc).toFixed(5));
+        var pincCell  = newRow.insertCell();
+        var pincText  = document.createTextNode(Pinc);
+        pincCell.appendChild(pincText);
+        // ячейка с Emax
+        var Emax = calculateEmax(tangent_trace);
+        var emaxCell = newRow.insertCell();
+        var emaxText = document.createTextNode(Number((Emax).toFixed(5)));
+        emaxCell.appendChild(emaxText);
+    };
+
+    function calculateEmax(tangentTrace){
+        let x1=tangentTrace['x'][0];
+        let x2=tangentTrace['x'][1];
+        let y1=tangentTrace['y'][0];
+        let y2=tangentTrace['y'][1];
+        let Emax = (y2-y1)/(x2-x1);
+        return Emax;
+    };
 
     function calc_x0(tangent_trace){ //расчет пересечения прмой с 0Х
         let x1=tangent_trace['x'][0];
