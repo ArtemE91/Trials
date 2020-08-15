@@ -265,11 +265,8 @@ function ajax_get_detail_tr_all(id, table){
     }
 
     var layout = {hovermode:'closest', 
-                //   xaxis: {title: 
-                //     {text: "Изменение времени, мин"},
-                //   },
                   yaxis: {title: 
-                    {text: "Изменение массы, г"}
+                    {text: "Изменение массы [г]"}
                   },
                   legend: {orientation: "h",
                             bgcolor: '#E2E2E2',
