@@ -8,7 +8,9 @@ class TrialForm(forms.ModelForm):
         fields = ['size_particle', 'speed_collision', 'add_param', 'corner_collision',
                   'date_trials', 'date_end_trials', 'type_particle', 'description', 'sample',
                   'flow_type', 'chamber_pressure', 'sample_temp', 'abrasive_type', 'air_consumption',
-                  'abrasive_consumption', 'nozzle_diam', 'distance_sub']
+                  'abrasive_consumption', 'nozzle_diam', 'distance_sub', 'droplets_distance',
+                  'sample_density', 'water_density', 'sample_erosion_height', 'number_of_droplet_flow',
+                  'samples_distance_diameter']
         labels = {
             'size_particle': 'Размер частицы',
             'speed_collision': 'Cкорость соударения',
@@ -27,6 +29,12 @@ class TrialForm(forms.ModelForm):
             'abrasive_consumption': 'Расход абразива',
             'nozzle_diam': 'Диаметр сопла',
             'distance_sub': 'Расстояние от сопла до образца',
+            'droplets_distance': 'Расстояние между каплями',
+            'sample_density': 'Плотность материала образца',
+            'water_density': 'Плотность воды',
+            'sample_erosion_height': 'Средняя высота зоны эрозийного износа',
+            'number_of_droplet_flow': 'Число потоков капель',
+            'samples_distance_diameter': 'Диаметр крепления образцов на штанге',
             }
 
     def __init__(self, *args, **kwargs):
@@ -44,19 +52,10 @@ class TrialUpdateForm(forms.ModelForm):
 class ExperimentForm(forms.ModelForm):
     class Meta:
         model = ReceivedValues
-        fields = ['change_weight', 'time_trials', 'image',
-                  'droplets_distance', 'sample_density', 'water_density',
-                  'sample_erosion_height', 'number_of_droplet_flow',
-                  'samples_distance_diameter']
+        fields = ['change_weight', 'time_trials', 'image', ]
 
         labels = {
             'change_weight': 'Масса после испытания',
             'time_trials': 'Время испытания',
             'image': 'Изображение образца',
-            'droplets_distance': 'Расстояние между каплями',
-            'sample_density': 'Плотность материала образца',
-            'water_density': 'Плотность воды',
-            'sample_erosion_height': 'Средняя высота зоны эрозийного износа',
-            'number_of_droplet_flow': 'Число потоков капель',
-            'samples_distance_diameter': 'Диаметр крепления образцов на штанге',
         }

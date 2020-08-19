@@ -140,13 +140,13 @@
                 <div class="thirteen wide column">{{ trials.sample }}</div>
             </div>
         </div>
+    {% if plot_div %}
         <div class="content">
             <div style="width:600px;height:500px">
-                {% if plot_div %}
                     {{ plot_div|safe }}
-                {% endif %}
             </div>
         </div>
+    {% endif %}
 
         <div class="ui aligned grid">
             <div class="right aligned sixteen wide column">
@@ -168,12 +168,6 @@
                         <th>Изменение массы за время испытания</th>
                         <th>Время испытания</th>
                         <th>Потеря массы</th>
-                        <th>Расстояние между каплями</th>
-                        <th>Плотность материала образца</th>
-                        <th>Плотность воды</th>
-                        <th>Средняя высота зоны эрозийного износа</th>
-                        <th>Число потоков капель</th>
-                        <th>Диаметр крепления образцов на штанге</th>
                     </tr>
                 </thead>
                 <tbody id='experiments_table_body'>
@@ -182,12 +176,6 @@
                         <td>{{ experiment.change_weight }}</td>
                         <td>{{ experiment.time_trials }}</td>
                         <td>{{ experiment.weight_loss }}</td>
-                        <td>{{ experiment.droplets_distance }}</td>
-                        <td>{{ experiment.sample_density }}</td>
-                        <td>{{ experiment.water_density }}</td>
-                        <td>{{ experiment.sample_erosion_height }}</td>
-                        <td>{{ experiment.number_of_droplet_flow }}</td>
-                        <td>{{ experiment.samples_distance_diameter }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

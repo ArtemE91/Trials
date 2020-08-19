@@ -3,6 +3,8 @@ from Sample.models import AbstractModel, Sample
 from django.shortcuts import reverse
 
 
+
+
 class Trials(AbstractModel):
     """Информация по испытанию"""
     size_particle = models.IntegerField(blank=True, null=True, verbose_name='Размер частиц')
@@ -20,7 +22,17 @@ class Trials(AbstractModel):
     air_consumption = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расход воздуха')
     abrasive_consumption = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расход абразива')
     nozzle_diam = models.CharField(max_length=255, blank=True, null=True, verbose_name='Диаметр сопла')
-    distance_sub = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расстояние от сопла до образца')
+    distance_sub = models.CharField(max_length=255, blank=True, null=True,
+                                    verbose_name='Расстояние от сопла до образца')
+    droplets_distance = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расстояние между каплями')
+    sample_density = models.CharField(max_length=255, blank=True, null=True, verbose_name='Плотность материала образца')
+    water_density = models.CharField(max_length=255, blank=True, null=True, verbose_name='Плотность воды')
+    sample_erosion_height = models.CharField(max_length=255, blank=True, null=True,
+                                             verbose_name='Средняя высота зоны эрозийного износа')
+    number_of_droplet_flow = models.CharField(max_length=255, blank=True, null=True,
+                                              verbose_name='Число потоков капель')
+    samples_distance_diameter = models.CharField(max_length=255, blank=True, null=True,
+                                                 verbose_name='Диаметр крепления образцов на штанге')
 
     sample = models.OneToOneField(Sample, blank=True, null=True, on_delete=models.CASCADE, related_name='sample')
 
@@ -33,6 +45,7 @@ class Trials(AbstractModel):
 
 class ReceivedValues(AbstractModel):
     """Информация по эксперементу"""
+
     def experement_image_path(self, filename):
         return f"experement/trial_{self.trials.id}/{filename}"
 
@@ -40,15 +53,6 @@ class ReceivedValues(AbstractModel):
     time_trials = models.FloatField(verbose_name='Длительность эксперимента', default=0)
     image = models.FileField(upload_to=experement_image_path, null=True, blank=True,
                              verbose_name='Изображение образца после эксперимента')
-    droplets_distance = models.CharField(max_length=255, blank=True, null=True, verbose_name='Расстояние между каплями')
-    sample_density = models.CharField(max_length=255, blank=True, null=True, verbose_name='Плотность материала образца')
-    water_density = models.CharField(max_length=255, blank=True, null=True, verbose_name='Плотность воды')
-    sample_erosion_height = models.CharField(max_length=255, blank=True, null=True,
-                                             verbose_name='Средняя высота зоны эрозийного износа')
-    number_of_droplet_flow = models.CharField(max_length=255, blank=True, null=True,
-                                              verbose_name='Число потоков капель')
-    samples_distance_diameter = models.CharField(max_length=255, blank=True, null=True,
-                                                 verbose_name='Диаметр крепления образцов на штанге')
 
     trials = models.ForeignKey(Trials, on_delete=models.CASCADE,
                                blank=True, null=True, related_name="trials_values")
@@ -59,3 +63,24 @@ class ReceivedValues(AbstractModel):
     @staticmethod
     def get_absolute_url():
         return reverse('trial:list')
+
+
+class ReceivedData(AbstractModel):
+    """Полученные данные при обработке графиков"""
+
+    incubation_period = models.CharField(max_length=255, blank=True, null=True,
+                                         verbose_name='Длительность инкубационного периода')
+    max_erosion_rate = models.CharField(max_length=255, blank=True, null=True,
+                                        verbose_name='Максимальная скорость эрозии')
+    established_erosion_rate = models.CharField(max_length=255, blank=True, null=True,
+                                                verbose_name='Установившейся скорость эрозии')
+    point_max_erosion_rate = models.CharField(max_length=255, blank=True, null=True,
+                                              verbose_name='Общая точка максимальной скорости эрозии')
+    point_erosion_rate = models.CharField(max_length=255, blank=True, null=True,
+                                          verbose_name='Общая точка установившейся скорости эрозии')
+    type_graph = models.CharField(max_length=255, blank=True, null=True, verbose_name='Тип графика')
+
+    trials = models.ForeignKey(Trials, on_delete=models.CASCADE, blank=True, null=True)
+
+    class Meta:
+        db_table = 'received_data'
