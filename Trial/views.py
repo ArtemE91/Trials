@@ -83,15 +83,17 @@ class TrialDetailTr(LoginRequiredMixin, AjaxableResponseMixin, DetailView):
 
 
 class TrialUpdate(LoginRequiredMixin, AjaxableResponseMixin, UpdateView):
-    model = Trials
+    form_class = TrialForm
     template_name = 'Trial/trial_update.html'
-    fields = '__all__'
     success_url = '/trial/'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sample'] = Sample.objects.filter(Q(sample=None) | Q(id=context['trials'].sample.id))
         return context
+
+    def get_object(self, queryset=None):
+        return Trials.objects.get(id=self.kwargs['pk'])
 
 
 class TrialDelete(LoginRequiredMixin, DeleteView):

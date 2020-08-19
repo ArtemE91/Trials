@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="two fields">
+        <div class="three fields">
             <div class="field">
                 <label for="id_nozzle_diam">Диаметр сопла</label>
                 <input type="text" placeholder="Введите данные" name="nozzle_diam" id="id_nozzle_diam"
@@ -71,20 +71,55 @@
                 <input type="text" placeholder="Введите данные" name="distance_sub" id="id_distance_sub"
                 value="{% if trials.distance_sub %}{{ trials.distance_sub }}{% endif %}">
             </div>
+            <div class="field">
+                <label for="id_droplets_distance">{{ form.droplets_distance.label }}</label>
+                <input type="text" name="droplets_distance" id="id_droplets_distance" placeholder="Введите данные"
+                value="{{ form.droplets_distance.value }}">
+            </div>
         </div>
 
-        <div class="two fields">
+        <div class="three fields">
+            <div class="field">
+                <label for="id_sample_density">{{ form.sample_density.label }}</label>
+                <input type="text" name="sample_density" id="id_sample_density" placeholder="Введите данные"
+                value="{{ form.sample_density.value }}">
+            </div>
+            <div class="field">
+                <label for="id_water_density">{{ form.water_density.label }}</label>
+                <input type="text" name="water_density" id="id_water_density" placeholder="Введите данные"
+                value="{{ form.water_density.value }}">
+            </div>
+            <div class="field">
+                <label for="id_sample_erosion_height">{{ form.sample_erosion_height.label }}</label>
+                <input type="text" name="sample_erosion_height" id="id_sample_erosion_height" placeholder="Введите данные"
+                value="{{ form.sample_erosion_height.value }}">
+            </div>
+        </div>
+
+        <div class="three fields">
+            <div class="field">
+                <label for="id_number_of_droplet_flow">{{ form.number_of_droplet_flow.label }}</label>
+                <input type="text" name="number_of_droplet_flow" id="id_number_of_droplet_flow" placeholder="Введите данные"
+                value="{{ form.number_of_droplet_flow.value }}">
+            </div>
+            <div class="field">
+                <label for="id_samples_distance_diameter">{{ form.samples_distance_diameter.label }}</label>
+                <input type="text" name="samples_distance_diameter" id="id_samples_distance_diameter" placeholder="Введите данные"
+                value="{{ form.samples_distance_diameter.value }}">
+            </div>
             <div class="field">
                 <label for="id_type_particle">Тип частиц</label>
                 <input type="text" placeholder="Введите данные" name="type_particle" id="id_type_particle"
                 value="{% if trials.type_particle %}{{ trials.type_particle }}{% endif %}">
             </div>
+        </div>
+
+
             <div class="field">
                 <label for="id_add_param">Параметры</label>
                 <input type="text" placeholder="Введите данные" name="add_param" id="id_add_param"
                 value="{% if trials.add_param %}{{ trials.add_param }}{% endif %}">
             </div>
-        </div>
 
         <div class="two fields">
             <div class="field">
