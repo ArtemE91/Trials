@@ -3,7 +3,8 @@ from .views import (TrialCreate, TrialList, TrialDetail,
                     TrialUpdate, TrialDelete, ExperimentCreate,
                     TrialDetailTr, TrialModalDetail, ExperimentList,
                     ExperimentDelete, ExperimentUpdate, TrialTableListView,
-                    CompareGraphsTemplate, AjaxCompareGraphs)
+                    CompareGraphsTemplate, AjaxCompareGraphs, ReceivedDataCreate,
+                    ReceivedDataUpdate, ReceivedDataDelete, ReceivedDataList)
 
 app_name = 'trial'
 urlpatterns = [
@@ -11,6 +12,10 @@ urlpatterns = [
     path('experiment/<int:pk>/delete/', ExperimentDelete.as_view(), name='delete_experiment'),
     path('experiment/<int:pk>/update/', ExperimentUpdate.as_view(), name='update_experiment'),
     path('<int:pk>/create_experiment/', ExperimentCreate.as_view(), name='create_experiment'),
+    path('received_data/<int:pk>/delete/', ReceivedDataDelete.as_view(), name='delete_received_data'),
+    path('received_data/<int:pk>/update/', ReceivedDataUpdate.as_view(), name='update_received_data'),
+    path('<int:pk>/create_received_data/', ReceivedDataCreate.as_view(), name='create_received_data'),
+    path('<int:pk>/received_data_list/', ReceivedDataList.as_view(), name='list_received_data'),
     path('<int:pk>/experement_list/', ExperimentList.as_view(), name='list_experiment'),
     path('<int:pk>/delete/', TrialDelete.as_view(), name='delete'),
     path('copmpare_graphs/', CompareGraphsTemplate.as_view(), name='compare_graphs'),

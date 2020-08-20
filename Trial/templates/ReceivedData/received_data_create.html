@@ -1,0 +1,94 @@
+<div class="ui modal material" id="id_received_data_modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Создать данные при обработке графиков
+    </div>
+    <div class="content">
+        <form  class='ui form' id="create_received_data">
+            {% csrf_token %}
+        <div class="two fields">
+            <div class="field">
+                <label for="id_incubation_period">{{ form.incubation_period.label }}</label>
+                <input type="text" name="incubation_period" id="id_incubation_period" placeholder="Введите данные">
+            </div>
+            <div class="field">
+                <label for="id_max_erosion_rate">{{ form.max_erosion_rate.label }}</label>
+                <input type="text" name="max_erosion_rate" id="id_max_erosion_rate" placeholder="Введите данные">
+            </div>
+        </div>
+
+        <div class="two fields">
+            <div class="field">
+                <label for="id_established_erosion_rate">{{ form.established_erosion_rate.label }}</label>
+                <input type="text" name="established_erosion_rate" id="id_established_erosion_rate" placeholder="Введите данные">
+            </div>
+            <div class="field">
+                <label for="id_point_max_erosion_rate">{{ form.point_max_erosion_rate.label }}</label>
+                <input type="text" name="point_max_erosion_rate" id="id_point_max_erosion_rate" placeholder="Введите данные">
+            </div>
+        </div>
+
+        <div class="two fields">
+            <div class="field">
+                <label for="id_point_erosion_rate">{{ form.point_erosion_rate.label }}</label>
+                <input type="text" name="point_erosion_rate" id="id_point_erosion_rate" placeholder="Введите данные">
+            </div>
+            <div class="field">
+                <label for="id_type_graph">{{ form.type_graph.label }}</label>
+                <input type="text" name="type_graph" id="id_type_graph" placeholder="Введите данные">
+            </div>
+        </div>
+
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Отмена
+        </div>
+        <div class="ui positive right labeled icon button" id="id_btn_create_received_data">
+            Создать
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $("#create_received_data").submit(function(event){
+    event.preventDefault();
+
+    var formData  = new FormData(this);
+    var createPostUrl = "{% url 'trial:create_received_data' trial.pk %}";
+    $.ajax({
+        method   : "POST",
+        url      : createPostUrl,
+        data     : formData,
+        processData:false,
+        contentType:false,
+        success  : function(data){
+            location.reload(true);
+        },
+        error    : function(data){
+            console.log("ERROR:CH0x2 while fetching after creation form submit");
+            console.log("data :",data.status, data.statusText);
+        }
+    });
+ });
+
+ $("#id_btn_create_received_data")
+    .on('click', function (e) {
+        let form = new FormData( $("#create_received_data")[0] )
+        $.ajax({
+            method: 'post',
+            url: "{% url 'trial:create_received_data' trial.pk %}",
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function () {
+                location.href = '{% url 'trial:detail' trial.pk %}';
+            },
+        })
+        e.preventDefault();
+    });
+
+</script>

@@ -1,0 +1,79 @@
+<div class="ui modal material" id="id_received_data_modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Обновить данные при обработке графиков
+    </div>
+    <div class="content">
+        <form  class='ui form' id="update_received_data">
+            {% csrf_token %}
+        <div class="two fields">
+            <div class="field">
+                <label for="id_incubation_period">{{ form.incubation_period.label }}</label>
+                <input type="text" name="change_weight" id="id_incubation_period" placeholder="Введите данные"
+                value="{{ form.incubation_period.value }}">
+            </div>
+            <div class="field">
+                <label for="id_max_erosion_rate">{{ form.max_erosion_rate.label }}</label>
+                <input type="text" name="max_erosion_rate" id="id_max_erosion_rate" placeholder="Введите данные"
+                value="{{ form.max_erosion_rate.value }}">
+            </div>
+        </div>
+
+        <div class="two fields">
+            <div class="field">
+                <label for="id_established_erosion_rate">{{ form.established_erosion_rate.label }}</label>
+                <input type="text" name="established_erosion_rate" id="id_established_erosion_rate" placeholder="Введите данные"
+                value="{{ form.established_erosion_rate.value }}">
+            </div>
+            <div class="field">
+                <label for="id_point_max_erosion_rate">{{ form.point_max_erosion_rate.label }}</label>
+                <input type="text" name="time_trials" id="id_point_max_erosion_rate" placeholder="Введите данные"
+                value="{{ form.point_max_erosion_rate.value }}">
+            </div>
+        </div>
+
+        <div class="two fields">
+            <div class="field">
+                <label for="id_point_erosion_rate">{{ form.point_erosion_rate.label }}</label>
+                <input type="text" name="point_erosion_rate" id="id_point_erosion_rate" placeholder="Введите данные"
+                value="{{ form.point_erosion_rate.value }}">
+            </div>
+            <div class="field">
+                <label for="id_type_graph">{{ form.type_graph.label }}</label>
+                <input  type="text" name="type_graph" id="id_type_graph" placeholder="Введите данные"
+                value="{{ form.type_graph.value }}">
+            </div>
+        </div>
+
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Отмена
+        </div>
+        <div class="ui positive right labeled icon button" id="id_btn_update_received_data">
+            Сохранить
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $("#id_btn_update_received_data")
+    .on('click', function (e) {
+        let form = new FormData( $("#update_received_data")[0] )
+        $.ajax({
+            method: 'post',
+            url: '{% url 'trial:update_received_data' receiveddata.pk %}',
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function () {
+                location.href = '{% url 'trial:detail' receiveddata.trials.pk %}';
+            },
+        })
+        e.preventDefault();
+    });
+
+</script>
