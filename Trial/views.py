@@ -5,8 +5,8 @@ from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .experiment_graph import figure, multigraf
-from .models import Trials, ReceivedValues, Sample
-from .form import TrialForm, ExperimentForm
+from .models import Trials, ReceivedValues, Sample, ReceivedData
+from .form import TrialForm, ExperimentForm, ReceivedDataForm
 from services.mixin import AjaxableResponseMixin
 from services.list_coordinate import get_list_coordinate
 from services.filter_queryset import FilterQueryset
@@ -65,6 +65,7 @@ class TrialDetail(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         trial = super(TrialDetail, self).get_object()
+        trial.received_data = trial.receiveddata_set.all()
         trial.experiments = trial.trials_values.all().annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
         trial.experiments = trial.experiments.order_by('time_trials')
         for e in trial.experiments:
@@ -139,6 +140,40 @@ class ExperimentUpdate(LoginRequiredMixin, AjaxableResponseMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return ReceivedValues.objects.get(id=self.kwargs['pk'])
+
+
+class ReceivedDataCreate(LoginRequiredMixin, AjaxableResponseMixin, CreateView):
+    form_class = ReceivedDataForm
+    template_name = 'ReceivedData/received_data_create.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        trial = Trials.objects.get(pk=self.kwargs['pk'])
+        ctx['trial'] = trial
+        return ctx
+
+    def get_form(self, **kwargs):
+        form = super().get_form()
+        form.instance.trials = Trials.objects.get(pk=self.kwargs['pk'])
+        return form
+
+
+class ReceivedDataUpdate(LoginRequiredMixin, AjaxableResponseMixin, UpdateView):
+    form_class = ReceivedDataForm
+    template_name = 'ReceivedData/received_data_update.html'
+
+    def get_object(self, queryset=None):
+        return ReceivedData.objects.get(id=self.kwargs['pk'])
+
+
+class ReceivedDataList(LoginRequiredMixin, ListView):
+    model = ReceivedData
+    template_name = 'ReceivedData/received_data_table.html'
+
+
+class ReceivedDataDelete(LoginRequiredMixin, AjaxableResponseMixin, DeleteView):
+    model = ReceivedData
+    success_url = '/trial/'
 
 
 class CompareGraphsTemplate(LoginRequiredMixin, TemplateView):

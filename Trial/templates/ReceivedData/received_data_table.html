@@ -1,0 +1,11 @@
+
+{% for received_data in object_list %}
+<tr id='{{ received_data.pk }}'>
+    <td>{{ received_data.incubation_period }}</td>
+    <td>{{ received_data.max_erosion_rate }}</td>
+    <td>{{ received_data.established_erosion_rate }}</td>
+    <td>{{ received_data.point_max_erosion_rate }}</td>
+    <td>{{ received_data.point_erosion_rate }}</td>
+    <td>{{ received_data.type_graph }}</td>
+</tr>
+{% endfor %}

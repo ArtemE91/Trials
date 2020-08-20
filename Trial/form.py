@@ -1,5 +1,5 @@
 from django import forms
-from .models import Trials, Sample, ReceivedValues
+from .models import Trials, Sample, ReceivedValues, ReceivedData
 
 
 class TrialForm(forms.ModelForm):
@@ -58,4 +58,20 @@ class ExperimentForm(forms.ModelForm):
             'change_weight': 'Масса после испытания',
             'time_trials': 'Время испытания',
             'image': 'Изображение образца',
+        }
+
+
+class ReceivedDataForm(forms.ModelForm):
+    class Meta:
+        model = ReceivedData
+        fields = ['incubation_period', 'max_erosion_rate', 'established_erosion_rate',
+                  'point_max_erosion_rate', 'point_erosion_rate', 'type_graph']
+
+        labels = {
+            'incubation_period': 'Длительность инкубационного периода',
+            'max_erosion_rate': 'Максимальная скорость эрозии',
+            'established_erosion_rate': 'Установившейся скорость эрозии',
+            'point_max_erosion_rate': 'Общая точка максимальной скорости эрозии',
+            'point_erosion_rate': 'Общая точка установившейся скорости эрозии',
+            'type_graph': 'Тип графика',
         }

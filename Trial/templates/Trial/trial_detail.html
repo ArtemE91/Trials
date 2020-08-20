@@ -159,6 +159,54 @@
 </div>
 
 <div class="ui orange clearing segment">
+    <h3 class="ui dividing header">Полученные данные при обработке графиков</h3>
+    <div class="sixteen wide column">
+        <div class="select table">
+            <table class="ui celled striped table green compact selectable" id="received_data_table">
+                <thead>
+                    <tr>
+                        <th>Длительность инкубационного периода</th>
+                        <th>Максимальная скорость эрозии</th>
+                        <th>Установившейся скорость эрозии</th>
+                        <th>Общая точка максимальной скорости эрозии</th>
+                        <th>Общая точка установившейся скорости эрозии</th>
+                        <th>Тип графика</th>
+                    </tr>
+                </thead>
+                <tbody id='received_data_table_body'>
+                {% for received_data in trials.received_data %}
+                    <tr id='{{ received_data.pk }}'>
+                        <td>{{ received_data.incubation_period }}</td>
+                        <td>{{ received_data.max_erosion_rate }}</td>
+                        <td>{{ received_data.established_erosion_rate }}</td>
+                        <td>{{ received_data.point_max_erosion_rate }}</td>
+                        <td>{{ received_data.point_erosion_rate }}</td>
+                        <td>{{ received_data.type_graph }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="ui aligned grid">
+        <div class="right aligned sixteen wide column">
+            <div class="ui orange right floated buttons">
+                <div class="ui button" id='received_data_action_btn'><i class="edit icon"></i>Изменить</div>
+                <div class="ui combo top right pointing dropdown icon button">
+                <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item"><i class="edit icon"></i>Изменить</div>
+                        <div class="item"><i class="delete icon"></i>Удалить</div>
+                        <div class="item"><i class="pen icon"></i>Создать</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui orange clearing segment">
     <h3 class="ui dividing header">Эксперименты</h3>
     <div class="sixteen wide column">
         <div class="select table">
@@ -252,6 +300,32 @@
         </div>
   </div>
 </div>
+
+
+<div class="ui modal delete receiveddata">
+  <i class="close icon"></i>
+  <div class="header">
+    Удалить данные при обработке графиков
+  </div>
+  <div class="content">
+    <div class="description">
+      <p>Вы уверены что хотите удалить эти данные?</p>
+    </div>
+  </div>
+  <div class="actions">
+      <div class="ui aligned grid">
+            <div class="right aligned sixteen wide column">
+                <div class="ui negative button">
+                    Нет
+                </div>
+                <button id="id_btn_modal_delete_received_data" type="submit" class="ui positive button right labeled icon">
+                    Да
+                <i class="checkmark icon"></i>
+                </button>
+            </div>
+        </div>
+  </div>
+</div>
 {% endblock content %}
 
 {% block scripts %}
@@ -291,13 +365,46 @@ function show_save_experiment_modal(checked_experement_pk){
     })
 };
 
+function show_save_received_data_modal(checked_received_data_pk){
+    $.ajax({
+        url: "{% url 'trial:create_received_data' 0 %}".replace(0, checked_received_data_pk),
+        type: "get",
+        success: function(data){
+            $(data).modal().modal('show');
+        }
+    })
+};
+
+function show_update_received_data_modal(checked_received_data_pk){
+    $.ajax({
+        url: "{% url 'trial:update_received_data' 0 %}".replace(0, checked_received_data_pk),
+        type: "get",
+        success: function(data){
+            $(data).modal().modal('show');
+        }
+    })
+};
+
 function ajax_download_experement_table(){ // Получаю список эксперементов, текущего испытания. Переписываю tbody в таблице эксперементов
     $.ajax({
         url: 'experement_list/',  // <int:pk>/experement_list/ - url где pk это primary key от Trial
         type: 'get',
         success: function(data){
             $('#experiments_table_body').html(data); // Переписываю содержимое tbody
-            window.onload = addRowHandlers();
+            window.onload = addRowHandlersExperiment('experiments_table');
+            window.onload = addRowHandlersReceivedData('received_data_table');
+        }
+    });
+};
+
+function ajax_download_received_data_table(){ // Получаю список эксперементов, текущего испытания. Переписываю tbody в таблице эксперементов
+    $.ajax({
+        url: 'received_data_list/',  // <int:pk>/experement_list/ - url где pk это primary key от Trial
+        type: 'get',
+        success: function(data){
+            $('#received_data_table_body').html(data); // Переписываю содержимое tbody
+            window.onload = addRowHandlersExperiment('experiments_table');
+            window.onload = addRowHandlersReceivedData('received_data_table');
         }
     });
 };
@@ -314,13 +421,29 @@ function ajax_delete_experiment(){
         });
 }
 
+function ajax_delete_received_data(){
+    $.ajax({
+            headers: { "X-CSRFToken": token },
+            url: "{% url 'trial:delete_received_data' 0 %}".replace(0, checked_receiveddata_pk),
+            type: 'post',
+            success: function(data)
+            {
+                ajax_download_received_data_table();
+            }
+        });
+}
+
 $('#id_btn_modal_delete_exp').on('click', function () {
         ajax_delete_experiment();
 })
 
+$('#id_btn_modal_delete_received_data').on('click', function () {
+        ajax_delete_received_data();
+})
+
 $('#experiment_action_btn').click(function () {
     let btn_text = this.innerText;
-    if (btn_text =='Удалить'){
+    if (btn_text === 'Удалить'){
         $('.ui.modal.delete.experiment').
             modal('show');
     }
@@ -334,10 +457,27 @@ $('#experiment_action_btn').click(function () {
     }
 });
 
-var checked_experement_pk=null;
+$('#received_data_action_btn').click(function () {
+    let btn_text = this.innerText;
+    if (btn_text === 'Удалить'){
+        $('.ui.modal.delete.receiveddata').
+            modal('show');
+    }
+    else if(btn_text === "Изменить"){
+        $('#id_received_data_modal').remove();
+        show_update_received_data_modal(checked_receiveddata_pk);
+    }
+    else if(btn_text === "Создать"){ // создаю модальное окно, с формой для создания эксперемента
+        $('#id_received_data_modal').remove();
+        show_save_received_data_modal('{{ trials.pk }}');
+    }
+});
 
-function addRowHandlers() {
-    var table = document.getElementById("experiments_table");
+var checked_experement_pk=null;
+var checked_receiveddata_pk = null;
+
+function addRowHandlersExperiment(table_name) {
+    var table = document.getElementById(table_name);
     var rows = table.getElementsByTagName("tr");
     for (i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
@@ -358,7 +498,31 @@ function addRowHandlers() {
         currentRow.onclick = createClickHandler(currentRow);
     }
 }
-window.onload = addRowHandlers();
+
+function addRowHandlersReceivedData(table_name) {
+    var table = document.getElementById(table_name);
+    var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler =
+            function(row){
+                return function() {
+                    if (checked_receiveddata_pk==row.id){
+                        $(`#${checked_receiveddata_pk}`).removeAttr('class');
+                        checked_receiveddata_pk=null;
+                        }
+                    else{
+                        $(`#${checked_receiveddata_pk}`).removeAttr('class');
+                        $(`#${row.id}`).attr('class', 'green');
+                        checked_receiveddata_pk=row.id;
+                        }
+                    };
+            };
+        currentRow.onclick = createClickHandler(currentRow);
+    }
+}
+window.onload = addRowHandlersExperiment('experiments_table');
+window.onload = addRowHandlersReceivedData('received_data_table');
 </script>
 {% endblock scripts %}
 
