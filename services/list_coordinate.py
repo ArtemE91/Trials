@@ -61,7 +61,7 @@ def get_trend_traces(traces):
         trend_trace = {
             'x': times,
             'y': poly_trend,
-            'mode': 'lines',
+            'mode': 'lines+markers',
             'name': function_name,
             'text': function_equation
             }

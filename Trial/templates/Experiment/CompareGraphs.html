@@ -5,13 +5,21 @@
 
         <div id="myPlot" style="width: 100%; height: 100%;"></div>
 
-        <select class="ui dropdown compact" id="action_type">
+        <!-- <select class="ui dropdown compact" id="action_type">
             <option value="">Действие по клику</option>
             <option value="point_comparison">Сравнение</option>
             <option value="make_tangent">Касательные</option>
-        </select>
+        </select> -->
 
         <div class='ui segment'>
+            <div class="ui buttons">
+                <button class="ui button" value="make_tangent" onclick="setClickHandler(this)">Касательная уст</button>
+                <div class="or"></div>
+                <button class="ui button" value="make_tangent" onclick="setClickHandler(this)">Касательная макс</button>
+                <div class="or"></div>
+                <button class="ui button" value="point_comparison" onclick="setClickHandler(this)">Сравнение</button>
+              </div>
+            
             <button class="ui labeled icon button" onclick="deleteTrace()">
                 <i class="eraser icon"></i>
                 Удалить касательную
@@ -57,6 +65,20 @@ $('#action_type')
     }
   })
 ;
+
+function setClickHandler(objButton){
+    handlerName = objButton.value;
+    clickHandler=window[handlerName];
+    removePositiveClassFromButtons();
+    objButton.classList.add('positive');
+};
+
+function removePositiveClassFromButtons(){
+    positiveButtons = document.getElementsByClassName('positive');
+    if (positiveButtons.length>0){
+        positiveButtons[0].classList.remove('positive');
+    }
+};
 
 function deleteTrace(){
     if (tangentCount>0) {
