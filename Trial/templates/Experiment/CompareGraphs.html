@@ -5,12 +5,6 @@
 
         <div id="myPlot" style="width: 100%; height: 100%;"></div>
 
-        <!-- <select class="ui dropdown compact" id="action_type">
-            <option value="">Действие по клику</option>
-            <option value="point_comparison">Сравнение</option>
-            <option value="make_tangent">Касательные</option>
-        </select> -->
-
         <div class='ui segment'>
             <div class="ui buttons">
                 <button class="ui button" value="make_tangent" onclick="setClickHandler(this)">Касательная уст</button>
@@ -58,13 +52,6 @@
 {% block scripts %}
     <script>
 var clickHandler=point_comparison;
-$('#action_type')
-.dropdown({
-    onChange: function(value, text, $selectedItem) {
-        clickHandler=window[value];
-    }
-  })
-;
 
 function setClickHandler(objButton){
     handlerName = objButton.value;
@@ -85,6 +72,7 @@ function deleteTrace(){
         Plotly.deleteTraces('myPlot', -1);
         tangentCount -= 1;
         $('#dataTable tr:last').remove();
+        lastClickedGraphId=null;
     }
 };
 
@@ -133,7 +121,7 @@ function deleteTrace(){
         show_message(answer);;
     }
 
-    var tangentCount = 0
+    var tangentCount = 0;
     var tangent_trace = {x: [], 
                          y :[], 
                          type: 'scatter', 
@@ -147,13 +135,20 @@ function deleteTrace(){
                          textposition: 'bottom', 
                          showlegend: false,
                          line: {width: 4}};
+    var lastClickedGraphId=null;
     function make_tangent(point){
+        if (lastClickedGraphId !== point.curveNumber && lastClickedGraphId !== null){
+            alert('Кликните в тот же самый график');
+            return;
+        };
+        lastClickedGraphId=point.curveNumber;
         tangent_trace['x'].push(point['x']);
         tangent_trace['y'].push(point['y']);
         // 2 клика в одну точку очистят список координат
         if (tangent_trace['x'][0]==tangent_trace['x'][1] && tangent_trace['y'][0]==tangent_trace['y'][1]){
             tangent_trace['x']=[];
             tangent_trace['y']=[];
+            lastClickedGraphId=null;
         }
         if (tangent_trace['x'].length == 2){
             let x0 = calc_x0(tangent_trace)
@@ -165,6 +160,7 @@ function deleteTrace(){
             addToDataTable(x0, tangent_trace);
             tangent_trace['x']=[];
             tangent_trace['y']=[];
+            lastClickedGraphId=null;
         }
     }
 
@@ -255,6 +251,7 @@ function deleteTrace(){
             showed_trend_group=0;
         };
         showTrendGroup(showed_trend_group);
+        lastClickedGraphId=null;
     };
 
     </script>
