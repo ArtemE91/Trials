@@ -7,9 +7,9 @@
 
         <div class='ui segment'>
             <div class="ui buttons">
-                <button class="ui button" value="make_tangent" onclick="setClickHandler(this)">Касательная уст</button>
-                <div class="or"></div>
                 <button class="ui button" value="make_tangent" onclick="setClickHandler(this)">Касательная макс</button>
+                <div class="or"></div>
+                <button class="ui button" value="makeSteadyTangent" onclick="setClickHandler(this)">Касательная уст</button>
                 <div class="or"></div>
                 <button class="ui button" value="point_comparison" onclick="setClickHandler(this)">Сравнение</button>
               </div>
@@ -24,7 +24,7 @@
             </button>
         </div>
 
-        <div class="ui message answer" style="display: none;">
+        <div class="ui message answer" style="display: none;"> 
             <div class="header" id="header_answer">
             </div>
             <div id="answer">
@@ -40,7 +40,8 @@
             <thead><tr>
                 <th>Образец</th>
                 <th>Длительность инкубационного периода</th>
-                <th>Cкорость эрозии E [г/с]</th>
+                <th>Уст скорость эрозии E [г/с]</th>
+                <th>Макс скорость эрозии E [г/с]</th>
             </tr></thead>
             <tbody>
 
@@ -136,7 +137,7 @@ function deleteTrace(){
                          showlegend: false,
                          line: {width: 4}};
     var lastClickedGraphId=null;
-    function make_tangent(point){
+    function make_tangent(point, tangent_type){
         if (lastClickedGraphId !== point.curveNumber && lastClickedGraphId !== null){
             alert('Кликните в тот же самый график');
             return;
@@ -157,15 +158,22 @@ function deleteTrace(){
             tangent_trace['y'].push(0);
             Plotly.addTraces(myPlot, tangent_trace);
             tangentCount += 1;
-            addToDataTable(x0, tangent_trace, point.data.related_trials);
+            if (tangent_type == 'steady'){
+                addSteadyErosionData(tangent_trace, point.data.related_trials);
+            } else {
+                addToDataTable(x0, tangent_trace, point.data.related_trials);
+            }
             tangent_trace['x']=[];
             tangent_trace['y']=[];
             lastClickedGraphId=null;
         }
-    }
+    };
+
+    function makeSteadyTangent(point){
+        make_tangent(point, 'steady')
+    };
 
     function addToDataTable(Pinc, tangent_trace, related_trials_info){
-        alert(related_trials_info);
         var tableRef = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
         for (var i = 0; i < related_trials_info.length; i++) {
             related_trial = related_trials_info[i]
@@ -188,6 +196,19 @@ function deleteTrace(){
             var emaxText = document.createTextNode(Number((Emax).toFixed(5)));
             emaxCell.appendChild(emaxText);
             }
+    };
+
+    function addSteadyErosionData(tangent_trace, related_trials_info){
+        for (var i = 0; i < related_trials_info.length; i++) {
+            related_trial = related_trials_info[i]
+            trial_pk = related_trial[0]
+            sample_name = related_trial[1]
+            var row = document.getElementById(trial_pk);
+            var Est = calculateEmax(tangent_trace);
+            var estCell = row.insertCell();
+            var estText = document.createTextNode(Number((Est).toFixed(5)));
+            estCell.appendChild(estText);
+        }
     };
 
     function calculateEmax(tangentTrace){
