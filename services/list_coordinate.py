@@ -14,7 +14,8 @@ def get_list_coordinate(sample_ids: list) -> dict:
             if trace:
                 trial_group_info['traces'].append(trace)
         if trial_group_info['traces']:
-            trial_group_info['trend_lines'] = get_trend_traces(trial_group_info['traces'])
+            related_trials_info = [[t.pk, str(t.sample)] for t in trial_group]  # Пока не понял как сделать через values или values_list
+            trial_group_info['trend_lines'] = get_trend_traces(trial_group_info['traces'], related_trials_info)
             trials_info.append(trial_group_info)
     all_traces = []
     trend_ids = []
@@ -38,12 +39,12 @@ def create_trace(trial):
         'x': times,
         'y': weight_loss,
         'name': str(trial.sample),
-        'mode': 'markers',
+        'mode': 'markers'
     }
     return trace
 
 
-def get_trend_traces(traces):
+def get_trend_traces(traces, related_trials_info):
     union_times = list(sum([trace['x'] for trace in traces], []))
     union_times.sort()
     time_no_duplicates = sorted(list(set(union_times)))
@@ -63,7 +64,8 @@ def get_trend_traces(traces):
             'y': poly_trend,
             'mode': 'lines+markers',
             'name': function_name,
-            'text': function_equation
+            'text': function_equation,
+            'related_trials': list(related_trials_info)
             }
         trend_traces.append(trend_trace)
     return trend_traces

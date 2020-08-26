@@ -38,7 +38,7 @@
     <div class="ui orange segment">
         <table class="ui selectable celled table" id="dataTable">
             <thead><tr>
-                <th>Num</th>
+                <th>Образец</th>
                 <th>Длительность инкубационного периода</th>
                 <th>Cкорость эрозии E [г/с]</th>
             </tr></thead>
@@ -157,30 +157,37 @@ function deleteTrace(){
             tangent_trace['y'].push(0);
             Plotly.addTraces(myPlot, tangent_trace);
             tangentCount += 1;
-            addToDataTable(x0, tangent_trace);
+            addToDataTable(x0, tangent_trace, point.data.related_trials);
             tangent_trace['x']=[];
             tangent_trace['y']=[];
             lastClickedGraphId=null;
         }
     }
 
-    function addToDataTable(Pinc, tangent_trace){
+    function addToDataTable(Pinc, tangent_trace, related_trials_info){
+        alert(related_trials_info);
         var tableRef = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
-        var newRow = tableRef.insertRow();
-        // ячейка с номером касательной
-        var numberCell  = newRow.insertCell();
-        var numberText  = document.createTextNode(tangentCount);
-        numberCell.appendChild(numberText);
-        // ячейка с Pinc
-        var Pinc=Number((Pinc).toFixed(5));
-        var pincCell  = newRow.insertCell();
-        var pincText  = document.createTextNode(Pinc);
-        pincCell.appendChild(pincText);
-        // ячейка с Emax
-        var Emax = calculateEmax(tangent_trace);
-        var emaxCell = newRow.insertCell();
-        var emaxText = document.createTextNode(Number((Emax).toFixed(5)));
-        emaxCell.appendChild(emaxText);
+        for (var i = 0; i < related_trials_info.length; i++) {
+            related_trial = related_trials_info[i]
+            trial_pk = related_trial[0]
+            sample_name = related_trial[1]
+            var newRow = tableRef.insertRow();
+            newRow.id = trial_pk;
+            // ячейка с именем сэмла
+            var sampleNameCell  = newRow.insertCell();
+            var sampleNameText  = document.createTextNode(sample_name);
+            sampleNameCell.appendChild(sampleNameText);
+            // ячейка с Pinc
+            var Pinc=Number((Pinc).toFixed(5));
+            var pincCell  = newRow.insertCell();
+            var pincText  = document.createTextNode(Pinc);
+            pincCell.appendChild(pincText);
+            // ячейка с Emax
+            var Emax = calculateEmax(tangent_trace);
+            var emaxCell = newRow.insertCell();
+            var emaxText = document.createTextNode(Number((Emax).toFixed(5)));
+            emaxCell.appendChild(emaxText);
+            }
     };
 
     function calculateEmax(tangentTrace){
