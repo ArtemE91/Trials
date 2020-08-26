@@ -1,4 +1,5 @@
 from Sample.models import Sample
+from django.db.models import F, Q
 from Trial.models import Trials
 import numpy as np
 
@@ -23,6 +24,7 @@ def get_list_coordinate(sample_ids: list) -> dict:
         all_traces += ti['traces']
         trend_ids.append(list(range(len(all_traces), len(all_traces)+len(ti['trend_lines']))))
         all_traces += ti['trend_lines']
+    second_coordinate_grid(sample_ids)
     return {'traces': all_traces, 'trend_ids': group_trend_ids(trend_ids)}
 
 
@@ -185,3 +187,58 @@ def group_by_material(trials):
         grouped_trials.append(filtered)
     trials = trials.exclude(id__in=disk_plast_modif_trials)
     return grouped_trials
+
+
+class SecondCoordinateGrid:
+    param_erosive_wear = {}
+    average_depth_of_erosive_wear = []
+    value_erosive_wear = ['sample_density', 'size_particle', 'water_density',
+                          'sample_erosion_height','droplets_distance', 'number_of_droplet_flow',
+                          'speed_collision', 'samples_distance_diameter']
+
+    def __init__(self, sample_ids):
+        self.sample_ids = sample_ids
+
+    def get_data(self):
+        queryset = self._get_data_from_model()
+        if queryset is None:
+            return []
+
+        weight_loss = self._get_weight_loss(queryset)
+        value = self._get_param_erosive_wear(queryset)
+
+    def _get_data_from_model(self):
+        if self.sample_ids is not None:
+            return Trials.objects.filter(sample__pk__in=self.sample_ids)
+        return None
+
+    def _get_weight_loss(self, queryset):
+        data_weight_loss = {}
+        for trial in queryset:
+            experiment_list = trial.trials_values.all()
+            weight_loss = experiment_list.annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
+            weight_loss = self._convert_weight_loss_in_list(weight_loss.values('weight_loss', 'change_weight'))
+            data_weight_loss[trial.id] = weight_loss
+        return data_weight_loss
+
+    @staticmethod
+    def _convert_weight_loss_in_list(weight_loss):
+        list_weight_loss = []
+        for weight in weight_loss:
+            list_weight_loss.append(round(weight['weight_loss'], 5))
+        return list_weight_loss
+
+    def _get_param_erosive_wear(self, queryset):
+        erosive_wear = {}
+        for trial in queryset:
+            list_erosive_wear = []
+            data = queryset.values(*self.value_erosive_wear)
+            for name_attr, value in data.__iter__().__next__().items():
+                list_erosive_wear.append({name_attr: value})
+            erosive_wear[trial.id] = list_erosive_wear
+        return erosive_wear
+
+
+def second_coordinate_grid(ids):
+    coordibate = SecondCoordinateGrid(sample_ids=ids)
+    coordibate.get_data()
