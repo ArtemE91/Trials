@@ -174,40 +174,55 @@ function deleteTrace(){
     };
 
     function addToDataTable(Pinc, tangent_trace, related_trials_info){
+        addSamplesRowsInTable(related_trials_info);
+        for (var i = 0; i < related_trials_info.length; i++){
+            var trial_pk = related_trials_info[i][0];
+            var Pinc=Number((Pinc).toFixed(5));
+            var pincCell = document.getElementById('pinc_'+trial_pk);
+            pincCell.innerHTML = Pinc;
+            var EmaxCell = document.getElementById('emax_' + trial_pk);
+            var Emax = calculateEmax(tangent_trace);
+            EmaxCell.innerHTML = Emax;
+        }
+    };
+
+    function addSamplesRowsInTable(related_trials_info){
         var tableRef = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
-        for (var i = 0; i < related_trials_info.length; i++) {
-            related_trial = related_trials_info[i]
-            trial_pk = related_trial[0]
-            sample_name = related_trial[1]
+        for (var i = 0; i < related_trials_info.length; i++){
+            related_trial = related_trials_info[i];
+            trial_pk = related_trial[0];
+            sample_name = related_trial[1];
+            row_id = 'trial_' + trial_pk
+            existedRow = document.getElementById(row_id);
+            if (existedRow) { 
+                continue; 
+            }
             var newRow = tableRef.insertRow();
-            newRow.id = trial_pk;
+            newRow.id = row_id
             // ячейка с именем сэмла
             var sampleNameCell  = newRow.insertCell();
-            var sampleNameText  = document.createTextNode(sample_name);
-            sampleNameCell.appendChild(sampleNameText);
+            sampleNameCell.id = 'sampleName_' + trial_pk;
+            sampleNameCell.innerHTML = sample_name;
             // ячейка с Pinc
-            var Pinc=Number((Pinc).toFixed(5));
             var pincCell  = newRow.insertCell();
-            var pincText  = document.createTextNode(Pinc);
-            pincCell.appendChild(pincText);
+            pincCell.id = 'pinc_' + trial_pk
             // ячейка с Emax
-            var Emax = calculateEmax(tangent_trace);
             var emaxCell = newRow.insertCell();
-            var emaxText = document.createTextNode(Number((Emax).toFixed(5)));
-            emaxCell.appendChild(emaxText);
-            }
+            emaxCell.id = 'emax_' + trial_pk
+            // ячейка с Est
+            var estCell = newRow.insertCell();
+            estCell.id = 'est_' + trial_pk
+        }
     };
 
     function addSteadyErosionData(tangent_trace, related_trials_info){
+        addSamplesRowsInTable(related_trials_info);
         for (var i = 0; i < related_trials_info.length; i++) {
-            related_trial = related_trials_info[i]
-            trial_pk = related_trial[0]
-            sample_name = related_trial[1]
-            var row = document.getElementById(trial_pk);
+            var trial_pk = related_trials_info[i][0];
             var Est = calculateEmax(tangent_trace);
-            var estCell = row.insertCell();
-            var estText = document.createTextNode(Number((Est).toFixed(5)));
-            estCell.appendChild(estText);
+            Est = Number((Est).toFixed(5));
+            var EstCell = document.getElementById('est_' + trial_pk);
+            EstCell.innerHTML = Est;
         }
     };
 
