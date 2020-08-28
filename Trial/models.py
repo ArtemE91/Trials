@@ -3,8 +3,6 @@ from Sample.models import AbstractModel, Sample
 from django.shortcuts import reverse
 
 
-
-
 class Trials(AbstractModel):
     """Информация по испытанию"""
     size_particle = models.IntegerField(blank=True, null=True, verbose_name='Размер частиц')
