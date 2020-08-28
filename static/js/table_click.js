@@ -90,6 +90,7 @@ function same_array(){
 // Показывать корзину если есть выбранные элементы
 function show_select_table(table) {
     if (select_tr.length > 0){
+        $('#' + main_field[table]['btn_analyze']).removeAttr('style');
         $('#' + main_field[table]['btn_detail']).removeAttr('style');
         $('#' + main_field[table]['btn_graphs']).removeAttr('style');
         $('#' + main_field[table]['btn_excel']).removeAttr('style');
@@ -98,6 +99,7 @@ function show_select_table(table) {
         $('#' + main_field[table]['message']).attr('style', 'display: none');
     }
     else {
+        $('#' + main_field[table]['btn_analyze']).attr('style', 'display: none');
         $('#' + main_field[table]['btn_detail']).attr('style', 'display: none');
         $('#' + main_field[table]['btn_graphs']).attr('style', 'display: none');
         $('#' + main_field[table]['btn_excel']).attr('style', 'display: none');
@@ -126,6 +128,8 @@ function click_btn(table) {
                 btn_graphs_or_excel(main_field[table][name_btn]);
             if ('id_btn_experiment' === name_btn)
                 btn_experiment(main_field[table][name_btn], check_tr[0]);
+            if ('id_btn_analyze' === name_btn)
+                btn_analyze(table);
         })
 }
 
@@ -164,12 +168,18 @@ function btn_experiment(url, trial_id) {
     document.location=url + trial_id;
 }
 
+function btn_analyze(table){
+    alert('Здесь сделаем анализ с касательными');
+};
+
 // Активация кнопок
 function active_btn() {
     if(check_tr.length === 1){
+        $('#id_btn_analyze')[0].classList.remove('disabled')
         $('#id_btn_detail').attr('class', 'ui button')
         $('#id_btn_experiment').attr('class', 'ui button')
     } else {
+        $('#id_btn_analyze')[0].classList.add('disabled')
         $('#id_btn_detail').attr('class', 'ui button disabled')
         $('#id_btn_experiment').attr('class', 'ui button disabled')
     }

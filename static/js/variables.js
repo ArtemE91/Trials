@@ -30,6 +30,7 @@ var main_field = {
         'tr': 'tr_select_',
         'arr_el': check_tr,
         'checkbox': 'select_checkbox_',
+        'btn_analyze': 'id_btn_analyze',
         'btn_detail': 'id_btn_detail',
         'btn_graphs': 'id_btn_compare_graphs',
         'btn_excel': 'id_btn_download_excel',
