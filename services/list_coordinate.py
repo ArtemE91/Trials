@@ -203,7 +203,7 @@ class SecondCoordinateGrid:
     def get_data(self):
         queryset = self._get_data_from_model()
         if queryset is None:
-            return []
+            return {'average_depth': [], 'amount_of_liquid': []}
 
         params_experiment = self._get_data_experiment(queryset)
         params_erosive_wear = self._get_param_erosive_wear(queryset)

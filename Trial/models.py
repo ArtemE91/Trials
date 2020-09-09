@@ -78,6 +78,8 @@ class ReceivedData(AbstractModel):
                                           verbose_name='Общая точка установившейся скорости эрозии')
     type_graph = models.CharField(max_length=255, blank=True, null=True, verbose_name='Тип графика')
 
+    polynomial_type = models.CharField(max_length=255, blank=True, null=True, verbose_name='Тип полинома')
+
     trials = models.ForeignKey(Trials, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
