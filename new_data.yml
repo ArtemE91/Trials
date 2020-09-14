@@ -1,0 +1,154 @@
+sample_type:
+  1:
+    name: 'грибок'
+
+sample_material:
+  1:
+    name: 'сталь'
+    type: '12Х13'
+    description: 'Горячекатаный пруток, изготовление токарное, сталь по ГОСТ'
+
+modification:
+  1:
+    method: 'азотирование'
+    exp_param: '5 часов'
+    depth_coating: 60
+    hardness_coating: 1200
+    struct_coating: 'азот N2'
+    organization: 'НЦ «Износостойкость» ФГБОУ ВО «НИУ «МЭИ»'
+
+sample:
+  1:
+    roughness: 0.2
+    sub_hardness: 230
+    weight: 13.2743
+    marking: '71Х15Э'
+    image: 'Sample_71Х15Э_0.png'
+    sample_material_id: 1
+    sample_type_id: 1
+  2:
+    date_proc_streng: "2015-09-16"
+    roughness: 0.6
+    sub_hardness: 230
+    weight: 13.2713
+    marking: '29Х15Э'
+    description: 'азотирование в течение 5 часов на установке «Гефест+» неподвижно между двух магнетронов'
+    image: 'Sample_29Х15Э_0.png'
+    sample_material_id: 1
+    sample_type_id: 1
+    modification_id: 1
+
+trials:
+  1:
+    size_particle: 800
+    speed_collision: 300
+    add_param: 'монодисперсный поток, вода (конденсат), расстояние между каплями – 800 мкм'
+    corner_collision: 90
+    date_trials: '2016-11-02'
+    date_end_trials: '2016-11-04'
+    type_particle: 'капля воды'
+    description: 'давление в камере стенда – 5-7 кПа, частота генератора сигналов – 2 кГц, частота по двигателю – 165 Гц, частота вращения – 5200 об/мин'
+    sample_id: 1
+  2:
+    size_particle: 800
+    speed_collision: 300
+    add_param: 'монодисперсный поток, вода (конденсат), расстояние между каплями – 800 мкм'
+    corner_collision: 90
+    date_trials: '2016-11-02'
+    date_end_trials: '2016-11-04'
+    type_particle: 'капля воды'
+    description: 'давление в камере стенда – 5-7 кПа, частота генератора сигналов – 2 кГц, частота по двигателю – 165 Гц, частота вращения – 5200 об/мин'
+    sample_id: 2
+
+
+received_values:
+  1:
+    change_weight: 13.26944
+    time_trials: 5
+    image: 'Sample_71Х15Э_5.jpg'
+    trials_id: 1
+  2:
+    change_weight: 13.22856
+    time_trials: 15
+    image: 'Sample_71Х15Э_15.jpg'
+    trials_id: 1
+  3:
+    change_weight: 13.1784
+    time_trials: 25
+    image: 'Sample_71Х15Э_25.jpg'
+    trials_id: 1
+  4:
+    change_weight: 13.10836
+    time_trials: 35
+    image: 'Sample_71Х15Э_35.jpg'
+    trials_id: 1
+  5:
+    change_weight: 13.02414
+    time_trials: 45
+    image: 'Sample_71Х15Э_45.jpg'
+    trials_id: 1
+  6:
+    change_weight: 12.92852
+    time_trials: 55
+    image: 'Sample_71Х15Э_55.jpg'
+    trials_id: 1
+  7:
+    change_weight: 12.82368
+    time_trials: 65
+    image: 'Sample_71Х15Э_65.jpg'
+    trials_id: 1
+  8:
+    change_weight: 12.71136
+    time_trials: 75
+    image: 'Sample_71Х15Э_75.jpg'
+    trials_id: 1
+  9:
+    change_weight: 12.58324
+    time_trials: 85
+    image: 'Sample_71Х15Э_85.jpg'
+    trials_id: 1
+  10:
+    change_weight: 13.27078
+    time_trials: 5
+    image: 'Sample_29Х15Э_5.jpg'
+    trials_id: 2
+  11:
+    change_weight: 13.2653
+    time_trials: 15
+    image: 'Sample_29Х15Э_15.jpg'
+    trials_id: 2
+  12:
+    change_weight: 13.25134
+    time_trials: 25
+    image: 'Sample_29Х15Э_25.jpg'
+    trials_id: 2
+  13:
+    change_weight: 13.22828
+    time_trials: 35
+    image: 'Sample_29Х15Э_35.jpg'
+    trials_id: 2
+  14:
+    change_weight: 13.19542
+    time_trials: 45
+    image: 'Sample_29Х15Э_45.jpg'
+    trials_id: 2
+  15:
+    change_weight: 13.15174
+    time_trials: 55
+    image: 'Sample_29Х15Э_55.jpg'
+    trials_id: 2
+  16:
+    change_weight: 13.09916
+    time_trials: 65
+    image: 'Sample_29Х15Э_65.jpg'
+    trials_id: 2
+  17:
+    change_weight: 13.03852
+    time_trials: 75
+    image: 'Sample_29Х15Э_75.jpg'
+    trials_id: 2
+  18:
+    change_weight: 12.97452
+    time_trials: 85
+    image: 'Sample_29Х15Э_85.jpg'
+    trials_id: 2
