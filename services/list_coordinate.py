@@ -4,6 +4,150 @@ from Trial.models import Trials
 import math
 import numpy as np
 from typing import Union, List, Tuple, Optional
+import json
+
+TYPE_1 = 1
+TYPE_2 = 2
+TYPE_3 = 3
+TYPE_POLYNOMIAL = (TYPE_1, TYPE_2, TYPE_3)
+
+
+class Trace:
+
+    def __init__(self, x: list, y: list, name: str, mode: str, ) -> None:
+        self.x = x
+        self.y = y
+        self.name = name
+        self.mode = mode
+
+    @classmethod
+    def create_trace_first(cls, trial: Trials):
+
+        x, y, name = cls.first_coordinate_grid(trial)
+        trace = cls(x=x, y=y, name=name, mode='markers')
+        return trace
+
+    @classmethod
+    def create_trace_second(cls, trial: Trials):
+        x, y, name = cls.second_coordinate_grid(trial)
+        trace = cls(x=x, y=y, name=name, mode='markers')
+        return trace
+
+    @classmethod
+    def first_coordinate_grid(cls, trial: Trials) -> Optional[Tuple[list, list, str]]:
+        data_experiment = cls.get_data_experiment(trial)
+
+        y = [0] + [round(value['weight_loss'], 5) for value in data_experiment]
+        x = [0] + [value['time_trials'] for value in data_experiment]
+
+        return x, y, str(trial.sample)
+
+    @classmethod
+    def second_coordinate_grid(cls, trial: Trials) -> Optional[Tuple[list, list, str]]:
+        data_experiment = cls.get_data_experiment(trial)
+
+        x = cls.calculate_x_for_second_cg(data_experiment, trial)
+        y = cls.calculate_y_for_second_cg(data_experiment, trial)
+
+        return x, y, str(trial.sample)
+
+    @staticmethod
+    def calculate_x_for_second_cg(data_experiment: QuerySet, trial: Trials) -> list:
+        x = [0]
+        for i_block in data_experiment:
+            try:
+                denominator = trial.sample_density * trial.size_particle * trial.droplets_distance
+                average_depth = round(i_block['weight_loss'], 5) / denominator
+                x.append(average_depth)
+            except (ZeroDivisionError, TypeError):
+                return []
+            except KeyError:
+                return []
+        return x
+
+    @classmethod
+    def calculate_y_for_second_cg(cls, data_experiment: QuerySet, trial: Trials) -> list:
+        """Расчет значений средней глубины эрозионного износа"""
+        y = [0]
+
+        try:
+            numerator = cls.get_numerator_amount_of_liquid(trial)
+            for i_block in data_experiment:
+                denominator = trial.size_particle * trial.sample_erosion_height
+                average_depth = (numerator * i_block['time_trials']) / denominator
+                y.append(average_depth)
+        except (ZeroDivisionError, TypeError):
+            return []
+        except KeyError:
+            return []
+
+        return y
+
+    @staticmethod
+    def get_numerator_amount_of_liquid(trial: Trials) -> int:
+        """Расчет числителя для формулы глубины эрозийного износа без аргумента ti(время эксперимента)"""
+        try:
+            first_arg = (math.pi * (trial.size_particle ** 3)) / 6
+            second_arg = trial.sample_erosion_height / trial.droplets_distance
+            third_arg = trial.speed_collision / (math.pi * trial.samples_distance_diameter)
+
+            numerator = first_arg * trial.water_density * second_arg * trial.number_of_droplet_flow * third_arg
+        except (ZeroDivisionError, TypeError):
+            raise ZeroDivisionError
+        except KeyError:
+            raise KeyError
+
+        return numerator
+
+    @staticmethod
+    def get_data_experiment(trial: Trials) -> QuerySet:
+        experiment_list = trial.trials_values.all().order_by('time_trials')
+        params_experiment = experiment_list.annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
+        data = params_experiment.values('weight_loss', 'change_weight', 'time_trials')
+
+        return data
+
+    def as_dict(self):
+        return dict(x=self.x, y=self.y, name=self.name, mode=self.mode)
+
+    def __bool__(self):
+        return False if not(self.x or self.y) else True
+
+
+trace1 = Trace.create_trace_first
+trace2 = Trace.create_trace_second
+
+list_trace = {1: trace1, 2: trace2}
+
+
+def get_list_coordinate_new(sample_ids: list) -> dict:
+    # 1. Получаем Trials
+    # 2. Группируем их
+    # 3. Получаем Trace для каждого элемента в группе
+    # 4. Отправляем List[Trace] полученный в пункте 3 для получения полиномов
+    related_trials = Trials.objects.filter(sample__pk__in=sample_ids)
+    grouped_trials = group_by_material(related_trials)
+    trials_info = []
+    for trial in grouped_trials:
+        trial_group_info = {'traces': {}, 'trend_lines': {}}
+        for coordinate_grid, func_trace in list_trace.items():
+            trial_group_info['traces'][coordinate_grid] = []
+            trace = func_trace(trial.get())
+            if trace:
+                trial_group_info['traces'][coordinate_grid].append(trace)
+        for coordinate_grid, _ in list_trace.items():
+            if trial_group_info['traces'][coordinate_grid]:
+                trial_group_info['trend_lines'] = create_trend_traces(trial_group_info['traces'][coordinate_grid],
+                                                                      coordinate_grid)
+    print(trial_group_info)
+
+
+def create_trend_traces(trial_group_info, coordinate_grid):
+    trend_traces = {coordinate_grid: {}}
+    for type_pol in TYPE_POLYNOMIAL:
+        trend_traces[coordinate_grid][type_pol] = []
+        trend_traces[coordinate_grid][type_pol].append(TracePolynomial.create_trace(trial_group_info, type_pol))
+    return trend_traces
 
 
 def get_list_coordinate(sample_ids: list) -> dict:
@@ -191,115 +335,15 @@ def group_by_material(trials):
     return grouped_trials
 
 
-class Trace:
-
-    def __init__(self, x: list, y: list, name: str, mode: str, ) -> None:
-        self.x = x
-        self.y = y
-        self.name = name
-        self.mode = mode
-
-    @classmethod
-    def create_trace_first(cls, trial: Trials):
-
-        x, y, name = cls.first_coordinate_grid(trial)
-        trace = cls(x=x, y=y, name=name, mode='markers')
-        return trace
-
-    @classmethod
-    def create_trace_second(cls, trial: Trials):
-        x, y, name = cls.second_coordinate_grid(trial)
-        trace = cls(x=x, y=y, name=name, mode='markers')
-        return trace
-
-    @classmethod
-    def first_coordinate_grid(cls, trial: Trials) -> Optional[Tuple[list, list, str]]:
-        data_experiment = cls.get_data_experiment(trial)
-
-        y = [0] + [round(value['weight_loss'], 5) for value in data_experiment]
-        x = [0] + [value['time_trials'] for value in data_experiment]
-
-        return x, y, str(trial.sample)
-
-    @classmethod
-    def second_coordinate_grid(cls, trial: Trials) -> Optional[Tuple[list, list, str]]:
-        data_experiment = cls.get_data_experiment(trial)
-
-        x = cls.calculate_x_for_second_cg(data_experiment, trial)
-        y = cls.calculate_y_for_second_cg(data_experiment, trial)
-
-        return x, y, str(trial.sample)
-
-    @staticmethod
-    def calculate_x_for_second_cg(data_experiment: QuerySet, trial: Trials) -> list:
-        x = [0]
-        for i_block in data_experiment:
-            try:
-                denominator = trial.sample_density * trial.size_particle * trial.droplets_distance
-                average_depth = round(i_block['weight_loss'], 5) / denominator
-                x.append(average_depth)
-            except (ZeroDivisionError, TypeError):
-                return []
-            except KeyError:
-                return []
-        return x
-
-    @classmethod
-    def calculate_y_for_second_cg(cls, data_experiment: QuerySet, trial: Trials) -> list:
-        """Расчет значений средней глубины эрозионного износа"""
-        y = [0]
-
-        try:
-            numerator = cls.get_numerator_amount_of_liquid(trial)
-            for i_block in data_experiment:
-                denominator = trial.size_particle * trial.sample_erosion_height
-                average_depth = (numerator * i_block['time_trials']) / denominator
-                y.append(average_depth)
-        except (ZeroDivisionError, TypeError):
-            return []
-        except KeyError:
-            return []
-
-        return y
-
-    @staticmethod
-    def get_numerator_amount_of_liquid(trial: Trials) -> int:
-        """Расчет числителя для формулы глубины эрозийного износа без аргумента ti(время эксперимента)"""
-        try:
-            first_arg = (math.pi * (trial.size_particle ** 3)) / 6
-            second_arg = trial.sample_erosion_height / trial.droplets_distance
-            third_arg = trial.speed_collision / (math.pi * trial.samples_distance_diameter)
-
-            numerator = first_arg * trial.water_density * second_arg * trial.number_of_droplet_flow * third_arg
-        except (ZeroDivisionError, TypeError):
-            raise ZeroDivisionError
-        except KeyError:
-            raise KeyError
-
-        return numerator
-
-    @staticmethod
-    def get_data_experiment(trial: Trials) -> QuerySet:
-        experiment_list = trial.trials_values.all().order_by('time_trials')
-        params_experiment = experiment_list.annotate(weight_loss=F('trials__sample__weight') - F('change_weight'))
-        data = params_experiment.values('weight_loss', 'change_weight', 'time_trials')
-
-        return data
-
-
 class TracePolynomial:
 
-    def __init__(self, x: list, y: list, name: str, mode: str, related_trials: [],
-                 text: str, sample_id: str, sample_name: str, **kwargs) -> None:
-        super().__init__(**kwargs)
+    def __init__(self, x: list, y: list, name: str, mode: str, related_trials: list, text: str, **kwargs) -> None:
         self.x = x
         self.y = y
         self.name = name
         self.mode = mode
         self.related_trials = related_trials
         self.text = text
-        self.sample_id = sample_id
-        self.sample_name = sample_name
 
     @classmethod
     def create_trace(cls, traces: List[Trace], type_polynomial: int):
